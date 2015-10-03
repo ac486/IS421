@@ -7,6 +7,7 @@ IS421
 # open
 
 for now just clone the app and.
+![](https://github.com/ac486/IS421/blob/master/public/img/front.png)
 
 # Usage
 
@@ -26,8 +27,8 @@ Visualization Project
 <h4 align="center">Visualization for Class IS219 </h4>
 <h5 align="center">Using Boirlerplate</h5>
 
-![](https://github.com/ac486/IS421/blob/master/public/img/Screenshot%202015-09-29%2018.20.55.png)
-![](https://github.com/dguardia/visualization219/blob/master/public/img/daveg1.png)
+![](https://github.com/ac486/IS421/blob/master/public/img/login.png)
+
 
 Table of Contents
 -----------------
