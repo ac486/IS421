@@ -1,12 +1,8 @@
 # IS421
-IS421 
-## 
-### h3 run npm install
-#### then just run gulp
-#cheers
-# open
 
-for now just clone the app and.
+##Open
+    for now just clone the app and follow the installation process
+
 ![](https://github.com/ac486/IS421/blob/master/public/img/front.png)
 
 # Usage
