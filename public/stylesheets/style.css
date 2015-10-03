@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+#adminTable th input.center-block {
+  margin: 2px auto 2px auto;
+}
+
+#adminTable td input.center-block {
+  margin: 5px auto 5px auto;
+}
