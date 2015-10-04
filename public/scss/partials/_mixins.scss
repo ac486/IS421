@@ -1,8 +1,8 @@
 // rem fallback - credits: http://zerosixthree.se/
 
 @function calculateRem($size) {
-  $remSize: $size / 16px;
-  @return $remSize * 1rem;
+  $remSize: $size / 14px;
+  @return $remSize * 1.2rem;
 }
 
 @mixin font-size($size) {

@@ -8,11 +8,16 @@ $color-2: #2f889a; // blue-light
 $color-3: #d2d8d8; // grey
 
 $red: #d76666; // error messages
+$green: #2f889a;
+
+//button borders
+$no-border: none;
 
 // fonts 
 
 $primary-font: 'PT Sans', sans-serif;
 $secondy-font: 'Roboto', sans-serif;
+$font-size-base: 14px;
 
 // z-index
 
@@ -23,3 +28,5 @@ $modal-zindex: 3;
 
 $header-height-S: 50px;
 $header-height-M: 80px;
+
+

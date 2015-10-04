@@ -1,12 +1,16 @@
+@import "vendor/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "vendor/bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
+@import "vendor/bootstrap-sass/assets/stylesheets/bootstrap-compass";
+@import "vendor/bootstrap-sass/assets/stylesheets/bootstrap-mincer";
+@import "vendor/font-awesome/scss/font-awesome";
+
 @import 'bourbon/bourbon'; // http://bourbon.io/
-
 @import 'partials/variables'; // colors, fonts etc...
-
 @import 'partials/mixins'; // custom mixins
-
 @import 'partials/layout'; // responsive grid and media queries
+@import "pages/profile";
 
-/* -------------------------------- 
+/* --------------------------------
 
 Primary style
 
@@ -22,10 +26,7 @@ html * {
 }
 
 body {
-	font: {
-		size: 100%;
-		family: $primary-font; // variables inside partials > _variables.scss
-	}
+
 	color: $main-text;
 	background-color: $background;
 }
@@ -41,7 +42,7 @@ img {
 
 input, textarea {
 	font-family: $primary-font;
-	@include font-size(16px);
+	@include font-size(26px);
 
 	&::-ms-clear {
     	display: none;
@@ -478,3 +479,21 @@ xsigin/signup popup
 	display: block;
 }
 
+.btn-warning {
+  background: $green;
+  border: $no-border;
+}
+
+.btn-success {
+  background: $green;
+  border: $no-border;
+}
+.panel-info {
+  border-color: $color-2;
+
+  .panel-heading {
+    color: $color-2;
+    background-color: $color-3;
+    border-color: $color-2;
+  }
+}

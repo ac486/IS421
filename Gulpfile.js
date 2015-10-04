@@ -18,7 +18,7 @@ var opn             = require('opn');
 // Configuration
 // -----------------------------------------------------------------------------
 
-var input = './public/scss/*.scss';
+var input = './public/scss/**/*.scss';
 var output = './public/css';
 var sassOptions = { outputStyle: 'expanded' };
 var autoprefixerOptions = { browsers: ['last 2 versions', '> 5%', 'Firefox ESR'] };

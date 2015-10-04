@@ -94,11 +94,13 @@ jQuery(document).ready(function($){
 	//REMOVE THIS - it's just to show error messages 
 	$form_login.find('input[type="submit"]').on('click', function(event){
 		event.preventDefault();
-		$form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+		$(location).attr('href', 'admin-dashboard.html');
+		//$form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
 	});
 	$form_signup.find('input[type="submit"]').on('click', function(event){
 		event.preventDefault();
-		$form_signup.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+		$(location).attr('href', 'dashboard.html');
+		//$form_signup.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
 	});
 
 
@@ -125,6 +127,48 @@ jQuery(document).ready(function($){
 		  	})
 		});
 	}
+	$("#mytable #checkall").click(function () {
+		if ($("#mytable #checkall").is(':checked')) {
+			$("#mytable input[type=checkbox]").each(function () {
+				$(this).prop("checked", true);
+			});
+
+		} else {
+			$("#mytable input[type=checkbox]").each(function () {
+				$(this).prop("checked", false);
+			});
+		}
+	});
+
+	$("[data-toggle=tooltip]").tooltip();
+
+    var panels = $('.user-infos');
+    var panelsButton = $('.dropdown-user');
+    panels.hide();
+
+    //Click dropdown
+    panelsButton.click(function() {
+        //get data-for attribute
+        var dataFor = $(this).attr('data-for');
+        var idFor = $(dataFor);
+
+        //current button
+        var currentButton = $(this);
+        idFor.slideToggle(400, function() {
+            //Completed slidetoggle
+            if(idFor.is(':visible'))
+            {
+                currentButton.html('<i class="fa fa-chevron-up text-muted"></i>');
+            }
+            else
+            {
+                currentButton.html('<i class="fa fa--chevron-down text-muted"></i>');
+            }
+        })
+    });
+
+
+    $('[data-toggle="tooltip"]').tooltip();
 
 });
 
