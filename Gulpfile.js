@@ -18,7 +18,7 @@ var opn             = require('opn');
 // Configuration
 // -----------------------------------------------------------------------------
 
-var input = './stylesheets/**/*.scss';
+var input = './public/scss/*.scss';
 var output = './public/css';
 var sassOptions = { outputStyle: 'expanded' };
 var autoprefixerOptions = { browsers: ['last 2 versions', '> 5%', 'Firefox ESR'] };
@@ -27,7 +27,7 @@ var sassdocOptions = { dest: './public/sassdoc' };
 var server = {
     host: 'localhost',
     port: '8001'
-}
+};
 
 // -----------------------------------------------------------------------------
 // Sass compilation
