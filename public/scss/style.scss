@@ -451,6 +451,10 @@ xsigin/signup popup
 		color: #FFF;
 		text-decoration: underline;
 	}
+
+    a.plain {
+        text-decoration: none;
+    }
 }
 
 .cd-close-form {
@@ -471,11 +475,11 @@ xsigin/signup popup
 	}
 }
 
-#cd-login, #cd-signup, #cd-reset-password {
+#cd-login, #cd-signup, #cd-reset-password, #cd-reset-username {
 	display: none;
 }
 
-#cd-login.is-selected, #cd-signup.is-selected, #cd-reset-password.is-selected {
+#cd-login.is-selected, #cd-signup.is-selected, #cd-reset-password.is-selected, #cd-reset-username.is-selected {
 	display: block;
 }
 

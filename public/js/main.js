@@ -3,11 +3,15 @@ jQuery(document).ready(function($){
 		$form_login = $form_modal.find('#cd-login'),
 		$form_signup = $form_modal.find('#cd-signup'),
 		$form_forgot_password = $form_modal.find('#cd-reset-password'),
+        $form_forgot_username = $form_modal.find('#cd-reset-username'),
 		$form_modal_tab = $('.cd-switcher'),
 		$tab_login = $form_modal_tab.children('li').eq(0).children('a'),
 		$tab_signup = $form_modal_tab.children('li').eq(1).children('a'),
 		$forgot_password_link = $form_login.find('.cd-form-bottom-message a'),
-		$back_to_login_link = $form_forgot_password.find('.cd-form-bottom-message a'),
+        $forgot_username_link = $form_login.find('.cd-form-bottom-message2 a')
+		$back_to_login_link = $form_forgot_password.find('.cd-form-bottom-message a')
+        $back_to_login_link2 = $form_forgot_username.find('.cd-form-bottom-message a'),
+
 		$main_nav = $('.main-nav');
 
 	//open modal
@@ -63,15 +67,31 @@ jQuery(document).ready(function($){
 		forgot_password_selected();
 	});
 
-	//back to login from the forgot-password form
+    //show forgot-username form
+    $forgot_username_link.on('click', function(event){
+        event.preventDefault();
+        forgot_username_selected();
+    });
+
+
+
+    //back to login from the forgot-password form
 	$back_to_login_link.on('click', function(event){
 		event.preventDefault();
 		login_selected();
 	});
 
+    //back to login from the forgot-username form
+    $back_to_login_link2.on('click', function(event){
+        event.preventDefault();
+        login_selected();
+    });
+
+
 	function login_selected(){
 		$form_login.addClass('is-selected');
 		$form_signup.removeClass('is-selected');
+        $form_forgot_username.removeClass('is-selected');
 		$form_forgot_password.removeClass('is-selected');
 		$tab_login.addClass('selected');
 		$tab_signup.removeClass('selected');
@@ -80,6 +100,7 @@ jQuery(document).ready(function($){
 	function signup_selected(){
 		$form_login.removeClass('is-selected');
 		$form_signup.addClass('is-selected');
+        $form_forgot_username.removeClass('is-selected');
 		$form_forgot_password.removeClass('is-selected');
 		$tab_login.removeClass('selected');
 		$tab_signup.addClass('selected');
@@ -88,8 +109,17 @@ jQuery(document).ready(function($){
 	function forgot_password_selected(){
 		$form_login.removeClass('is-selected');
 		$form_signup.removeClass('is-selected');
+        $form_forgot_username.removeClass('is-selected');
 		$form_forgot_password.addClass('is-selected');
 	}
+
+    function forgot_username_selected() {
+        $form_login.removeClass('is-selected');
+        $form_signup.removeClass('is-selected');
+        $form_forgot_password.removeClass('is-selected');
+        $form_forgot_username.addClass('is-selected');
+
+    }
 
 	//REMOVE THIS - it's just to show error messages 
 	$form_login.find('input[type="submit"]').on('click', function(event){
