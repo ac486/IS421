@@ -7,12 +7,12 @@ jQuery(document).ready(function($){
 		$form_modal_tab = $('.cd-switcher'),
 		$tab_login = $form_modal_tab.children('li').eq(0).children('a'),
 		$tab_signup = $form_modal_tab.children('li').eq(1).children('a'),
-		$forgot_password_link = $form_login.find('.cd-form-bottom-message a'),
-        $forgot_username_link = $form_login.find('.cd-form-bottom-message2 a')
+		$forgot_password_link = $form_login.find('.cd-form-bottom-message a.pass'),
+        $forgot_username_link = $form_login.find('.cd-form-bottom-message a.user')
 		$back_to_login_link = $form_forgot_password.find('.cd-form-bottom-message a')
         $back_to_login_link2 = $form_forgot_username.find('.cd-form-bottom-message a'),
 
-		$main_nav = $('.main-nav');
+        $main_nav = $('.main-nav');
 
 	//open modal
 	$main_nav.on('click', function(event){
@@ -124,12 +124,14 @@ jQuery(document).ready(function($){
 	//REMOVE THIS - it's just to show error messages 
 	$form_login.find('input[type="submit"]').on('click', function(event){
 		event.preventDefault();
-		$(location).attr('href', 'admin-dashboard.html');
+        $(location).attr('href', '/adminDashboard')
+		//$(location).attr('href', 'admin-dashboard.html');
 		//$form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
 	});
 	$form_signup.find('input[type="submit"]').on('click', function(event){
 		event.preventDefault();
-		$(location).attr('href', 'dashboard.html');
+		//$(location).attr('href', 'dashboard.html');
+        $(location).attr('href', '/dashboard');
 		//$form_signup.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
 	});
 
