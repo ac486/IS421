@@ -14,8 +14,8 @@ angular.module('is421', [
         requireBase: false
     });
     $routeProvider
-        .when('/signup', {
-            templateUrl: 'partials/signup.html',
-            controller: 'SignupCtrl'
+        .when('/', {
+            templateUrl: 'partials/index.html',
+            controller: 'MainCtrl'
         })
 }]);

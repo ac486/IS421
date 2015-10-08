@@ -2,14 +2,31 @@ doctype html
 html(ng-app='is421')
   head
     title= title
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+
+    link(href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css')
+
     link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/reset.css')
+    link(rel='stylesheet', href='/stylesheets/styleFromSass.css')
 
     script(src='angular/angular.js')
     script(src='angular-route/angular-route.js')
-    script(src='angular-bootstrap/ui-bootstrap.js')
+    script(src='angular-bootstrap/ui-bootstrap-tpls.js')
     script(src='/javascripts/app.js')
     script(src='/javascripts/controllers.js')
   body(ng-controller='MainCtrl')
     //block content
+    header(role='banner')
+        #cd-logo
+            a(href='/')
+                img(src='/img/cd-logo.svg', alt='Logo')
+        nav.main-nav
+            ul
+                // insert more links here
+                li
+                    a.cd-signin(href='#', ng-click='open("login")') Sign in
+                li
+                    a.cd-signup(href='#', ng-click='open("signup")') Sign up
     ng-view
