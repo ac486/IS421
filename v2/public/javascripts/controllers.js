@@ -4,45 +4,39 @@
 
 var app = angular.module('controllers', []);
 
-app.controller('MainCtrl', function($scope, $modal) {
+app.controller('NavCtrl', function($scope, $modal, $location) {
+    $scope.authenticated = false;
     $scope.title = 'Welcome to the Main Page';
-    $scope.selectedLogin = true;
-    $scope.animationsEnabled = true;
 
-    $scope.open = function(openType) {
-        //openType: 'login' or 'signup'
+});
 
-        if (openType === 'login') {
-            var modalInstance = $modal.open({
-                animation: $scope.animationsEnabled,
-                templateUrl: 'modals/login.html',
-                controller: 'LoginCtrl'
-            })
-        } else if (openType === 'signup') {
-            var modalInstance = $modal.open({
-                animation: $scope.animationsEnabled,
-                templateUrl: 'modals/signup.html',
-                controller: 'SignupCtrl'
-            })
-        }
+app.controller('MainCtrl', function($scope) {
+
+});
+
+app.controller('LoginCtrl', function($scope) {
+    $scope.submit = function() {
+        console.log('login');
+        //make http post request
 
     }
-
 });
 
-app.controller('LoginCtrl', function($scope, $modalInstance) {
+app.controller('SignupCtrl', function($scope) {
+    $scope.submit = function() {
+        console.log('signup');
+        //make http post request
+    };
 
-});
-
-app.controller('SignupCtrl', function($scope, $modalInstance) {
 
 });
 
 app.controller('DashboardCtrl', function($scope) {
-
+    $scope.authenticated = true;
 });
 
 app.controller('AdminCtrl', function($scope) {
+    $scope.authenticated = true;
     $scope.selectedAll = false;
     $scope.userList = [
         {
@@ -96,6 +90,4 @@ app.controller('AdminCtrl', function($scope) {
         }
     };
 
-
-    $scope.adminValues = ['a', 'b'];
 });

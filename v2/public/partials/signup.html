@@ -1,0 +1,47 @@
+<div class="row page-header">
+    <h3 class="text-center">New Account</h3>
+
+    <form class="cd-form col-sm-6 col-sm-offset-3" ng-submit="submit()">
+        <p class="fieldset">
+            <label class="image-replace cd-username"></label>
+            <input ng-model="username" class="full-width has-padding has-border" type="text" placeholder="Username">
+        </p>
+        <p class="fieldset">
+            <label class="image-replace cd-username"></label>
+            <input ng-model="firstname" class="full-width has-padding has-border" type="text" placeholder="First Name">
+        </p>
+
+        <p class="fieldset">
+            <label class="image-replace cd-username"></label>
+            <input ng-model="lastname" class="full-width has-padding has-border" type="text" placeholder="Last Name">
+        </p>
+
+        <p class="fieldset">
+            <label class="image-replace cd-email"></label>
+            <input ng-model="email" class="full-width has-padding has-border" type="email" placeholder="E-mail">
+            <!--<span class="cd-error-message">Error message here!</span>-->
+        </p>
+
+        <p class="fieldset">
+            <label class="image-replace cd-password"></label>
+            <input ng-model="password" class="full-width has-padding has-border" placeholder="Password" type="password">
+            <!--<a href="#" class="hide-password">Hide</a>-->
+            <!--<span class="cd-error-message">Error message here!</span>-->
+        </p>
+        <p class="fieldset">
+            <label class="image-replace cd-password">Re-enter Password</label>
+            <input ng-model="password2" class="full-width has-padding has-border" type="password"  placeholder="Re-enter Password">
+            <!--<span class="cd-error-message">Error message here!</span>-->
+        </p>
+
+        <!--<p class="fieldset">-->
+            <!--<input type="checkbox" id="accept-terms">-->
+            <!--<label for="accept-terms">I agree to the <a href="#">Terms</a></label>-->
+        <!--</p>-->
+
+        <p class="fieldset">
+            <input class="full-width has-padding" type="submit" value="Create account">
+            <input ng-model="forHoneyPot" type="hidden" value="">
+        </p>
+    </form>
+</div>

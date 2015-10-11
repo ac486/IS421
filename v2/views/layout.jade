@@ -16,17 +16,21 @@ html(ng-app='is421')
     script(src='angular-bootstrap/ui-bootstrap-tpls.js')
     script(src='/javascripts/app.js')
     script(src='/javascripts/controllers.js')
-  body(ng-controller='MainCtrl')
+  body(ng-controller='NavCtrl')
     //block content
     header(role='banner')
         #cd-logo
             a(href='/')
                 img(src='/img/cd-logo.svg', alt='Logo')
-        nav.main-nav
+        //nav.main-nav
             ul
                 // insert more links here
                 li
-                    a.cd-signin(href='#', ng-click='open("login")') Sign in
+                    a.cd-signin(href='#', ng-if='!authenticated' ng-click='open("login")') Sign in
                 li
-                    a.cd-signup(href='#', ng-click='open("signup")') Sign up
+                    a.cd-signup(href='#', ng-if='!authenticated' ng-click='open("signup")') Sign up
+                li
+                    a.cd-signup(href='/profile', ng-if='authenticated') Profile
+                li
+                    a.cd-signup(href='/', ng-if='authenticated') Log Out
     ng-view

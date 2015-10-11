@@ -18,6 +18,14 @@ angular.module('is421', [
             templateUrl: 'partials/index.html',
             controller: 'MainCtrl'
         })
+        .when('/signup', {
+            templateUrl: 'partials/signup.html',
+            controller: 'SignupCtrl'
+        })
+        .when('/login', {
+            templateUrl: 'partials/login.html',
+            controller: 'LoginCtrl'
+        })
         .when('/dashboard', {
             templateUrl: 'partials/dashboard.html',
             controller: 'DashboardCtrl'
