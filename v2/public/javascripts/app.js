@@ -18,4 +18,12 @@ angular.module('is421', [
             templateUrl: 'partials/index.html',
             controller: 'MainCtrl'
         })
+        .when('/dashboard', {
+            templateUrl: 'partials/dashboard.html',
+            controller: 'DashboardCtrl'
+        })
+        .when('/admin', {
+            templateUrl: 'partials/admin.html',
+            controller: 'AdminCtrl'
+        })
 }]);
