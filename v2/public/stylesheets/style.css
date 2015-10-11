@@ -9,3 +9,14 @@ a {
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
+.signup p.fieldset {
+    margin-top: 0;
+    /*margin-bottom: 2em;*/
+}
+
+/*.signup form  {*/
+    /*margin-bottom: 2em;*/
+/*}*/
+span[ng-message] {
+    color: red;
+}

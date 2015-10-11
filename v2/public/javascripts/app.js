@@ -5,7 +5,8 @@
 angular.module('is421', [
     'ngRoute',
     'ui.bootstrap',
-    'controllers'
+    'controllers',
+    'ngMessages'
 ])
 
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
