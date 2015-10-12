@@ -35,4 +35,9 @@ angular.module('is421', [
             templateUrl: 'partials/admin.html',
             controller: 'AdminCtrl'
         })
+        .when('/profile', {
+            templateUrl: 'partials/profile.html',
+            controller: 'ProfileCtrl'
+        })
+        .otherwise({ redirectTo: '/'})
 }]);
