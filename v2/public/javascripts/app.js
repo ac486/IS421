@@ -27,6 +27,14 @@ angular.module('is421', [
             templateUrl: 'partials/login.html',
             controller: 'LoginCtrl'
         })
+        .when('/forgotusername', {
+            templateUrl: 'partials/forgotusername.html',
+            controller: 'ForgotUsernameCtrl'
+        })
+        .when('/forgotpassword', {
+            templateUrl: 'partials/forgotpassword.html',
+            controller: 'ForgotPasswordCtrl'
+        })
         .when('/dashboard', {
             templateUrl: 'partials/dashboard.html',
             controller: 'DashboardCtrl'
