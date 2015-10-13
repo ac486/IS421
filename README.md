@@ -20,7 +20,7 @@ clone the repo.
 Visualization Project
 =======================
 [![Build Status](https://travis-ci.org/dguardia/visualization219.svg)](https://travis-ci.org/dguardia/visualization219)
-<h4 align="center">Visualization for Class IS219 </h4>
+<h4 align="center">Project for Class IS421 </h4>
 <h5 align="center">Using Boirlerplate</h5>
 
 ![](https://github.com/ac486/IS421/blob/master/public/img/login.png)
