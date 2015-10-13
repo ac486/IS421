@@ -1,6 +1,7 @@
 <div class="row page-header signup" >
     <h3 class="text-center">New Account</h3>
 
+    <!--<form action="/api/signup" method="post" novalidate name="signupForm" class="cd-form col-sm-6 col-sm-offset-3">-->
     <form novalidate name="signupForm" class="cd-form col-sm-6 col-sm-offset-3" ng-submit="submit()">
         <div ng-if="signupForm.username.$touched || signupForm.username.$dirty" ng-messages="signupForm.username.$error">
             <span ng-message="required">Required</span>

@@ -11,12 +11,11 @@ app.controller('NavCtrl', function($scope, $modal, $location) {
     $scope.$watch(function() {
         return $location.path();
     }, function(path) {
-        if (path === '/dashboard' || path === '/admin') {
+        if (path === '/dashboard' || path === '/admin' || path === '/profile') {
             $scope.authenticated = true;
         } else {
             $scope.authenticated = false;
         }
-        // console.log(path);
     })
 
 });
@@ -31,10 +30,10 @@ app.controller('LoginCtrl', function($scope, $location) {
             username: $scope.username,
             password: $scope.password
         };
-        
+
         var keys = Object.keys(user);
         var count = 0;
-        
+
         for (var i = 0; i < keys.length; i++) {
             if (user[keys[i]]) {
                 count++;
@@ -43,7 +42,7 @@ app.controller('LoginCtrl', function($scope, $location) {
                 break;
             }
         }
-        
+
         if (count === keys.length) {
             $location.path('/dashboard');
         }
