@@ -17,7 +17,7 @@ clone the repo.
     then just gulp
     after 
     
-Visualization Project
+IS421 Project
 =======================
 [![Build Status](https://travis-ci.org/dguardia/visualization219.svg)](https://travis-ci.org/dguardia/visualization219)
 <h4 align="center">Project for Class IS421 </h4>
