@@ -4,55 +4,61 @@
 
 var app = angular.module('controllers', []);
 
-app.controller('NavCtrl', function($scope, $modal, $location) {
-    $scope.authenticated = false;
-    $scope.title = 'Welcome to the Main Page';
-    
+app.controller('NavCtrl', function($scope, $modal, $location, $http) {
+
     $scope.$watch(function() {
         return $location.path();
     }, function(path) {
-        if (path === '/dashboard' || path === '/admin' || path === '/profile') {
-            $scope.authenticated = true;
-        } else {
-            $scope.authenticated = false;
+        if (path !== '/login' && path !== '/' && path !== '/signup') {
+            $http({
+                method: 'GET',
+                url: '/api/authentication'
+            }).then(function(response) {
+                console.log(response);
+            }, function(err) {
+                console.log(err);
+                window.location.href = '/login';
+            });
         }
-    })
+    });
 
+    $scope.logout = function() {
+        $http({
+            method: 'POST',
+            url: '/api/logout'
+        }).then(function(response) {
+            console.log(response);
+            window.location.href = '/';
+        }, function(err) {
+            console.log(err);
+        })
+    }
 });
 
 app.controller('MainCtrl', function($scope) {
 
 });
 
-app.controller('LoginCtrl', function($scope, $location) {
+app.controller('LoginCtrl', function($scope, $location, $http) {
     $scope.submit = function() {
-        var user = {
-            username: $scope.username,
-            password: $scope.password
-        };
-
-        var keys = Object.keys(user);
-        var count = 0;
-
-        for (var i = 0; i < keys.length; i++) {
-            if (user[keys[i]]) {
-                count++;
-            } else {
-                alert('All fields must be filled out');
-                break;
+        $http({
+            method: 'POST',
+            url: '/api/login',
+            data: {
+                username: $scope.username,
+                password: $scope.password
             }
-        }
-
-        if (count === keys.length) {
-            $location.path('/dashboard');
-        }
-        
-        //make http post request
-
+        }).then(function(response) {
+            console.log(response);
+            window.location.href = '/dashboard';
+            //$location.path('/dashboard');
+        }, function(err) {
+            console.log(err);
+        });
     }
 });
 
-app.controller('ForgotUsernameCtrl', function($scope) {
+app.controller('ForgotUsernameCtrl', function($scope, $http) {
 
 });
 
@@ -60,34 +66,27 @@ app.controller('ForgotPasswordCtrl', function($scope) {
 
 });
 
-app.controller('SignupCtrl', function($scope, $location) {
+app.controller('SignupCtrl', function($scope, $location, $http) {
     $scope.submit = function() {
-        var user = {
-            username: $scope.username,
-            firstName: $scope.firstname,
-            lastName: $scope.lastname,
-            email: $scope.email,
-            password: $scope.password,
-            password2: $scope.password2
-        };
-        
-        var keys = Object.keys(user);
-        var count = 0;
-        for (var i = 0; i < keys.length; i++) {
-            if (user[keys[i]]) {
-                count++;
-            } else {
-                alert('All fields must be filled out and valid');
-                break;
-            } 
-        }
-        
-        if (count === keys.length) {
-            $location.path('/dashboard');
-        }
+        $http({
+            method: 'POST',
+            url: '/api/signup',
+            data: {
+                username: $scope.username,
+                firstname: $scope.firstname,
+                lastname: $scope.lastname,
+                email: $scope.email,
+                password: $scope.password,
+                password2: $scope.password2
+            }
+        }).then(function(response) {
+            console.log(response);
+            window.location.href = '/dashboard';
+            //$location.path('/dashboard');
+        }, function(err) {
+            console.log(err);
+        })
     };
-
-
 });
 
 app.controller('DashboardCtrl', function($scope) {
@@ -98,32 +97,19 @@ app.controller('ProfileCtrl', function($scope) {
     
 });
 
-app.controller('AdminCtrl', function($scope) {
-    $scope.authenticated = true;
+app.controller('AdminCtrl', function($scope, $http) {
+    $http({
+        method: 'GET',
+        url: '/api/admin'
+    }).then(function(response) {
+        console.log(response);
+        $scope.userList = response.data;
+    }, function(err) {
+        console.log(err);
+        window.location.href = '/';
+    });
+
     $scope.selectedAll = false;
-    $scope.userList = [
-        {
-            username: 'bob123',
-            firstName: 'Bob',
-            lastName: 'Henry',
-            email: 'bob@henry.com',
-            isAdmin: true
-        },
-        {
-            username: 'kevin123',
-            firstName: 'kevin',
-            lastName: 'joe',
-            email: 'kevin@joe.com',
-            isAdmin: false
-        },
-        {
-            username: 'fancy123',
-            firstName: 'fancy',
-            lastName: 'name',
-            email: 'fancy@name.com',
-            isAdmin: false
-        }
-    ];
 
     $scope.all = function() {
         for (var i = 0; i < $scope.userList.length; i++) {

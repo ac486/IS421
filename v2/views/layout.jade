@@ -25,17 +25,19 @@ html(ng-app='is421')
         nav.main-nav
             ul
                 // insert more links here
-                li
-                    a.cd-signin(href='/login' ng-if='!authenticated') Sign in
-                li
-                    a.cd-signup(href='/signup' ng-if='!authenticated') Sign up
-                li
-                    a.cd-signup(href='/profile' ng-if='authenticated') Profile
-                li
-                    a.cd-signup(href='/dashboard' ng-if='authenticated') Dashboard
-                li
-                    a.cd-signup(href='/admin' ng-if='authenticated') Admin
-                li
-                    a.cd-signup(href='/' ng-if='authenticated') Logout
+                if authenticated
+                    li
+                        a.cd-signup(href='/profile') Profile
+                    li
+                        a.cd-signup(href='/dashboard') Dashboard
+                    li
+                        a.cd-signup(href='/admin') Admin
+                    li
+                        a.cd-signup(href='/' ng-click='logout()') Logout
+                else
+                    li
+                        a.cd-signin(href='/login') Sign in
+                    li
+                        a.cd-signup(href='/signup') Sign up
     block content
     ng-view

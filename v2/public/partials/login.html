@@ -2,10 +2,10 @@
     <h3 class="text-center">Login</h3>
 
     <!--<form action="/api/login" method="post" class="cd-form col-sm-6 col-sm-offset-3">-->
-    <form class="cd-form col-sm-6 col-sm-offset-3" ng-submit="submit()">
+    <form novalidate name="loginForm" class="cd-form col-sm-6 col-sm-offset-3" ng-submit="submit()">
         <p class="fieldset">
             <label class="image-replace cd-username"></label>
-            <input class="full-width has-padding has-border" type="text" name="username" ng-model="username" placeholder="Username">
+            <input class="full-width has-padding has-border" type="text" name="username" ng-model="username" placeholder="Username" required>
             <span>
                 <a href='/forgotusername'>Forgot username?</a>
             </span>
@@ -14,7 +14,7 @@
 
         <p class="fieldset">
             <label class="image-replace cd-password"></label>
-            <input class="full-width has-padding has-border" type="password" name="password" ng-model="password" placeholder="Password">
+            <input class="full-width has-padding has-border" type="password" name="password" ng-model="password" placeholder="Password" required>
             <span>
                 <a href='/forgotpassword'>Forgot password?</a>
             </span>
@@ -28,7 +28,7 @@
         <!--</p>-->
 
         <p class="fieldset">
-            <input class="full-width" type="submit" value="Login">
+            <input class="full-width" type="submit" value="Login" ng-disabled="loginForm.$invalid" ng-class="{ 'disabled' : loginForm.$invalid}">
         </p>
     </form>
 </div>

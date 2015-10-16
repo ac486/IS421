@@ -50,11 +50,12 @@
         </p>
         <div ng-if="signupForm.password2.$touched || signupForm.password2.$dirty" ng-messages="signupForm.password2.$error">
             <span ng-show="signupForm.password2.$touched" ng-message="minlength">Needs to be at least 6 characters long.</span>
+            <span ng-show="signupForm.password2.$touched" ng-message="pattern">Password needs to match.</span>
             <span ng-show="signupForm.password2.$touched" ng-message="required">Required.</span>
         </div>
         <p class="fieldset">
             <label class="image-replace cd-password">Re-enter Password</label>
-            <input ng-model="password2" name="password2" class="full-width has-padding has-border" type="password"  placeholder="Re-enter Password" required ng-minlength="6">
+            <input ng-model="password2" name="password2" class="full-width has-padding has-border" type="password"  placeholder="Re-enter Password" required ng-minlength="6" ng-pattern="{{password}}">
             <!--<span class="cd-error-message">Error message here!</span>-->
         </p>
 
@@ -64,7 +65,7 @@
         <!--</p>-->
 
         <p class="fieldset">
-            <input class="full-width has-padding" type="submit" value="Create account">
+            <input class="full-width has-padding" ng-disabled="signupForm.$invalid" type="submit" value="Create account">
             <input ng-model="forHoneyPot" type="hidden" value="">
         </p>
     </form>

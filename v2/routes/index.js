@@ -1,27 +1,8 @@
 var express = require('express');
 var router = express.Router();
-//var conn = require('../db.js');
-//var passport = require('passport');
-//var LocalStrategy = require('passport-local').Strategy;
-
-/* GET home page. */
-//router.get('/signup', function(req, res, next) {
-//    res.send('idk');
-//  //res.render('index', {
-//  //    title: 'IS421'
-//  //});
-//});
-
-
-//var mysql = require('mysql');
-//
-//var connection = mysql.createConnection({
-//    host: 'localhost',
-//    user: 'root',
-//    password: false,
-//    database: 'njit'
-//});
-//connection.connect();
+var pool = require('../config/pool.js');
+var passport = require('passport');
+require('../config/passport.js')(passport);
 
 router.post('/signup', function(req, res) {
     if (req.body) {
@@ -31,28 +12,60 @@ router.post('/signup', function(req, res) {
             lastname: req.body.lastname,
             email: req.body.email,
             password: req.body.password,
-            password2: req.body.password
-        }
+            password2: req.body.password2
+        };
+
+        pool.getConnection(function(err, connection) {
+            var sql = 'INSERT into is421 (username, password, firstname, lastname, email) VALUES (?, ?, ?, ?, ?)';
+            var values = [user.username, user.password, user.firstname, user.lastname, user.email];
+            connection.query(sql, values, function(err, rows) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    connection.release();
+                    res.send('Added User');
+                }
+            })
+        });
+    } else {
+        res.statusCode(401);
     }
-
-    //connection.query('insert into is421 (username, password, firstname, lastname, email, isAdmin) values (?,?,?,?,?,?) ', [user.username, user.password, user.firstname, o.lastname, o.email, true], function(err, rows) {
-    //    console.log('rows:', rows);
-    //    if (err) console.log(err);
-    //});
-
-    //connection.end();
-    res.send('aaa');
-
 });
 
-//router.post('/login', passport.authenticate('local'), function(req, res) {
-//    res.send('did it work?', req.user);
-//})
-//
-//router.post('/login', passport.authenticate('local', {
-//    successRedirect: '/dashboard',
-//    failureRedirect: '/login',
-//    failureFlash: 'Invalid username or password'
-//}));
+router.post('/login', passport.authenticate('local'), function(req, res) {
+    res.send(req.user);
+});
 
+router.post('/logout', function(req, res) {
+    req.logout();
+    res.send('Successfully Logged Out.');
+});
+
+router.get('/admin', function(req, res) {
+    if (req.isAuthenticated()) {
+        console.log(req.query);
+        console.log(req.params);
+
+        pool.getConnection(function(err, connection) {
+            var sql = 'Select username, firstname, lastname, email, isAdmin from is421';
+            connection.query(sql, function(err, rows) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    connection.release();
+                    res.send(rows);
+                }
+
+            })
+        })
+    } else {
+        res.sendStatus(401);
+    }
+});
+
+router.get('/authentication', function(req, res) {
+    if (!req.isAuthenticated()) {
+        res.statusCode(401);
+    }
+})
 module.exports = router;

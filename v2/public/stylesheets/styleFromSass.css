@@ -10953,6 +10953,11 @@ xsigin/signup popup
     appearance: none;
 }
 
+.cd-form input[type=submit][disabled] {
+    background: gray;
+}
+
+
 .no-touch .cd-form input[type=submit]:hover, .no-touch .cd-form input[type=submit]:focus {
     background: #3599ae;
     outline: none;
