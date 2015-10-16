@@ -5,6 +5,7 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var pool = require('./pool.js');
+var bcrypt = require('bcrypt');
 
 module.exports = function(passport) {
 
@@ -42,8 +43,35 @@ module.exports = function(passport) {
                 if (err) {
                     return done(err);
                 }
-                return done(null, rows[0]);
+                var user = rows[0];
+
+                if (rows.length === 0 ){
+                    console.log('no user');
+                    return done(null, false, {
+                        message: 'User does not exist.'
+                    });
+                }
+
+                if (user.password) {
+                    bcrypt.compare(password, user.password, function(err, match) {
+                        if (match) {
+                            if (user.active) {
+                                return done(null, user);
+                            } else {
+                                console.log('User has not been validated');
+                                return done(null, false, {
+                                    message: 'User has not been validated.'
+                                })
+                            }
+                        } else {
+                            console.log('Incorrect Password.');
+                            return done(null, false, {
+                                message: 'Incorrect Password.'
+                            })
+                        }
+                    })
+                }
             })
         })
     }));
-}
+};

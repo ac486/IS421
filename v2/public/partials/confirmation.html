@@ -1,0 +1,24 @@
+<div class="row page-header text-center">
+    <h3>Confirmation</h3>
+
+    <p>
+        A confirmation email has been sent.
+    </p>
+
+    <p>
+        Please enter your confirmation code below to validate your account.
+    </p>
+
+    <form novalidate name="confirmationForm" class="cd-form col-sm-6 col-sm-offset-3" ng-submit="submit()">
+        <div ng-if="confirmationForm.confirmation.$touched || confirmationForm.confirmation.$dirty" ng-messages="confirmationForm.confirmation.$error">
+            <span ng-message="required">Required</span>
+        </div>
+        <p class="fieldset">
+            <input ng-model="confirmation" name="confirmation" class="full-width has-padding has-border" type="text" placeholder="Confirmation Code" required>
+        </p>
+
+        <p class="fieldset">
+            <input class="full-width has-padding" ng-disabled="confirmationForm.$invalid" type="submit" value="Validate Account">
+        </p>
+    </form>
+</div>

@@ -9,7 +9,7 @@ app.controller('NavCtrl', function($scope, $modal, $location, $http) {
     $scope.$watch(function() {
         return $location.path();
     }, function(path) {
-        if (path !== '/login' && path !== '/' && path !== '/signup') {
+        if (path !== '/login' && path !== '/' && path !== '/signup' && path !== '/confirmation' ) {
             $http({
                 method: 'GET',
                 url: '/api/authentication'
@@ -81,12 +81,30 @@ app.controller('SignupCtrl', function($scope, $location, $http) {
             }
         }).then(function(response) {
             console.log(response);
-            window.location.href = '/dashboard';
+            window.location.href = '/confirmation';
+            //window.location.href = '/dashboard';
             //$location.path('/dashboard');
         }, function(err) {
             console.log(err);
         })
     };
+});
+
+app.controller('ConfirmationCtrl', function($scope, $http, $location) {
+    $scope.submit = function() {
+        $http({
+            method: 'POST',
+            url: '/api/confirmation',
+            data: {
+                confirmation: $scope.confirmation
+            }
+        }).then(function(response) {
+            console.log(response);
+            $location.path('/login');
+        }, function(err) {
+            console.log(err);
+        })
+    }
 });
 
 app.controller('DashboardCtrl', function($scope) {

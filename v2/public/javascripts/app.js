@@ -47,5 +47,9 @@ angular.module('is421', [
             templateUrl: 'partials/profile.html',
             controller: 'ProfileCtrl'
         })
+        .when('/confirmation', {
+            templateUrl: 'partials/confirmation.html',
+            controller: 'ConfirmationCtrl'
+        })
         .otherwise({ redirectTo: '/'})
 }]);
