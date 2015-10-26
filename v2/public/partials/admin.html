@@ -13,16 +13,16 @@
             </thead>
             <tbody>
             <tr ng-repeat="user in userList">
-                <td><input type="checkbox" ng-model="user.isSelected" ng-change="selectUser()"></td>
+                <td><input type="checkbox" ng-model="user.isSelected" ng-change="selectUser()" ng-disabled="user.username === 'urvesh'"></td>
                 <td>{{user.username}}</td>
-                <td>{{user.firstName}}</td>
-                <td>{{user.lastName}}</td>
+                <td>{{user.firstname}}</td>
+                <td>{{user.lastname}}</td>
                 <td>{{user.email}}</td>
                 <td>
-                    <select ng-model="user.a">
-                        <option hidden></option>
-                        <option ng-selected="user.isAdmin" value="a">true</option>
-                        <option ng-selected="!user.isAdmin" value="b">false</option>
+                    <select ng-model="user.isAdmin" ng-disabled="user.username === 'urvesh'">
+                        <option disabled hidden></option>
+                        <option ng-selected="user.isAdmin" value="1">true</option>
+                        <option ng-selected="!user.isAdmin" value="0">false</option>
                     </select>
                 </td>
             </tr>
@@ -30,8 +30,14 @@
         </table>
     </div>
     <div class="row">
-        <div class="col-sm-2 col-sm-offset-10">
-            <button class="btn btn-default">Update Changes</button>
+        <div class="col-sm-2">
+            <button class="btn btn-default" ng-click="deleteUsers()">Delete</button>
+        </div>
+        <div class="col-sm-2 col-sm-offset-8">
+            <button class="btn btn-default" ng-click="save()">Save Changes</button>
+        </div>
+        <div class="pull-right">
+            <p>***Your changes won't be saved until you press the Save Changes button.</p>
         </div>
     </div>
 

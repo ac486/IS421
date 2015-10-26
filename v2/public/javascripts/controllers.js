@@ -122,6 +122,16 @@ app.controller('AdminCtrl', function($scope, $http) {
     }).then(function(response) {
         console.log(response);
         $scope.userList = response.data;
+
+        for (var i = 0; i < $scope.userList.length; i++) {
+            var user = $scope.userList[i];
+            console.log(user.isAdmin)
+            if (user.isAdmin === 1) {
+                user.isAdmin = "1"
+            } else {
+                user.isAdmin = "0";
+            }
+        }
     }, function(err) {
         console.log(err);
         window.location.href = '/';
@@ -156,5 +166,58 @@ app.controller('AdminCtrl', function($scope, $http) {
             $scope.selectedAll = true;
         }
     };
+
+
+
+    $scope.deleteUsers = function() {
+        var selected = [];
+        var users = $scope.userList;
+
+        for (var i = 0; i < users.length; i++) {
+            if (users[i].isSelected) {
+                if (users[i].username === 'urvesh') {
+                    continue;
+                }
+                selected.push(users[i].username);
+            }
+        }
+
+        if (selected.length > 0 ) {
+            $http({
+                method: 'POST',
+                url: '/api/admin/delete',
+                data: selected
+            }).then(function(response) {
+                console.log(response);
+            }, function(err) {
+                console.log(err);
+            })
+        }
+    };
+    $scope.save = function() {
+        var selected = [];
+        var users = $scope.userList;
+
+        for (var i = 0; i < users.length; i++) {
+            if (users[i].isSelected) {
+                if (users[i].username === 'urvesh') {
+                    continue;
+                }
+                selected.push(users[i].username);
+            }
+        }
+
+        if (selected.length > 0) {
+            $http({
+                method: 'POST',
+                url: '/api/admin/save',
+                data: selected
+            }).then(function(response) {
+                console.log(response);
+            }, function(err) {
+                console.log(err);
+            })
+        }
+    }
 
 });
