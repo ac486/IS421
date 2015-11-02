@@ -35,11 +35,22 @@ app.controller('NavCtrl', function($scope, $modal, $location, $http) {
     }
 });
 
-app.controller('MainCtrl', function($scope) {
-
+app.controller('MainCtrl', function($scope, subdomain) {
+    console.log(subdomain);
 });
 
-app.controller('LoginCtrl', function($scope, $location, $http) {
+app.controller('LoginCtrl', function($scope, $location, $http, subdomain) {
+    if (subdomain) {
+        console.log('calling somethign');
+        $http({
+            method: 'GET',
+            url: '/api/admin'
+        }).then(function(response) {
+            console.log(response);
+        }, function(err) {
+            console.log(err);
+        })
+    }
     $scope.submit = function() {
         $http({
             method: 'POST',

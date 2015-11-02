@@ -117,6 +117,7 @@ router.post('/logout', function(req, res) {
 });
 
 router.get('/admin', function(req, res) {
+    console.log('inside normal domain');
     if (req.isAuthenticated()) {
         console.log(req.query);
         console.log(req.params);

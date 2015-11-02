@@ -1,3 +1,4 @@
+var subdomain = require('express-subdomain');
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -9,7 +10,7 @@ var session = require('express-session');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-
+var apiRouter = require('./routes/api');
 var app = express();
 
 // view engine setup
@@ -25,13 +26,29 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'bower_components')));
 
-app.use(session({ secret: 'secret'}));
+app.use(session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
 //app.use('/', routes);
 //app.use('/users', users);
+
+// Enable cors.
+//app.use(function(req, res, next) {
+//    res.header('Access-Control-Allow-Credentials', true);
+//    res.header('Access-Control-Allow-Origin',      req.headers.origin);
+//    res.header('Access-Control-Allow-Methods',     'GET,PUT,POST,DELETE');
+//    res.header('Access-Control-Allow-Headers',     'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+//    next();
+//});
+
+//app.use(subdomain('api', apiRouter));
 app.use('/api', routes);
+
 app.use('/*', function(req, res) {
     console.log('Logged in?:', req.isAuthenticated());
     res.render('layout', {
