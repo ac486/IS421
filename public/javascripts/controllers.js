@@ -127,22 +127,27 @@ app.controller('ProfileCtrl', function($scope) {
 });
 
 app.controller('AdminCtrl', function($scope, $http) {
-    $http({
-        method: 'GET',
-        url: '/api/admin'
-    }).then(function(response) {
-        console.log(response);
-        var userList = response.data.data;
-        $scope.currentUser = response.data.user;
 
-        $scope.userList = userList;
-        //for (var i = 0; i < userList.length; i++) {
-        //    var user = userList[i];
-        //}
-    }, function(err) {
-        console.log(err);
-        window.location.href = '/';
-    });
+    onLoad();
+
+    function onLoad() {
+        $http({
+            method: 'GET',
+            url: '/api/admin'
+        }).then(function(response) {
+            console.log(response);
+            var userList = response.data.data;
+            $scope.currentUser = response.data.user;
+
+            $scope.userList = userList;
+            //for (var i = 0; i < userList.length; i++) {
+            //    var user = userList[i];
+            //}
+        }, function(err) {
+            console.log(err);
+            window.location.href = '/';
+        });
+    }
 
     $scope.selectedAll = false;
 
@@ -192,6 +197,7 @@ app.controller('AdminCtrl', function($scope, $http) {
                 data: selected
             }).then(function(response) {
                 console.log(response);
+                onLoad();
             }, function(err) {
                 console.log(err);
             })
