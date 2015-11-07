@@ -10,16 +10,17 @@ angular.module('is421', [
 ])
 
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-    $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: false
-    });
+    $locationProvider.html5Mode(true);
     $routeProvider
         .when('/', {
             templateUrl: 'partials/index.html',
             controller: 'MainCtrl'
         })
         .when('/signup', {
+            templateUrl: 'partials/signup.html',
+            controller: 'SignupCtrl'
+        })
+        .when('/:username/signup/', {
             templateUrl: 'partials/signup.html',
             controller: 'SignupCtrl'
         })

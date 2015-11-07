@@ -17,6 +17,7 @@ var transporter = nodemailer.createTransport({
 router.post('/signup', function(req, res) {
     if (req.body) {
         var user = {
+            host: req.body.host, //either null or a username
             username: req.body.username,
             firstname: req.body.firstname,
             lastname: req.body.lastname,
@@ -48,8 +49,8 @@ router.post('/signup', function(req, res) {
             function() {
                 pool.getConnection(function(err, connection) {
                     if (!connection) res.send(500);
-                    var sql = 'INSERT into is421 (username, password, firstname, lastname, email, confirmationCode) VALUES (?, ?, ?, ?, ?, ?)';
-                    var values = [user.username, user.password, user.firstname, user.lastname, user.email, user.confirmationCode];
+                    var sql = 'INSERT into is421 (username, password, firstname, lastname, email, confirmationCode, host) VALUES (?, ?, ?, ?, ?, ?, ?)';
+                    var values = [user.username, user.password, user.firstname, user.lastname, user.email, user.confirmationCode, user.host];
                     connection.query(sql, values, function(err, rows) {
                         if (err) {
                             console.log(err);
@@ -69,8 +70,6 @@ router.post('/signup', function(req, res) {
                                     console.log(info);
                                 }
                             });
-
-
                             res.send('Confirmation Email Sent');
                         }
                     })
@@ -78,8 +77,31 @@ router.post('/signup', function(req, res) {
             }
         ]);
     } else {
-        res.statusCode(401);
+        res.end();
     }
+});
+
+router.get('/host', function(req, res) {
+    var username = req.query.username;
+
+    pool.getConnection(function(err, connection) {
+        if (!connection) res.send(500);
+
+        var sql = 'Select * from is421 where username = ?';
+        var values = [username];
+        connection.query(sql, values, function(err, rows) {
+            connection.release();
+            console.log(rows);
+            if (err) {
+                console.log(err);
+            }
+            if (rows.length > 0) {
+                res.end();
+            } else {
+                res.sendStatus(404);    //user does not exist
+            }
+        });
+    });
 });
 
 router.post('/confirmation', function(req, res) {
@@ -114,6 +136,34 @@ router.post('/login', passport.authenticate('local'), function(req, res) {
 router.post('/logout', function(req, res) {
     req.logout();
     res.send('Successfully Logged Out.');
+});
+
+router.get('/dashboard', function(req, res) {
+    var username = req.user.username;
+    pool.getConnection(function(err, connection) {
+        if (!connection) res.send(500);
+
+        var sql = 'Select host from is421 where username = ?';
+        var values = [username];
+        connection.query(sql, values, function(err, rows) {
+            connection.release();
+            console.log(rows);
+            if (err) {
+                console.log(err);
+            }
+
+            if (rows[0].host) {
+                res.json({
+                    message: 'You are registered under user: ' + rows[0].host
+                });
+            } else {
+                res.json({
+                    message: 'You are the owner'
+                })
+            }
+        })
+
+    })
 });
 
 router.get('/admin', function(req, res) {

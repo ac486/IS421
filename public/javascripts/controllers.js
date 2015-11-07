@@ -6,21 +6,21 @@ var app = angular.module('controllers', []);
 
 app.controller('NavCtrl', function($scope, $modal, $location, $http) {
 
-    $scope.$watch(function() {
-        return $location.path();
-    }, function(path) {
-        if (path !== '/login' && path !== '/' && path !== '/signup' && path !== '/confirmation' ) {
-            $http({
-                method: 'GET',
-                url: '/api/authentication'
-            }).then(function(response) {
-                console.log(response);
-            }, function(err) {
-                console.log(err);
-                window.location.href = '/login';
-            });
-        }
-    });
+    //$scope.$watch(function() {
+    //    return $location.path();
+    //}, function(path) {
+    //    if (path !== '/login' && path !== '/' && path !== '/signup' && path !== '/confirmation' ) {
+    //        $http({
+    //            method: 'GET',
+    //            url: '/api/authentication'
+    //        }).then(function(response) {
+    //            console.log(response);
+    //        }, function(err) {
+    //            console.log(err);
+    //            window.location.href = '/login';
+    //        });
+    //    }
+    //});
 
     $scope.logout = function() {
         $http({
@@ -77,12 +77,29 @@ app.controller('ForgotPasswordCtrl', function($scope) {
 
 });
 
-app.controller('SignupCtrl', function($scope, $location, $http) {
+app.controller('SignupCtrl', function($scope, $location, $http, $routeParams) {
+    var host = $routeParams.username;
+    if (host) {
+        $http({
+            method: 'GET',
+            url: '/api/host',
+            params: {
+                username: host
+            }
+        }).then(function(response) {
+            console.log(response);
+        }, function(err) {
+            $location.path('/signup');
+            console.log(err);
+        })
+    }
+
     $scope.submit = function() {
         $http({
             method: 'POST',
             url: '/api/signup',
             data: {
+                host: host,
                 username: $scope.username,
                 firstname: $scope.firstname,
                 lastname: $scope.lastname,
@@ -118,8 +135,16 @@ app.controller('ConfirmationCtrl', function($scope, $http, $location) {
     }
 });
 
-app.controller('DashboardCtrl', function($scope) {
-    
+app.controller('DashboardCtrl', function($scope, $http) {
+    $http({
+        method: 'GET',
+        url: '/api/dashboard'
+    }).then(function(response) {
+        console.log(response);
+        $scope.message = response.data.message;
+    }, function(err) {
+        console.log(err);
+    })
 });
 
 app.controller('ProfileCtrl', function($scope) {

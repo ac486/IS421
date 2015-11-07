@@ -20,3 +20,8 @@ a {
 span[ng-message] {
     color: red;
 }
+
+body .row {
+    margin-left: 0;
+    margin-right: 0;
+}
