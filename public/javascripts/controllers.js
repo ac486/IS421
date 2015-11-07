@@ -132,17 +132,13 @@ app.controller('AdminCtrl', function($scope, $http) {
         url: '/api/admin'
     }).then(function(response) {
         console.log(response);
-        $scope.userList = response.data;
+        var userList = response.data.data;
+        $scope.currentUser = response.data.user;
 
-        for (var i = 0; i < $scope.userList.length; i++) {
-            var user = $scope.userList[i];
-            console.log(user.isAdmin)
-            if (user.isAdmin === 1) {
-                user.isAdmin = "1"
-            } else {
-                user.isAdmin = "0";
-            }
-        }
+        $scope.userList = userList;
+        //for (var i = 0; i < userList.length; i++) {
+        //    var user = userList[i];
+        //}
     }, function(err) {
         console.log(err);
         window.location.href = '/';
@@ -154,11 +150,7 @@ app.controller('AdminCtrl', function($scope, $http) {
         for (var i = 0; i < $scope.userList.length; i++) {
             var user = $scope.userList[i];
 
-            if ($scope.selectedAll) {
-                user.isSelected = true;
-            } else {
-                user.isSelected = false;
-            }
+            user.isSelected = $scope.selectedAll;
         }
     };
 
@@ -214,7 +206,10 @@ app.controller('AdminCtrl', function($scope, $http) {
                 if (users[i].username === 'urvesh') {
                     continue;
                 }
-                selected.push(users[i].username);
+                selected.push({
+                    username: users[i].username,
+                    isAdmin: users[i].isAdmin == 1 //boolean true otherwise false
+                });
             }
         }
 

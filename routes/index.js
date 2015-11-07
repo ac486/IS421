@@ -117,10 +117,7 @@ router.post('/logout', function(req, res) {
 });
 
 router.get('/admin', function(req, res) {
-    console.log('inside normal domain');
     if (req.isAuthenticated()) {
-        console.log(req.query);
-        console.log(req.params);
 
         pool.getConnection(function(err, connection) {
             if (!connection) res.send(500);
@@ -131,9 +128,11 @@ router.get('/admin', function(req, res) {
                 if (err) {
                     console.log(err);
                 } else {
-                    res.send(rows);
+                    res.json({
+                        data: rows,
+                        user: req.user
+                    });
                 }
-
             })
         })
     } else {
@@ -142,24 +141,28 @@ router.get('/admin', function(req, res) {
 });
 
 router.post('/admin/save', function(req, res) {
-    var usernames = req.body;   //array of usernames
-    console.log(usernames);
-    if (usernames.length > 0) {
+    var users = req.body;   //array of users
+    if (users.length > 0) {
         pool.getConnection(function(err, connection) {
             if (!connection) res.send(500);
 
-            var sql = 'Update is421 set isAdmin = true where username in (?)';
-            var values = usernames;
-            connection.query(sql, values, function (err, rows) {
-                connection.release();
-                if (err) {
-                    connection.log(err);
-                } else {
-                    res.send(rows);
-                }
-            });
+            for (var i = 0; i < users.length; i++) {
+                var sql = 'Update is421 set isAdmin = ? where username = ?';
+                var values = [users[i].isAdmin, users[i].username];
+                connection.query(sql, values, function (err, rows) {
+                    //connection.release();
+                    if (err) {
+                        connection.log(err);
+                    } else {
+                        console.log('updated');
+                        //res.send(rows);
+                    }
+                });
+            }
+            connection.release();
         });
     }
+    res.send('Done');
 });
 
 router.post('/admin/delete', function(req, res){
