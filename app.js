@@ -42,8 +42,15 @@ app.use('/api', routes);
 
 app.use('/*', function(req, res) {
     console.log('Logged in?:', req.isAuthenticated());
+    var authenticated = req.isAuthenticated();
+    var admin = false;
+
+    if (authenticated) {
+        admin = req.user.isAdmin;
+    }
     res.render('layout', {
-        authenticated: req.isAuthenticated()
+        authenticated: req.isAuthenticated(),
+        isAdmin: admin
     });
 });
 

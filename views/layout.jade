@@ -31,8 +31,9 @@ html(ng-app='is421')
                         a.cd-signup(href='/profile') Profile
                     li
                         a.cd-signup(href='/dashboard') Dashboard
-                    li
-                        a.cd-signup(href='/admin') Admin
+                    if admin
+                        li
+                            a.cd-signup(href='/admin') Admin
                     li
                         a.cd-signup(href='/' ng-click='logout()') Logout
                 else

@@ -69,8 +69,22 @@ app.controller('LoginCtrl', function($scope, $location, $http, subdomain) {
     }
 });
 
-app.controller('ForgotUsernameCtrl', function($scope, $http) {
+app.controller('ForgotUsernameCtrl', function($scope, $http, $location) {
 
+    $scope.submit = function() {
+        $http({
+            method: 'POST',
+            url: '/api/forgotUsername',
+            data: {
+                email: $scope.email
+            }
+        }).then(function (response) {
+            console.log(response);
+            $location.path('/login');
+        }, function (err) {
+            console.log(err);
+        })
+    }
 });
 
 app.controller('ForgotPasswordCtrl', function($scope) {

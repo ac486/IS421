@@ -56,9 +56,10 @@ router.post('/signup', function(req, res) {
                             console.log(err);
                         } else {
                             connection.release();
+                            console.log(user.confirmationCode);
 
                             transporter.sendMail({
-                                from: 'is421.njit@gmail.com',
+                                //from: 'is421.njit@gmail.com',
                                 to: user.email,
                                 subject: 'NJIT IS421 Confirmation ',
                                 text: 'Please enter the following code to validate your account. \n' + user.confirmationCode
@@ -235,6 +236,33 @@ router.post('/admin/delete', function(req, res){
             })
         });
     }
+});
+
+router.post('/forgotUsername', function(req, res) {
+    var email = req.body.email;
+    console.log(email);
+
+    if (email) {
+        pool.getConnection(function(err, connection) {
+            if (!connection) res.send(500);
+
+            var sql = 'Select username from is421 where email = ? ';
+            var values = [email];
+            connection.query(sql, values, function(err, rows) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    transporter.sendMail({
+                        to: email,
+                        subject: 'Username for is421',
+                        text: 'This is your username: ' + rows[0].username
+                    });
+                }
+            })
+        })
+    }
+
+    res.send();
 });
 
 router.get('/authentication', function(req, res) {
