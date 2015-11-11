@@ -87,8 +87,21 @@ app.controller('ForgotUsernameCtrl', function($scope, $http, $location) {
     }
 });
 
-app.controller('ForgotPasswordCtrl', function($scope) {
-
+app.controller('ForgotPasswordCtrl', function($scope, $http, $location) {
+    $scope.submit = function() {
+        $http({
+            method: 'POST',
+            url: '/api/forgotPassword',
+            data: {
+                username: $scope.username
+            }
+        }).then(function(response) {
+            console.log(response);
+            //$location.path('/login');
+        }, function(err) {
+            console.log(err);
+        })
+    }
 });
 
 app.controller('SignupCtrl', function($scope, $location, $http, $routeParams) {

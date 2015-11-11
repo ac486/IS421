@@ -13,6 +13,7 @@ var transporter = nodemailer.createTransport({
         pass: 'is421njit'
     }
 });
+var crypto = require('crypto');
 
 router.post('/signup', function(req, res) {
     if (req.body) {
@@ -263,6 +264,52 @@ router.post('/forgotUsername', function(req, res) {
     }
 
     res.send();
+});
+
+router.post('/forgotPassword', function(req, res) {
+    var username = req.body.username;
+    console.log(username);
+
+    if (username) {
+        pool.getConnection(function(err, connection) {
+            if (!connection) res.send(500);
+            var password = crypto.randomBytes(7).toString('hex');
+            console.log(password);
+            bcrypt.genSalt(10, function(err, salt) {
+                bcrypt.hash(password, salt, function(err, hash) {
+                    var hash = hash;
+
+                    var sql = 'Update is421 Set password = ? where username = ?';
+                    var values = [hash, username];
+                    connection.query(sql, values, function(err, rows) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            //console.log(rows);
+                        }
+                    });
+
+                    sql = 'Select email from is421 where username = ?';
+                    values = [username];
+                    connection.query(sql, values, function(err, rows) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log(rows[0].email);
+                            transporter.sendMail({
+                                to: rows[0].email,
+                                subject: 'temporary password',
+                                text: 'your temp password is: ' + password
+                            });
+                        }
+                    });
+                    connection.release();
+                })
+            });
+        })
+    }
+    res.send();
+
 });
 
 router.get('/authentication', function(req, res) {
