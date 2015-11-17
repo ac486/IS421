@@ -160,7 +160,7 @@ router.get('/dashboard', function(req, res) {
                 });
             } else {
                 res.json({
-                    message: 'You are the owner'
+                    message: req.user.username + ' you are the owner'
                 })
             }
         })
@@ -174,8 +174,9 @@ router.get('/admin', function(req, res) {
         pool.getConnection(function(err, connection) {
             if (!connection) res.send(500);
 
-            var sql = 'Select username, firstname, lastname, email, isAdmin from is421';
-            connection.query(sql, function(err, rows) {
+            var sql = 'Select username, firstname, lastname, email, isAdmin from is421 where host = ?';
+            var values = [req.user.username];
+            connection.query(sql, values, function(err, rows) {
                 connection.release();
                 if (err) {
                     console.log(err);
@@ -309,7 +310,6 @@ router.post('/forgotPassword', function(req, res) {
         })
     }
     res.send();
-
 });
 
 router.get('/authentication', function(req, res) {

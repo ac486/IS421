@@ -6,29 +6,13 @@ var app = angular.module('controllers', []);
 
 app.controller('NavCtrl', function($scope, $modal, $location, $http) {
 
-    //$scope.$watch(function() {
-    //    return $location.path();
-    //}, function(path) {
-    //    if (path !== '/login' && path !== '/' && path !== '/signup' && path !== '/confirmation' ) {
-    //        $http({
-    //            method: 'GET',
-    //            url: '/api/authentication'
-    //        }).then(function(response) {
-    //            console.log(response);
-    //        }, function(err) {
-    //            console.log(err);
-    //            window.location.href = '/login';
-    //        });
-    //    }
-    //});
-
     $scope.logout = function() {
         $http({
             method: 'POST',
             url: '/api/logout'
         }).then(function(response) {
             console.log(response);
-            window.location.href = '/';
+            window.location.href = '/login';
         }, function(err) {
             console.log(err);
         })

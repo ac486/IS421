@@ -41,10 +41,11 @@ app.use(passport.session());
 app.use('/api', routes);
 
 app.use('/*', function(req, res) {
-    console.log('Logged in?:', req.isAuthenticated());
     var authenticated = req.isAuthenticated();
-    var admin = false;
 
+    var admin = false;
+    console.log('Logged in?:', authenticated);
+    console.log('Admin?:', admin);
     if (authenticated) {
         admin = req.user.isAdmin;
     }
