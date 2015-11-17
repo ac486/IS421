@@ -156,10 +156,12 @@ router.get('/dashboard', function(req, res) {
 
             if (rows[0].host) {
                 res.json({
+                    user: req.user,
                     message: 'You are registered under user: ' + rows[0].host
                 });
             } else {
                 res.json({
+                    user: req.user,
                     message: req.user.username + ' you are the owner'
                 })
             }
@@ -310,6 +312,17 @@ router.post('/forgotPassword', function(req, res) {
         })
     }
     res.send();
+});
+
+router.post('/loginas', function(req, res, next) {
+    req.logout();
+    console.log('loginas user?', req.user);
+    next();
+}, passport.authenticate('adminLocal'), function (req, res){
+    console.log('passport worked?');
+    res.json({
+        user: req.user
+    })
 });
 
 router.get('/authentication', function(req, res) {

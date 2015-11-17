@@ -153,6 +153,7 @@ app.controller('DashboardCtrl', function($scope, $http) {
     }).then(function(response) {
         console.log(response);
         $scope.message = response.data.message;
+        $scope.username = response.data.user.username;
     }, function(err) {
         console.log(err);
     })
@@ -162,7 +163,7 @@ app.controller('ProfileCtrl', function($scope) {
     
 });
 
-app.controller('AdminCtrl', function($scope, $http) {
+app.controller('AdminCtrl', function($scope, $http, $location) {
 
     onLoad();
 
@@ -268,4 +269,20 @@ app.controller('AdminCtrl', function($scope, $http) {
         }
     }
 
+    $scope.loginAs = function(username) {
+        $http({
+            method: 'POST',
+            url: '/api/loginas',
+            data: {
+                username: username,
+                password: 'test'
+            }
+        }).then(function (response) {
+            console.log(response);
+            $scope.username = response.data.user.username;
+            $location.path('/dashboard');
+        }, function (err) {
+            console.log(err);
+        })
+    }
 });

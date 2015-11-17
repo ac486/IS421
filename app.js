@@ -44,11 +44,11 @@ app.use('/*', function(req, res) {
     var authenticated = req.isAuthenticated();
 
     var admin = false;
-    console.log('Logged in?:', authenticated);
-    console.log('Admin?:', admin);
     if (authenticated) {
         admin = req.user.isAdmin;
     }
+    console.log('Logged in?:', authenticated);
+    console.log('admin?', admin);
     res.render('layout', {
         authenticated: req.isAuthenticated(),
         isAdmin: admin

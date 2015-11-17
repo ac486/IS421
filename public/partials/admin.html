@@ -14,7 +14,9 @@
             <tbody>
             <tr ng-repeat="user in userList">
                 <td><input type="checkbox" ng-model="user.isSelected" ng-change="selectUser()" ng-disabled="user.username === 'urvesh'"></td>
-                <td>{{user.username}}</td>
+                <td>
+                    <a href="#" ng-click="loginAs(user.username)">{{user.username}}</a>
+                </td>
                 <td>{{user.firstname}}</td>
                 <td>{{user.lastname}}</td>
                 <td>{{user.email}}</td>
