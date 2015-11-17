@@ -1,45 +1,49 @@
 doctype html
 html(ng-app='is421')
-  head
-    base(href='/')
-    title= title
-    meta(name='viewport', content='width=device-width, initial-scale=1')
+    head
+        base(href='/')
+        title= title
+        meta(name='viewport', content='width=device-width, initial-scale=1')
 
-    link(href='https://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css')
+        link(href='https://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css')
 
-    link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/stylesheets/reset.css')
-    link(rel='stylesheet', href='/stylesheets/styleFromSass.css')
+        link(rel='stylesheet', href='/bootstrap/dist/css/bootstrap.css')
+        link(rel='stylesheet', href='/stylesheets/style.css')
+        link(rel='stylesheet', href='/stylesheets/reset.css')
+        link(rel='stylesheet', href='/stylesheets/styleFromSass.css')
 
-    script(src='angular/angular.js')
-    script(src='angular-route/angular-route.js')
-    script(src='angular-bootstrap/ui-bootstrap-tpls.js')
-    script(src='angular-messages/angular-messages.js')
-    script(src='/javascripts/app.js')
-    script(src='/javascripts/controllers.js')
-  body(ng-controller='NavCtrl' ng-cloak)
-    header(role='banner')
-        #cd-logo
-            a(href='/')
-                img(src='/img/cd-logo.svg', alt='Logo')
-        nav.main-nav
-            ul
-                // insert more links here
+        script(src='angular/angular.js')
+        script(src='angular-route/angular-route.js')
+        script(src='angular-bootstrap/ui-bootstrap-tpls.js')
+        script(src='angular-messages/angular-messages.js')
+        script(src='/javascripts/app.js')
+        script(src='/javascripts/controllers.js')
+    body(ng-controller='NavCtrl' ng-cloak)
+        header(role='banner')
+            #cd-logo
                 if authenticated
-                    li
-                        a.cd-signup(href='/profile') Profile
-                    li
-                        a.cd-signup(href='/dashboard') Dashboard
-                    if isAdmin
-                        li
-                            a.cd-signup(href='/admin') Admin
-                    li
-                        a.cd-signup(href='/' ng-click='logout()') Logout
+                    a(href='/dashboard')
+                        img(src='/img/cd-logo.svg', alt='Logo')
                 else
-                    li
-                        a.cd-signin(href='/login') Sign in
-                    li
-                        a.cd-signup(href='/signup') Sign up
-    block content
-    ng-view
+                    a(href='/')
+                        img(src='/img/cd-logo.svg', alt='Logo')
+            nav.main-nav
+                ul
+                    // insert more links here
+                    if authenticated
+                        li
+                            a.cd-signup(href='/profile') Profile
+                        li
+                            a.cd-signup(href='/dashboard') Dashboard
+                        if isAdmin
+                            li
+                                a.cd-signup(href='/admin') Admin
+                        li
+                            a.cd-signup(href='/' ng-click='logout()') Logout
+                    else
+                        li
+                            a.cd-signin(href='/login') Sign in
+                        li
+                            a.cd-signup(href='/signup') Sign up
+        block content
+        ng-view

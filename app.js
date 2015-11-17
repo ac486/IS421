@@ -9,8 +9,8 @@ var passport = require('passport');
 var session = require('express-session');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
-var apiRouter = require('./routes/api');
+//var users = require('./routes/users');
+var api = require('./routes/api');
 var app = express();
 
 // view engine setup
@@ -39,6 +39,13 @@ app.use(passport.session());
 
 //app.use(subdomain('api', apiRouter));
 app.use('/api', routes);
+app.use('/auth', function(req, res, next) {
+    if (req.isAuthenticated()) {
+        next();
+    } else {
+        res.sendStatus(401);
+    }
+}, api);
 
 app.use('/*', function(req, res) {
     var authenticated = req.isAuthenticated();

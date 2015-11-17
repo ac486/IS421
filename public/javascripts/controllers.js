@@ -19,22 +19,11 @@ app.controller('NavCtrl', function($scope, $modal, $location, $http) {
     }
 });
 
-app.controller('MainCtrl', function($scope, subdomain) {
-    console.log(subdomain);
+app.controller('MainCtrl', function($scope) {
+
 });
 
-app.controller('LoginCtrl', function($scope, $location, $http, subdomain) {
-    if (subdomain) {
-        console.log('calling somethign');
-        $http({
-            method: 'GET',
-            url: '/api/admin'
-        }).then(function(response) {
-            console.log(response);
-        }, function(err) {
-            console.log(err);
-        })
-    }
+app.controller('LoginCtrl', function($scope, $location, $http) {
     $scope.submit = function() {
         $http({
             method: 'POST',
@@ -46,7 +35,6 @@ app.controller('LoginCtrl', function($scope, $location, $http, subdomain) {
         }).then(function(response) {
             console.log(response);
             window.location.href = '/dashboard';
-            //$location.path('/dashboard');
         }, function(err) {
             console.log(err);
         });
@@ -81,7 +69,7 @@ app.controller('ForgotPasswordCtrl', function($scope, $http, $location) {
             }
         }).then(function(response) {
             console.log(response);
-            //$location.path('/login');
+            $location.path('/login');
         }, function(err) {
             console.log(err);
         })
@@ -121,8 +109,6 @@ app.controller('SignupCtrl', function($scope, $location, $http, $routeParams) {
         }).then(function(response) {
             console.log(response);
             window.location.href = '/confirmation';
-            //window.location.href = '/dashboard';
-            //$location.path('/dashboard');
         }, function(err) {
             console.log(err);
         })
@@ -146,20 +132,30 @@ app.controller('ConfirmationCtrl', function($scope, $http, $location) {
     }
 });
 
-app.controller('DashboardCtrl', function($scope, $http) {
+app.controller('DashboardCtrl', function($scope, $http, $location) {
     $http({
         method: 'GET',
-        url: '/api/dashboard'
+        url: '/auth/dashboard'
     }).then(function(response) {
         console.log(response);
         $scope.message = response.data.message;
         $scope.username = response.data.user.username;
     }, function(err) {
         console.log(err);
+        $location.path('/login');
     })
 });
 
-app.controller('ProfileCtrl', function($scope) {
+app.controller('ProfileCtrl', function($scope, $http, $location) {
+    $http({
+        method: 'GET',
+        url: '/auth/user'
+    }).then(function(response) {
+        $scope.user = response.data.user;
+    }, function(err) {
+        $location.path('/login');
+        console.log(err);
+    })
     
 });
 
@@ -170,25 +166,22 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
     function onLoad() {
         $http({
             method: 'GET',
-            url: '/api/admin'
+            url: '/auth/admin'
         }).then(function(response) {
             console.log(response);
             var userList = response.data.data;
             $scope.currentUser = response.data.user;
-
             $scope.userList = userList;
-            //for (var i = 0; i < userList.length; i++) {
-            //    var user = userList[i];
-            //}
         }, function(err) {
             console.log(err);
-            window.location.href = '/';
+            window.location.href = '/login';
         });
     }
 
     $scope.selectedAll = false;
 
     $scope.all = function() {
+        $scope.selectedAll = !$scope.selectedAll;
         for (var i = 0; i < $scope.userList.length; i++) {
             var user = $scope.userList[i];
 
@@ -202,12 +195,13 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
             var user = $scope.userList[i];
             if (user.isSelected) {
                 selectedCount++;
+            } else {
+                selectedCount--;
             }
         }
-
-        if ($scope.selectedAll && selectedCount != $scope.userList.length) {
+        if (selectedCount != $scope.userList.length) {
             $scope.selectedAll = false;
-        } else if (!$scope.selectedAll && selectedCount === $scope.userList.length) {
+        } else if (selectedCount === $scope.userList.length) {
             $scope.selectedAll = true;
         }
     };
@@ -230,7 +224,7 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
         if (selected.length > 0 ) {
             $http({
                 method: 'POST',
-                url: '/api/admin/delete',
+                url: '/auth/admin/delete',
                 data: selected
             }).then(function(response) {
                 console.log(response);
@@ -240,6 +234,7 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
             })
         }
     };
+
     $scope.save = function() {
         var selected = [];
         var users = $scope.userList;
@@ -259,7 +254,7 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
         if (selected.length > 0) {
             $http({
                 method: 'POST',
-                url: '/api/admin/save',
+                url: '/auth/admin/save',
                 data: selected
             }).then(function(response) {
                 console.log(response);
@@ -267,12 +262,12 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
                 console.log(err);
             })
         }
-    }
+    };
 
     $scope.loginAs = function(username) {
         $http({
             method: 'POST',
-            url: '/api/loginas',
+            url: '/auth/loginas',
             data: {
                 username: username,
                 password: 'test'

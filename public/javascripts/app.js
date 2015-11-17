@@ -53,12 +53,4 @@ angular.module('is421', [
             controller: 'ConfirmationCtrl'
         })
         .otherwise({ redirectTo: '/'})
-}])
-
-.factory('subdomain', function($location) {
-    var host = $location.host();
-    if (host.indexOf('.') < 0)
-        return null;
-    else
-        return host.split('.')[0];
-});
+}]);

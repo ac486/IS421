@@ -83,29 +83,6 @@ router.post('/signup', function(req, res) {
     }
 });
 
-router.get('/host', function(req, res) {
-    var username = req.query.username;
-
-    pool.getConnection(function(err, connection) {
-        if (!connection) res.send(500);
-
-        var sql = 'Select * from is421 where username = ?';
-        var values = [username];
-        connection.query(sql, values, function(err, rows) {
-            connection.release();
-            console.log(rows);
-            if (err) {
-                console.log(err);
-            }
-            if (rows.length > 0) {
-                res.end();
-            } else {
-                res.sendStatus(404);    //user does not exist
-            }
-        });
-    });
-});
-
 router.post('/confirmation', function(req, res) {
     var code = req.body.confirmation;
 
@@ -140,108 +117,6 @@ router.post('/logout', function(req, res) {
     res.send('Successfully Logged Out.');
 });
 
-router.get('/dashboard', function(req, res) {
-    var username = req.user.username;
-    pool.getConnection(function(err, connection) {
-        if (!connection) res.send(500);
-
-        var sql = 'Select host from is421 where username = ?';
-        var values = [username];
-        connection.query(sql, values, function(err, rows) {
-            connection.release();
-            console.log(rows);
-            if (err) {
-                console.log(err);
-            }
-
-            if (rows[0].host) {
-                res.json({
-                    user: req.user,
-                    message: 'You are registered under user: ' + rows[0].host
-                });
-            } else {
-                res.json({
-                    user: req.user,
-                    message: req.user.username + ' you are the owner'
-                })
-            }
-        })
-
-    })
-});
-
-router.get('/admin', function(req, res) {
-    if (req.isAuthenticated()) {
-
-        pool.getConnection(function(err, connection) {
-            if (!connection) res.send(500);
-
-            var sql = 'Select username, firstname, lastname, email, isAdmin from is421 where host = ?';
-            var values = [req.user.username];
-            connection.query(sql, values, function(err, rows) {
-                connection.release();
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.json({
-                        data: rows,
-                        user: req.user
-                    });
-                }
-            })
-        })
-    } else {
-        res.sendStatus(401);
-    }
-});
-
-router.post('/admin/save', function(req, res) {
-    var users = req.body;   //array of users
-    if (users.length > 0) {
-        pool.getConnection(function(err, connection) {
-            if (!connection) res.send(500);
-
-            for (var i = 0; i < users.length; i++) {
-                var sql = 'Update is421 set isAdmin = ? where username = ?';
-                var values = [users[i].isAdmin, users[i].username];
-                connection.query(sql, values, function (err, rows) {
-                    //connection.release();
-                    if (err) {
-                        connection.log(err);
-                    } else {
-                        console.log('updated');
-                        //res.send(rows);
-                    }
-                });
-            }
-            connection.release();
-        });
-    }
-    res.send('Done');
-});
-
-router.post('/admin/delete', function(req, res){
-    var usernames = req.body;   //array of usernames
-    console.log(usernames);
-
-    if (usernames.length > 0 ) {
-        pool.getConnection(function(err, connection) {
-            if (!connection) res.send(500);
-
-            var sql = 'Delete from is421 where username in (?)';
-            var values  = usernames;
-            connection.query(sql, values, function(err, rows) {
-                connection.release();
-                if (err) {
-                    console.log(err);
-                } else {
-                    res.send(rows);
-                }
-            })
-        });
-    }
-});
-
 router.post('/forgotUsername', function(req, res) {
     var email = req.body.email;
     console.log(email);
@@ -265,7 +140,6 @@ router.post('/forgotUsername', function(req, res) {
             })
         })
     }
-
     res.send();
 });
 
@@ -314,15 +188,27 @@ router.post('/forgotPassword', function(req, res) {
     res.send();
 });
 
-router.post('/loginas', function(req, res, next) {
-    req.logout();
-    console.log('loginas user?', req.user);
-    next();
-}, passport.authenticate('adminLocal'), function (req, res){
-    console.log('passport worked?');
-    res.json({
-        user: req.user
-    })
+router.get('/host', function(req, res) {
+    var username = req.query.username;
+
+    pool.getConnection(function(err, connection) {
+        if (!connection) res.send(500);
+
+        var sql = 'Select * from is421 where username = ?';
+        var values = [username];
+        connection.query(sql, values, function(err, rows) {
+            connection.release();
+            console.log(rows);
+            if (err) {
+                console.log(err);
+            }
+            if (rows.length > 0) {
+                res.end();
+            } else {
+                res.sendStatus(404);    //user does not exist
+            }
+        });
+    });
 });
 
 router.get('/authentication', function(req, res) {

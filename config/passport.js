@@ -79,49 +79,6 @@ module.exports = function(passport) {
         })
     }));
 
-    //passport.use('loginas', new LocalStrategy(function (username, password, done) {
-    //    console.log('inside localas strategy');
-    //    pool.getConnection(function (err, connection) {
-    //
-    //        var sql = 'Select * from is421 where username = ?';
-    //        var values = [username];
-    //        connection.query(sql, values, function (err, rows) {
-    //            connection.release();
-    //            if (err) {
-    //                return done(err);
-    //            }
-    //            var user = rows[0];
-    //
-    //            if (rows.length === 0 ){
-    //                console.log('no user');
-    //                return done(null, false, {
-    //                    message: 'User does not exist.'
-    //                });
-    //            }
-    //
-    //            if (user.password) {
-    //                bcrypt.compare(password, user.password, function(err, match) {
-    //                    if (match) {
-    //                        if (user.active) {
-    //                            return done(null, user);
-    //                        } else {
-    //                            console.log('User has not been validated');
-    //                            return done(null, false, {
-    //                                message: 'User has not been validated.'
-    //                            })
-    //                        }
-    //                    } else {
-    //                        console.log('Incorrect Password.');
-    //                        return done(null, false, {
-    //                            message: 'Incorrect Password.'
-    //                        })
-    //                    }
-    //                })
-    //            }
-    //        })
-    //    })
-    //}));
-
     passport.use('adminLocal', new LocalStrategy(function (username, password, done) {
         console.log('inide loginas');
         console.log(username, password);
