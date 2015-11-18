@@ -38,8 +38,8 @@ app.use(passport.session());
 //app.use('/users', users);
 
 //app.use(subdomain('api', apiRouter));
-app.use('/api', routes);
-app.use('/auth', function(req, res, next) {
+app.use('/', routes);
+app.use('/api', function(req, res, next) {
     if (req.isAuthenticated()) {
         next();
     } else {

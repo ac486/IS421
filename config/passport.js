@@ -10,19 +10,16 @@ var bcrypt = require('bcrypt');
 module.exports = function(passport) {
 
     passport.serializeUser(function (user, done) {
-        console.log('seralize', user.username);
         return done(null, user.username);
     });
 
     passport.deserializeUser(function (username, done) {
-        console.log('deseraizlie', username);
         pool.getConnection(function (err, connection) {
 
-            var sql = 'Select * from is421 where username = ?';
+            var sql = 'SELECT * FROM User WHERE username = ?';
             var values = [username];
             connection.query(sql, values, function (err, rows) {
                 connection.release();
-                console.log(rows[0]);
                 if (err) {
                     console.log(err);
                     return done(err);
@@ -37,10 +34,9 @@ module.exports = function(passport) {
     });
 
     passport.use('local', new LocalStrategy(function (username, password, done) {
-        console.log('\n\ninside local\n\n\n');
         pool.getConnection(function (err, connection) {
 
-            var sql = 'Select * from is421 where username = ?';
+            var sql = 'SELECT * FROM User WHERE username = ?';
             var values = [username];
             connection.query(sql, values, function (err, rows) {
                 connection.release();
@@ -80,18 +76,14 @@ module.exports = function(passport) {
     }));
 
     passport.use('adminLocal', new LocalStrategy(function (username, password, done) {
-        console.log('inide loginas');
-        console.log(username, password);
         pool.getConnection(function (err, connection) {
 
-            var sql = 'Select * from is421 where username = ?';
+            var sql = 'SELECT  * FROM User WHERE username = ?';
             var values = [username];
             connection.query(sql, values, function(err, rows) {
                 connection.release();
                 var user = rows[0];
-                console.log(user);
                 if (user) {
-
                     return done(null, user);
                 } else {
                     return done(null, false, {

@@ -18,7 +18,7 @@ var crypto = require('crypto');
 router.post('/signup', function(req, res) {
     if (req.body) {
         var user = {
-            host: req.body.host, //either null or a username
+            owner: req.body.owner, //either null or a username
             username: req.body.username,
             firstname: req.body.firstname,
             lastname: req.body.lastname,
@@ -50,8 +50,11 @@ router.post('/signup', function(req, res) {
             function() {
                 pool.getConnection(function(err, connection) {
                     if (!connection) res.send(500);
-                    var sql = 'INSERT into is421 (username, password, firstname, lastname, email, confirmationCode, host) VALUES (?, ?, ?, ?, ?, ?, ?)';
-                    var values = [user.username, user.password, user.firstname, user.lastname, user.email, user.confirmationCode, user.host];
+
+                    user.isAdmin = !user.owner; //if user has owner, he cannot be an admin initially
+
+                    var sql = 'INSERT INTO User (username, password, firstname, lastname, email, confirmationCode, owner, isAdmin) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+                    var values = [user.username, user.password, user.firstname, user.lastname, user.email, user.confirmationCode, user.owner, user.isAdmin];
                     connection.query(sql, values, function(err, rows) {
                         if (err) {
                             console.log(err);
@@ -90,10 +93,9 @@ router.post('/confirmation', function(req, res) {
         pool.getConnection(function(err, connection) {
             if (!connection) res.send(500);
 
-            var sql = 'UPDATE is421 SET active = true where confirmationCode = ?';
+            var sql = 'UPDATE User SET active = true WHERE confirmationCode = ?';
             var values = [code];
             connection.query(sql, values, function(err, rows) {
-                console.log(rows);
                 if (err) {
                     console.log(err);
                 } else {
@@ -125,7 +127,7 @@ router.post('/forgotUsername', function(req, res) {
         pool.getConnection(function(err, connection) {
             if (!connection) res.send(500);
 
-            var sql = 'Select username from is421 where email = ? ';
+            var sql = 'SELECT username FROM User where email = ? ';
             var values = [email];
             connection.query(sql, values, function(err, rows) {
                 if (err) {
@@ -156,7 +158,7 @@ router.post('/forgotPassword', function(req, res) {
                 bcrypt.hash(password, salt, function(err, hash) {
                     var hash = hash;
 
-                    var sql = 'Update is421 Set password = ? where username = ?';
+                    var sql = 'UPDATE User SET password = ? WHERE username = ?';
                     var values = [hash, username];
                     connection.query(sql, values, function(err, rows) {
                         if (err) {
@@ -166,13 +168,12 @@ router.post('/forgotPassword', function(req, res) {
                         }
                     });
 
-                    sql = 'Select email from is421 where username = ?';
+                    sql = 'SELECT email FROM User WHERE username = ?';
                     values = [username];
                     connection.query(sql, values, function(err, rows) {
                         if (err) {
                             console.log(err);
                         } else {
-                            console.log(rows[0].email);
                             transporter.sendMail({
                                 to: rows[0].email,
                                 subject: 'temporary password',
@@ -188,17 +189,17 @@ router.post('/forgotPassword', function(req, res) {
     res.send();
 });
 
-router.get('/host', function(req, res) {
+router.get('/owner', function(req, res) {
     var username = req.query.username;
 
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
 
-        var sql = 'Select * from is421 where username = ?';
+        console.log(username);
+        var sql = 'SELECT * FROM User WHERE username = ?';
         var values = [username];
         connection.query(sql, values, function(err, rows) {
             connection.release();
-            console.log(rows);
             if (err) {
                 console.log(err);
             }

@@ -24,19 +24,18 @@ router.get('/dashboard', function(req, res) {
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
 
-        var sql = 'Select host from is421 where username = ?';
+        var sql = 'SELECT owner FROM User WHERE username = ?';
         var values = [username];
         connection.query(sql, values, function(err, rows) {
             connection.release();
-            console.log(rows);
             if (err) {
                 console.log(err);
             }
 
-            if (rows[0].host) {
+            if (rows[0].owner) {
                 res.json({
                     user: req.user,
-                    message: 'You are registered under user: ' + rows[0].host
+                    message: 'You are registered under user: ' + rows[0].owner
                 });
             } else {
                 res.json({
@@ -53,7 +52,7 @@ router.get('/admin', function(req, res) {
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
 
-        var sql = 'Select username, firstname, lastname, email, isAdmin from is421 where host = ?';
+        var sql = 'SELECT username, firstname, lastname, email, isAdmin FROM User WHERE owner = ?';
         var values = [req.user.username];
         connection.query(sql, values, function(err, rows) {
             connection.release();
@@ -76,7 +75,7 @@ router.post('/admin/save', function(req, res) {
             if (!connection) res.send(500);
 
             for (var i = 0; i < users.length; i++) {
-                var sql = 'Update is421 set isAdmin = ? where username = ?';
+                var sql = 'UPDATE User SET isAdmin = ? WHERE username = ?';
                 var values = [users[i].isAdmin, users[i].username];
                 connection.query(sql, values, function (err, rows) {
                     //connection.release();
@@ -96,13 +95,12 @@ router.post('/admin/save', function(req, res) {
 
 router.post('/admin/delete', function(req, res){
     var usernames = req.body;   //array of usernames
-    console.log(usernames);
 
     if (usernames.length > 0 ) {
         pool.getConnection(function(err, connection) {
             if (!connection) res.send(500);
 
-            var sql = 'Delete from is421 where username in (?)';
+            var sql = 'DELETE FROM User WHERE username IN (?)';
             var values  = usernames;
             connection.query(sql, values, function(err, rows) {
                 connection.release();
@@ -129,7 +127,7 @@ router.get('/user', function(req, res, next) {
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
 
-        var sql = 'Select * from is421 where username = ?';
+        var sql = 'SELECT * FROM User WHERE username = ?';
         var values = [req.user.username];
         connection.query(sql, values, function(err, rows) {
             connection.release();

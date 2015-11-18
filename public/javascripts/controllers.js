@@ -9,7 +9,7 @@ app.controller('NavCtrl', function($scope, $modal, $location, $http) {
     $scope.logout = function() {
         $http({
             method: 'POST',
-            url: '/api/logout'
+            url: '/logout'
         }).then(function(response) {
             console.log(response);
             window.location.href = '/login';
@@ -27,7 +27,7 @@ app.controller('LoginCtrl', function($scope, $location, $http) {
     $scope.submit = function() {
         $http({
             method: 'POST',
-            url: '/api/login',
+            url: '/login',
             data: {
                 username: $scope.username,
                 password: $scope.password
@@ -46,7 +46,7 @@ app.controller('ForgotUsernameCtrl', function($scope, $http, $location) {
     $scope.submit = function() {
         $http({
             method: 'POST',
-            url: '/api/forgotUsername',
+            url: '/forgotUsername',
             data: {
                 email: $scope.email
             }
@@ -63,7 +63,7 @@ app.controller('ForgotPasswordCtrl', function($scope, $http, $location) {
     $scope.submit = function() {
         $http({
             method: 'POST',
-            url: '/api/forgotPassword',
+            url: '/forgotPassword',
             data: {
                 username: $scope.username
             }
@@ -77,13 +77,13 @@ app.controller('ForgotPasswordCtrl', function($scope, $http, $location) {
 });
 
 app.controller('SignupCtrl', function($scope, $location, $http, $routeParams) {
-    var host = $routeParams.username;
-    if (host) {
+    var owner = $routeParams.username;
+    if (owner) {
         $http({
             method: 'GET',
-            url: '/api/host',
+            url: '/owner',
             params: {
-                username: host
+                username: owner
             }
         }).then(function(response) {
             console.log(response);
@@ -96,9 +96,9 @@ app.controller('SignupCtrl', function($scope, $location, $http, $routeParams) {
     $scope.submit = function() {
         $http({
             method: 'POST',
-            url: '/api/signup',
+            url: '/signup',
             data: {
-                host: host,
+                owner: owner,
                 username: $scope.username,
                 firstname: $scope.firstname,
                 lastname: $scope.lastname,
@@ -119,7 +119,7 @@ app.controller('ConfirmationCtrl', function($scope, $http, $location) {
     $scope.submit = function() {
         $http({
             method: 'POST',
-            url: '/api/confirmation',
+            url: '/confirmation',
             data: {
                 confirmation: $scope.confirmation
             }
@@ -135,7 +135,7 @@ app.controller('ConfirmationCtrl', function($scope, $http, $location) {
 app.controller('DashboardCtrl', function($scope, $http, $location) {
     $http({
         method: 'GET',
-        url: '/auth/dashboard'
+        url: '/api/dashboard'
     }).then(function(response) {
         console.log(response);
         $scope.message = response.data.message;
@@ -149,7 +149,7 @@ app.controller('DashboardCtrl', function($scope, $http, $location) {
 app.controller('ProfileCtrl', function($scope, $http, $location) {
     $http({
         method: 'GET',
-        url: '/auth/user'
+        url: '/api/user'
     }).then(function(response) {
         $scope.user = response.data.user;
     }, function(err) {
@@ -166,7 +166,7 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
     function onLoad() {
         $http({
             method: 'GET',
-            url: '/auth/admin'
+            url: '/api/admin'
         }).then(function(response) {
             console.log(response);
             var userList = response.data.data;
@@ -224,7 +224,7 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
         if (selected.length > 0 ) {
             $http({
                 method: 'POST',
-                url: '/auth/admin/delete',
+                url: '/api/admin/delete',
                 data: selected
             }).then(function(response) {
                 console.log(response);
@@ -254,7 +254,7 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
         if (selected.length > 0) {
             $http({
                 method: 'POST',
-                url: '/auth/admin/save',
+                url: '/api/admin/save',
                 data: selected
             }).then(function(response) {
                 console.log(response);
@@ -267,10 +267,10 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
     $scope.loginAs = function(username) {
         $http({
             method: 'POST',
-            url: '/auth/loginas',
+            url: '/api/loginas',
             data: {
                 username: username,
-                password: 'test'
+                password: 'test'    // can't be empty
             }
         }).then(function (response) {
             console.log(response);
