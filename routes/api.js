@@ -21,30 +21,107 @@ var crypto = require('crypto');
 
 router.get('/dashboard', function(req, res) {
     var username = req.user.username;
+    var data = {
+        user: req.user
+    };
+
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
 
         var sql = 'SELECT owner FROM User WHERE username = ?';
         var values = [username];
         connection.query(sql, values, function(err, rows) {
-            connection.release();
+            //connection.release();
+
             if (err) {
                 console.log(err);
             }
 
             if (rows[0].owner) {
-                res.json({
-                    user: req.user,
-                    message: 'You are registered under user: ' + rows[0].owner
-                });
+                data.message = 'You are registered under user: ' + rows[0].owner;
             } else {
-                res.json({
-                    user: req.user,
-                    message: req.user.username + ' you are the owner'
-                })
+                data.message = req.user.username + ' you are the owner'
             }
-        })
 
+            sql = 'SELECT P.projectId, P.title FROM Project P INNER JOIN UserProject UP ' +
+                'ON P.projectId = UP.projectId AND UP.userId = ?';
+            values = [req.user.userId];
+            connection.query(sql, values, function(err, rows) {
+                if (err) console.log(err);
+
+                console.log(rows);
+                data.projects = rows;
+                connection.release();
+                res.json(data);
+            });
+        });
+    });
+});
+
+router.post('/project/create', function(req, res, next) {
+    var title = req.body.title;
+    var userId = req.user.userId;
+    var projectId;
+
+    pool.getConnection(function (err, connection) {
+        if (!connection) res.send(500);
+
+        var sql = 'INSERT INTO Project (title) VALUES (?)';
+        var values = [title];
+        connection.query(sql, values, function(err, result) {
+            if (err) console.log(err);
+            projectId = result.insertId;
+            console.log(result);
+            console.log(projectId);
+
+            sql = 'INSERT INTO UserProject (userId, projectId) VALUES (?,?)';
+            values = [userId, projectId];
+            connection.query(sql, values, function(err, result) {
+                if (err) console.log(err);
+            });
+        });
+
+        connection.release();
+        res.end();
+    })
+});
+
+// Gets tasks for specified project
+router.get('/project/:projectId', function(req, res, next) {
+    var projectId = req.params.projectId;
+    var data = {};
+
+    pool.getConnection(function (err, connection) {
+        if (!connection) res.send(500);
+
+        var sql = 'SELECT title, status, description FROM Task WHERE projectId = ?';
+        var values = [projectId];
+        connection.query(sql, values, function(err, rows) {
+            if (err) console.log(err);
+
+            connection.release();
+            res.json({
+                tasks: rows
+            });
+        });
+    });
+});
+
+
+router.post('/project/:projectId/task/create', function(req, res, next) {
+    var projectId = req.params.projectId;
+    var title = req.body.title;
+    var description = req.body.description;
+    pool.getConnection(function (err, connection) {
+        if (!connection) res.send(500);
+
+        var sql = 'INSERT INTO Task (projectId, title, description) VALUES (?,?, ?)';
+        var values = [projectId, title, description];
+        connection.query(sql, values, function(err, result) {
+            if (err) console.log(err);
+            console.log(result.insertId);
+        });
+        res.end();
     })
 });
 

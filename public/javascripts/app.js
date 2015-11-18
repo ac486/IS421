@@ -52,5 +52,9 @@ angular.module('is421', [
             templateUrl: 'partials/confirmation.html',
             controller: 'ConfirmationCtrl'
         })
+        .when('/project/:projectId', {
+            templateUrl: 'partials/project.html',
+            controller: 'ProjectCtrl'
+        })
         .otherwise({ redirectTo: '/'})
 }]);
