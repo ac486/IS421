@@ -28,33 +28,49 @@ router.get('/dashboard', function(req, res) {
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
 
-        var sql = 'SELECT owner FROM User WHERE username = ?';
-        var values = [username];
-        connection.query(sql, values, function(err, rows) {
-            //connection.release();
+        async.waterfall([
+            function(callback) {
+                var sql = 'SELECT owner FROM User WHERE username = ?';
+                var values = [username];
+                connection.query(sql, values, function (err, rows) {
 
-            if (err) {
-                console.log(err);
+                    if (err) {
+                        console.log(err);
+                    }
+
+                    if (rows[0].owner) {
+                        data.message = 'You are registered under user: ' + rows[0].owner;
+                    } else {
+                        data.message = req.user.username + ' you are the owner'
+                    }
+                    callback(null, rows[0].owner);
+                });
+            }, function(owner, callback) {
+                if (owner) {
+                    var sql = 'SELECT userId FROM User WHERE username = ?';
+                    var values = [owner];
+                    connection.query(sql, values, function (err, rows) {
+                        if (err) console.log(err);
+
+                        var userId = rows[0].userId;
+                        callback(null, userId);
+                    });
+                } else {
+                    callback(null, req.user.userId);
+                }
+            }, function(userId, callback) {
+                var sql = 'SELECT P.projectId, P.title FROM Project P INNER JOIN UserProject UP ' +
+                    'ON P.projectId = UP.projectId AND UP.userId = ?';
+                var values = [userId];
+                connection.query(sql, values, function(err, rows) {
+                    if (err) console.log(err);
+
+                    data.projects = rows;
+                    connection.release();
+                    res.json(data);
+                });
             }
-
-            if (rows[0].owner) {
-                data.message = 'You are registered under user: ' + rows[0].owner;
-            } else {
-                data.message = req.user.username + ' you are the owner'
-            }
-
-            sql = 'SELECT P.projectId, P.title FROM Project P INNER JOIN UserProject UP ' +
-                'ON P.projectId = UP.projectId AND UP.userId = ?';
-            values = [req.user.userId];
-            connection.query(sql, values, function(err, rows) {
-                if (err) console.log(err);
-
-                console.log(rows);
-                data.projects = rows;
-                connection.release();
-                res.json(data);
-            });
-        });
+        ]);
     });
 });
 
