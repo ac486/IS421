@@ -139,7 +139,7 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
     }).then(function(response) {
         console.log(response);
         $scope.message = response.data.message;
-        $scope.username = response.data.user.username;
+        $scope.user = response.data.user;
         $scope.projects = response.data.projects;
     }, function(err) {
         console.log(err);
