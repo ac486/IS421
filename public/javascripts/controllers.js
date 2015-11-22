@@ -154,6 +154,30 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
             size: size
         });
     };
+
+    $scope.addUser = function(email) {
+        if (!email) return;
+
+        $http({
+            method: 'POST',
+            url: '/api/project/addUser',
+            data: {
+                email: email
+            }
+        }).then(function(response) {
+            console.log(response);
+
+            // existing user cannot confirm if he wants to accept project invite
+            //$location.path('/confirmAddUser')
+        }, function (err) {
+            console.log(err);
+        });
+    }
+});
+
+// Should user be able to confirm if they want to accept project invite ?
+app.controller('ConfirmAddUserCtrl', function($scope, $http) {
+
 });
 
 app.controller('NewProjectModalCtrl', function($scope, $http, $modalInstance) {

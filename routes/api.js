@@ -236,4 +236,69 @@ router.get('/user', function(req, res, next) {
     });
 });
 
+router.post('/project/addUser', function(req, res) {
+    var email = req.body.email;
+    var admin = req.user.username;
+
+    console.log(email, admin);
+    pool.getConnection(function(err, connection) {
+        if (!connection) res.send(500);
+
+        var sql = 'SELECT email, confirmationCode FROM User WHERE email = ?';
+        var values = [email];
+        connection.query(sql, values, function(err, rows) {
+
+            if (err) {
+                console.log(err);
+            }
+
+            if (rows.length > 0) {
+
+                sql = 'UPDATE User SET owner = ? WHERE email = ?';
+                values = [admin, email];
+                connection.query(sql, values, function(err, rows) {
+                    connection.release();
+                    if (err) console.log(err);
+                });
+
+
+                transporter.sendMail({
+                    to: rows[0].email,
+                    subject: 'IS421 - Project Reassignment',
+                    text: 'You have been reassigned under a new manager: ' + admin
+                    //subject: 'IS421 - Join Project Confirmation',
+                    //text: 'Enter the confirmation code to accept the request to join under ' + admin + ', ' + rows[0].confirmationCode
+                }, function(err, info) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(info);
+                    }
+                });
+
+                res.send({
+                    message: rows[0].email + ' has been added to this project'
+                });
+
+            } else {
+                transporter.sendMail({
+                    to: email,
+                    subject: 'NJIT IS421 New Project Invite',
+                    text: 'Click the link to signup as a new user localhost:8080/' + admin + '/signup'
+                }, function(err, info) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(info);
+                    }
+                });
+
+                res.send({
+                    message: email + ' has been invited to sign up for an account'
+                });
+            }
+        })
+    });
+});
+
 module.exports = router;
