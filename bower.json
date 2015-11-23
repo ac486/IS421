@@ -22,6 +22,9 @@
     "angular-route": "~1.4.7",
     "angular-bootstrap": "~0.13.4",
     "bootstrap": "~3.3.5",
-    "angular-messages": "~1.4.7"
+    "angular-messages": "~1.4.7",
+    "bootstrap-sass": "bootstrap-sass-official#~3.3.5",
+    "font-awesome": "fontawesome#~4.4.0",
+    "jquery": "~2.1.4"
   }
 }
