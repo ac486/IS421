@@ -141,6 +141,21 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
         $scope.message = response.data.message;
         $scope.user = response.data.user;
         $scope.projects = response.data.projects;
+
+        $http({
+            method: 'GET',
+            url: '/api/users/all',
+            params: {
+                owner: $scope.user.owner
+            }
+        }).then(function(response) {
+            console.log(response);
+            $scope.userList = response.data.userList
+        }, function(err) {
+            console.log(err);
+        });
+
+
     }, function(err) {
         console.log(err);
         $location.path('/login');

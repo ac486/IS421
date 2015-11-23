@@ -301,4 +301,29 @@ router.post('/project/addUser', function(req, res) {
     });
 });
 
+router.get('/users/all', function(req, res) {
+    var owner = req.query.owner;
+
+    pool.getConnection(function(err, connection) {
+        if (!connection) res.send(500);
+
+        var sql = 'SELECT username FROM User WHERE owner = ?';
+        var values = [];
+
+        if (owner) {
+            values = [owner];
+        } else {
+            // if owner does not exist, the user is admin
+            values = [req.user.username];
+        }
+
+        connection.query(sql, values, function(err, rows) {
+            if (err) console.log(err);
+
+            res.json({
+                userList: rows
+            })
+        })
+    })
+});
 module.exports = router;
