@@ -133,15 +133,27 @@ app.controller('ConfirmationCtrl', function($scope, $http, $location) {
 });
 
 app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
-    $http({
-        method: 'GET',
-        url: '/api/dashboard'
-    }).then(function(response) {
-        console.log(response);
-        $scope.message = response.data.message;
-        $scope.user = response.data.user;
-        $scope.projects = response.data.projects;
 
+    onLoad();
+
+    function onLoad() {
+        $http({
+            method: 'GET',
+            url: '/api/dashboard'
+        }).then(function(response) {
+            console.log(response);
+            $scope.message = response.data.message;
+            $scope.user = response.data.user;
+            $scope.projects = response.data.projects;
+
+            getUsers();
+        }, function(err) {
+            console.log(err);
+            $location.path('/login');
+        });
+    }
+
+    function getUsers() {
         $http({
             method: 'GET',
             url: '/api/users/all',
@@ -154,12 +166,7 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
         }, function(err) {
             console.log(err);
         });
-
-
-    }, function(err) {
-        console.log(err);
-        $location.path('/login');
-    });
+    }
 
     $scope.openProjectModal = function(size) {
         var modalInstance = $modal.open({
@@ -167,6 +174,13 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
             templateUrl: 'newProjectModal.html',
             controller: 'NewProjectModalCtrl',
             size: size
+        });
+
+        modalInstance.result.then(function () {
+            onLoad();
+            getUsers();
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
         });
     };
 
@@ -221,16 +235,21 @@ app.controller('NewProjectModalCtrl', function($scope, $http, $modalInstance) {
 
 app.controller('ProjectCtrl', function($scope, $http, $routeParams, $location, $modal) {
     var projectId = $routeParams.projectId;
-    $http({
-        method: 'GET',
-        url: 'api/project/' + projectId
-    }).then(function(response) {
-        console.log(response);
-        $scope.tasks = response.data.tasks;
-    }, function(err) {
-        console.log(err);
-        $location.path('/login');
-    });
+
+    onLoad();
+
+    function onLoad() {
+        $http({
+            method: 'GET',
+            url: 'api/project/' + projectId
+        }).then(function(response) {
+            console.log(response);
+            $scope.tasks = response.data.tasks;
+        }, function(err) {
+            console.log(err);
+            $location.path('/login');
+        });
+    }
 
     $scope.openTaskModal = function(size) {
         var modalInstance = $modal.open({
@@ -244,6 +263,9 @@ app.controller('ProjectCtrl', function($scope, $http, $routeParams, $location, $
                 }
             }
         });
+        modalInstance.result.then(function() {
+            onLoad();
+        })
     };
 });
 
