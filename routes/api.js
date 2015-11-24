@@ -59,7 +59,7 @@ router.get('/dashboard', function(req, res) {
                     callback(null, req.user.userId);
                 }
             }, function(userId, callback) {
-                var sql = 'SELECT P.projectId, P.title FROM Project P INNER JOIN UserProject UP ' +
+                var sql = 'SELECT P.projectId, P.title, P.description FROM Project P INNER JOIN UserProject UP ' +
                     'ON P.projectId = UP.projectId AND UP.userId = ?';
                 var values = [userId];
                 connection.query(sql, values, function(err, rows) {
@@ -76,14 +76,15 @@ router.get('/dashboard', function(req, res) {
 
 router.post('/project/create', function(req, res, next) {
     var title = req.body.title;
+    var description = req.body.description;
     var userId = req.user.userId;
     var projectId;
 
     pool.getConnection(function (err, connection) {
         if (!connection) res.send(500);
 
-        var sql = 'INSERT INTO Project (title) VALUES (?)';
-        var values = [title];
+        var sql = 'INSERT INTO Project (title, description) VALUES (?, ?)';
+        var values = [title, description];
         connection.query(sql, values, function(err, result) {
             if (err) console.log(err);
             projectId = result.insertId;

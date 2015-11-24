@@ -37,3 +37,5 @@ INSERT INTO User (userId, username, firstname, lastname, email, password, isAdmi
 INSERT INTO Project (projectId, title) VALUES (1, 'Sample Test Project');
 INSERT INTO UserProject (upId, userId, projectId) VALUES (1, 1, 1);
 INSERT INTO Task (taskId, projectId, title, description) VALUES (1, 1, 'Sample Test Task', 'Sample Test Description');
+
+ALTER TABLE Project ADD COLUMN description VARCHAR(1000);

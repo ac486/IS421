@@ -217,7 +217,8 @@ app.controller('NewProjectModalCtrl', function($scope, $http, $modalInstance) {
             method: 'POST',
             url: '/api/project/create',
             data: {
-                title: $scope.title
+                title: $scope.title,
+                description: $scope.description
             }
         }).then(function (response) {
             console.log(response);
