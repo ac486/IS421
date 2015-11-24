@@ -22,29 +22,14 @@
 <div class="row">
     <div class="col-xs-6 col-sm-4 col-md-3" ng-repeat="project in projects track by $index">
         <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title projects-items"><i class="fa fa-tasks"></i> <a href="/project/{{project.projectId}}">{{project.title}}</a></h3>
-                </div>
-                <div class="panel-body">
-                    <p>{{project.title}}</p>
-                    <p>{{project.title}}</p>
-                    <p>Lets add Users here</p>
-                </div>
-
-    <div class="row">
-        <div class="col-sm-6">
-            <h5>Users:</h5>
-            <ul ng-repeat="user in userList">
-                <li>{{user.username}}</li>
-            </ul>
-        </div>
-        <div class="col-sm-6">
-            <h5>Projects:</h5>
-            <ul ng-repeat="project in projects track by $index">
-                <li>
-                    <a href="/project/{{project.projectId}}">{{project.title}}</a>
-                </li>
-            </ul>
+            <div class="panel-heading">
+                <h3 class="panel-title projects-items"><i class="fa fa-tasks"></i> <a href="/project/{{project.projectId}}">{{project.title}}</a></h3>
+            </div>
+            <div class="panel-body">
+                <p>{{project.title}}</p>
+                <p>{{project.title}}</p>
+                <p>Lets add Users here</p>
+            </div>
         </div>
     </div>
 </div>
