@@ -11,6 +11,7 @@ var session = require('express-session');
 var routes = require('./routes/index');
 //var users = require('./routes/users');
 var api = require('./routes/api');
+
 var app = express();
 
 // view engine setup
@@ -37,7 +38,6 @@ app.use(passport.session());
 //app.use('/', routes);
 //app.use('/users', users);
 
-//app.use(subdomain('api', apiRouter));
 app.use('/', routes);
 app.use('/api', function(req, res, next) {
     if (req.isAuthenticated()) {
@@ -54,8 +54,8 @@ app.use('/*', function(req, res) {
     if (authenticated) {
         admin = req.user.isAdmin;
     }
-    console.log('Logged in?:', authenticated);
-    console.log('admin?', admin);
+    //console.log('Logged in?:', authenticated);
+    //console.log('admin?', admin);
     res.render('layout', {
         authenticated: req.isAuthenticated(),
         isAdmin: admin
