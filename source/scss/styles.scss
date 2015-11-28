@@ -1,7 +1,9 @@
 @import 'reset';
 @import '../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap';
 @import '../../bower_components/font-awesome/scss/font-awesome';
-@import 'variables';
+@import "variables";
+@import 'dashboard';
+@import "loginSignup";
 
 body {
   padding: 50px;
@@ -27,7 +29,6 @@ body {
     }
   }
 }
-
 
 span[ng-message] {
     color: red;
@@ -82,3 +83,4 @@ span[ng-message] {
     border-color: $anchor-base;
   }
 }
+

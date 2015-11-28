@@ -4,6 +4,7 @@ var gulp  = require('gulp'),
     sass       = require('gulp-sass'),
     concat     = require('gulp-concat'),
     sourcemaps = require('gulp-sourcemaps'),
+    livereload = require('gulp-livereload'),
 
     input  = {
         'sass': 'source/scss/**/*.scss',
@@ -32,7 +33,8 @@ gulp.task('build-css', function() {
         .pipe(sourcemaps.init())
         .pipe(sass())
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest(output.stylesheets));
+        .pipe(gulp.dest(output.stylesheets))
+        .pipe(livereload())
 });
 
 /* concat javascript files, minify if --type production */
@@ -50,4 +52,6 @@ gulp.task('build-js', function() {
 gulp.task('watch', function() {
     gulp.watch(input.javascript, ['jshint', 'build-js']);
     gulp.watch(input.sass, ['build-css']);
+
+    livereload.listen();
 });
