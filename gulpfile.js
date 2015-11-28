@@ -5,6 +5,7 @@ var gulp  = require('gulp'),
     concat     = require('gulp-concat'),
     sourcemaps = require('gulp-sourcemaps'),
     livereload = require('gulp-livereload'),
+    browserSync = require("browser-sync").create(),
 
     input  = {
         'sass': 'source/scss/**/*.scss',
@@ -18,7 +19,15 @@ var gulp  = require('gulp'),
     };
 
 /* run the watch task when gulp is called without arguments */
-gulp.task('default', ['watch']);
+gulp.task('default', ['watch', 'browser-sync']);
+
+/*reload with browser-sync*/
+gulp.task('browser-sync', function(){
+   browserSync.init({
+       proxy: "localhost:8080",
+       online:false
+   })
+});
 
 /* run javascript through jshint */
 gulp.task('jshint', function() {
@@ -35,6 +44,7 @@ gulp.task('build-css', function() {
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(output.stylesheets))
         .pipe(livereload())
+        .pipe(browserSync.stream())
 });
 
 /* concat javascript files, minify if --type production */
@@ -50,8 +60,8 @@ gulp.task('build-js', function() {
 
 /* Watch these files for changes and run the task on update */
 gulp.task('watch', function() {
-    gulp.watch(input.javascript, ['jshint', 'build-js']);
-    gulp.watch(input.sass, ['build-css']);
+    gulp.watch(input.javascript, ['jshint', 'build-js'], browserSync.reload);
+    gulp.watch(input.sass, ['build-css'], browserSync.reload);
 
     livereload.listen();
 });

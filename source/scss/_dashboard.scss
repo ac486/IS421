@@ -1,11 +1,20 @@
 /*Here the area for the create project and user inside the dashboard*/
 
+.jumbotron {
+  background-color: #00a0d3;
+  color: #ffffff;
+  span{
+    border-bottom: 1px solid #FFFFFF;
+  }
+}
 .add-project-add-user {
   border: 1px solid #00a0d3;
   margin-bottom: 2rem;
   padding: 30px 0;
   h4 {
     text-align: center;
+    color: #00a0d3;
+    text-transform: uppercase;
   }
   .btn-primary {
     background-color: #00a0d3;
