@@ -1,26 +1,21 @@
 <div class="jumbotron">
-    <h3 class="text-center">Welcome to your Dashboard, {{user.username}}</h3>
+    <h3 class="text-center">Welcome to your Dashboard, <span>{{user.username}}</span></h3>
     <h4 class="text-center">{{message}}</h4>
 </div>
-<div class="row" ng-if="user.isAdmin">
+<div class="row add-project-add-user" ng-if="user.isAdmin">
     <div class="col-sm-12">
-        <div class="col-xs-6">
+        <div class="col-sm-6">
             <h4>Create new Project</h4>
             <button class="btn btn-primary btn-block" ng-click="openProjectModal()">New Project</button>
         </div>
-        <div class="col-xs-6">
-            <form class="form-horizontal" ng-submit="addUser(email); email=''">
-                <div class="form-group">
-                    <h4>Add New User</h4>
-                    <input class="form-control" type="email" ng-model="email" placeholder="example@example.com">
-                    <button type="submit" class="btn btn-primary btn-block">Add User</button>
-                </div>
-            </form>
+        <div class="col-sm-6">
+            <h4>Add new User</h4>
+            <button class="btn btn-primary btn-block" ng-click="openUserModal()">New User</button>
         </div>
     </div>
 </div>
 <div class="row">
-    <div class="col-xs-6 col-sm-4 col-md-3" ng-repeat="project in projects track by $index">
+    <div class="col-sm-4 col-md-3" ng-repeat="project in projects track by $index">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <button type="button" class="close"><i class="fa fa-trash-o"></i></button>
@@ -37,6 +32,15 @@
         </div>
     </div>
 </div>
+<!--
+     <form class="form-horizontal" ng-submit="addUser(email); email=''">
+                <div class="form-group">
+                    <h4>Add New User</h4>
+                    <input class="form-control" type="email" ng-model="email" placeholder="example@example.com">
+                    <button type="submit" class="btn btn-primary btn-block">Add User</button>
+                </div>
+            </form>
+-->
 
 
 <script type="text/ng-template" id="newProjectModal.html">

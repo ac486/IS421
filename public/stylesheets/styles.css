@@ -60,3 +60,6 @@ body .row {
     text-transform: uppercase;
     font-size: 1.3em;
 }
+.panel {
+    min-height: 200px;
+}
