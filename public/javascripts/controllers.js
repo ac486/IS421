@@ -108,7 +108,8 @@ app.controller('SignupCtrl', function($scope, $location, $http, $routeParams) {
             }
         }).then(function(response) {
             console.log(response);
-            window.location.href = '/confirmation';
+            $location.path('/login');
+            //window.location.href = '/confirmation';
         }, function(err) {
             console.log(err);
         })

@@ -53,8 +53,9 @@ router.post('/signup', function(req, res) {
 
                     user.isAdmin = !user.owner; //if user has owner, he cannot be an admin initially
 
-                    var sql = 'INSERT INTO User (username, password, firstname, lastname, email, confirmationCode, owner, isAdmin) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-                    var values = [user.username, user.password, user.firstname, user.lastname, user.email, user.confirmationCode, user.owner, user.isAdmin];
+                    // Removed confirmation page so made user active by default
+                    var sql = 'INSERT INTO User (username, password, firstname, lastname, email, confirmationCode, owner, isAdmin, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                    var values = [user.username, user.password, user.firstname, user.lastname, user.email, user.confirmationCode, user.owner, user.isAdmin, true];
                     connection.query(sql, values, function(err, rows) {
                         if (err) {
                             console.log(err);
@@ -62,19 +63,19 @@ router.post('/signup', function(req, res) {
                             connection.release();
                             console.log(user.confirmationCode);
 
-                            transporter.sendMail({
-                                //from: 'is421.njit@gmail.com',
-                                to: user.email,
-                                subject: 'NJIT IS421 Confirmation ',
-                                text: 'Please enter the following code to validate your account. \n' + user.confirmationCode
-
-                            }, function(err, info) {
-                                if (err) {
-                                    console.log(err);
-                                } else {
-                                    console.log(info);
-                                }
-                            });
+                            //transporter.sendMail({
+                            //    //from: 'is421.njit@gmail.com',
+                            //    to: user.email,
+                            //    subject: 'NJIT IS421 Confirmation ',
+                            //    text: 'Please enter the following code to validate your account. \n' + user.confirmationCode
+                            //
+                            //}, function(err, info) {
+                            //    if (err) {
+                            //        console.log(err);
+                            //    } else {
+                            //        console.log(info);
+                            //    }
+                            //});
                             res.send('Confirmation Email Sent');
                         }
                     })
