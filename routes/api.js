@@ -327,4 +327,27 @@ router.get('/users/all', function(req, res) {
         })
     })
 });
+
+router.put('/project/delete', function(req, res) {
+    var id = req.body.projectId;
+
+    pool.getConnection(function (err, connection) {
+        if (!connection) res.send(500);
+
+        var sql = 'DELETE Project, UserProject, Task ' +
+                    'FROM Project ' +
+                    'LEFT JOIN UserProject ON Project.projectId = UserProject.projectId ' +
+                    'LEFT JOIN Task ON Project.projectId = Task.projectId ' +
+                    'WHERE Project.projectId = ?';
+        var values = [id];
+
+        connection.query(sql, values, function(err, result) {
+            connection.release();
+            if (err) console.log(err);
+            console.log(result);
+            res.end();
+        })
+    })
+});
+
 module.exports = router;

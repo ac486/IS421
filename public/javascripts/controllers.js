@@ -185,6 +185,21 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
         });
     };
 
+    $scope.deleteProject = function(id) {
+        $http({
+            method: 'PUT',
+            url: '/api/project/delete',
+            data: {
+                projectId: id
+            }
+        }).then(function(response) {
+            console.log(response);
+            onLoad();
+        }, function(err) {
+            console.log(err);
+        })
+    };
+
     $scope.addUser = function(email) {
         if (!email) return;
 

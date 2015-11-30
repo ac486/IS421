@@ -18,8 +18,8 @@
     <div class="col-sm-4 col-md-3" ng-repeat="project in projects track by $index">
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <button type="button" class="close"><i class="fa fa-trash-o"></i></button>
-                <button type="button" class="close"><i class="fa fa-pencil"></i></button>
+                <button type="button" ng-click="deleteProject(project.projectId)" class="close"><i class="fa fa-trash-o"></i></button>
+                <!--<button type="button" class="close"><i class="fa fa-pencil"></i></button>-->
                 <h3 class="panel-title projects-items"><i class="fa fa-tasks"></i> <a href="/project/{{project.projectId}}">{{project.title}}</a></h3>
 
             </div>
