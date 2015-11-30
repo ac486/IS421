@@ -147,25 +147,10 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
             $scope.user = response.data.user;
             $scope.projects = response.data.projects;
 
-            getUsers();
+            //getUsers();
         }, function(err) {
             console.log(err);
             $location.path('/login');
-        });
-    }
-
-    function getUsers() {
-        $http({
-            method: 'GET',
-            url: '/api/users/all',
-            params: {
-                owner: $scope.user.owner
-            }
-        }).then(function(response) {
-            console.log(response);
-            $scope.userList = response.data.userList
-        }, function(err) {
-            console.log(err);
         });
     }
 
@@ -441,6 +426,73 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
             console.log(response);
             $scope.username = response.data.user.username;
             $location.path('/dashboard');
+        }, function (err) {
+            console.log(err);
+        })
+    }
+});
+
+app.controller('ManageUsersCtrl', function($scope, $http) {
+    //$scope.myUsers = [];
+    //$scope.otherUsers = [];
+
+
+    onLoad();
+
+    function onLoad() {
+        $http({
+            method: 'GET',
+            url: '/api/users/all'
+        }).then(function(response) {
+            console.log(response);
+            var user = response.data.user;
+            var userList = response.data.userList;
+
+            $scope.myUsers = [];
+            $scope.otherUsers = [];
+
+            for (var i = 0; i < userList.length; i++) {
+                var currUser = userList[i];
+                if (currUser.owner === user.username) {
+                    $scope.myUsers.push(currUser);
+                } else if (!currUser.owner) {
+                    // no owner, means they are admin, we dont want to assign admin under admin
+                } else {
+                    $scope.otherUsers.push(currUser);
+                }
+            }
+
+        }, function(err) {
+            console.log(err);
+            window.location.href = '/login';
+        });
+    }
+
+    $scope.addUser = function(email) {
+        $http({
+            method: 'POST',
+            url: '/api/project/addUser',
+            data: {
+                email: email
+            }
+        }).then(function(response) {
+            console.log(response);
+            onLoad();
+        }, function(err) {
+            console.log(err);
+        });
+    };
+
+    $scope.removeUser = function(email) {
+        $http({
+            method: 'POST',
+            url: '/api/project/removeUser',
+            data: {
+                email: email
+            }
+        }).then(function (response) {
+            console.log(response);
+            onLoad();
         }, function (err) {
             console.log(err);
         })

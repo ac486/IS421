@@ -37,6 +37,9 @@ html(lang='en' ng-app='is421')
                            i.fa.fa-dashboard
                            | &nbsp;Dashboard
                      if isAdmin
+                        li: a(href='/manageusers')
+                            i.fa.fa-user-md
+                            | &nbsp;Manage Users
                         li: a(href='/admin')
                             i.fa.fa-cog
                             | &nbsp;Admin

@@ -302,27 +302,48 @@ router.post('/project/addUser', function(req, res) {
     });
 });
 
-router.get('/users/all', function(req, res) {
-    var owner = req.query.owner;
+router.post('/project/removeUser', function(req, res) {
+    var email = req.body.email;
+    var admin = req.user.username;
 
+    console.log(email, admin);
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
 
-        var sql = 'SELECT username FROM User WHERE owner = ?';
-        var values = [];
+        var sql = 'UPDATE User SET owner = ? where email = ?';
 
-        if (owner) {
-            values = [owner];
-        } else {
-            // if owner does not exist, the user is admin
-            values = [req.user.username];
-        }
+        //TODO figure out what to set owner to
+        // if we set owner to null, the user becomes an admin
+        // if we set it to ' ' space, app wil crash on dashboard because ' ' is not a user
+        // for now, i will set it admin, must create super admin account
+
+        var values = ['admin', email];
+        connection.query(sql, values, function(err, rows) {
+            if (err) {
+                console.log(err);
+            }
+            console.log(rows);
+            connection.release();
+            res.end();
+
+        })
+    });
+});
+
+
+router.get('/users/all', function(req, res) {
+    pool.getConnection(function(err, connection) {
+        if (!connection) res.send(500);
+
+        var sql = 'SELECT email, firstname, lastname, owner FROM User WHERE username <> ?;';
+        var values = [req.user.username];
 
         connection.query(sql, values, function(err, rows) {
             if (err) console.log(err);
 
             res.json({
-                userList: rows
+                userList: rows,
+                user: req.user
             })
         })
     })

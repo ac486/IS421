@@ -56,5 +56,9 @@ angular.module('is421', [
             templateUrl: 'partials/project.html',
             controller: 'ProjectCtrl'
         })
+        .when('/manageusers', {
+            templateUrl: 'partials/manageusers.html',
+            controller: 'ManageUsersCtrl'
+        })
         .otherwise({ redirectTo: '/'})
 }]);
