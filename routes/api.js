@@ -18,6 +18,7 @@ var transporter = nodemailer.createTransport({
     }
 });
 var crypto = require('crypto');
+var mysql = require('mysql');
 
 router.get('/dashboard', function(req, res) {
     var username = req.user.username;
@@ -111,7 +112,7 @@ router.get('/project/:projectId', function(req, res, next) {
     pool.getConnection(function (err, connection) {
         if (!connection) res.send(500);
 
-        var sql = 'SELECT title, status, description, created_by FROM Task WHERE projectId = ?';
+        var sql = 'SELECT * FROM Task WHERE projectId = ?';
         var values = [projectId];
         connection.query(sql, values, function(err, rows) {
             if (err) console.log(err);
@@ -140,6 +141,28 @@ router.post('/project/:projectId/task/create', function(req, res, next) {
         });
         res.end();
     })
+});
+
+router.put('/project/:projectId/task/status', function(req, res, next) {
+    var projectId = req.params.projectId;
+    var ids = req.body.tasks;  //array of task Ids
+    var status = req.body.status;
+
+    console.log(ids);
+    pool.getConnection(function (err, connection) {
+        if (!connection) req.send(500);
+
+        var sql = 'UPDATE Task SET status = ? WHERE taskId IN (?)';
+        var values = [status, ids];
+
+        connection.query(sql, values, function(err, rows) {
+            if (err) console.log(err);
+            connection.release();
+            console.log(rows);
+
+            res.end();
+        })
+    });
 });
 
 router.get('/admin', function(req, res) {

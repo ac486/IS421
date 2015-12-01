@@ -1,7 +1,12 @@
 <div>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-4">
             <button ng-click="openTaskModal()" class="btn btn-default">New Task</button>
+        </div>
+        <div ng-show="selectedTasks.length > 0"  class="col-sm-8">
+            <button ng-click="updateStatus('new')" class="btn btn-primary">New</button>
+            <button ng-click="updateStatus('wip')" class="btn btn-warning">Work in Progress</button>
+            <button ng-click="updateStatus('done')" class="btn btn-success">Complete</button>
         </div>
     </div>
     <div class="row">
@@ -9,11 +14,15 @@
             <h4 class="text-center">New</h4>
             <table class="table table-striped">
                 <tr>
+                    <th></th>
                     <th>Title</th>
                     <th>Created By</th>
                     <th>Description</th>
                 </tr>
                 <tr ng-repeat="task in newTasks track by $index">
+                    <th>
+                        <input type="checkbox" ng-model="task.selected" ng-change="changeStatus(task)">
+                    </th>
                     <td>{{task.title}}</td>
                     <td>{{task.created_by}}</td>
                     <td>{{task.description}}</td>
@@ -24,11 +33,15 @@
             <h4 class="text-center">Work in Progress </h4>
             <table class="table table-striped">
                 <tr>
+                    <th></th>
                     <th>Title</th>
                     <th>Created By</th>
                     <th>Description</th>
                 </tr>
                 <tr ng-repeat="task in wipTasks track by $index">
+                    <th>
+                        <input type="checkbox" ng-model="task.selected" ng-change="changeStatus(task)">
+                    </th>
                     <td>{{task.title}}</td>
                     <td>{{task.created_by}}</td>
                     <td>{{task.description}}</td>
@@ -39,11 +52,15 @@
             <h4 class="text-center">Completed</h4>
             <table class="table table-striped">
                 <tr>
+                    <th></th>
                     <th>Title</th>
                     <th>Created By</th>
                     <th>Description</th>
                 </tr>
                 <tr ng-repeat="task in doneTasks track by $index">
+                    <th>
+                        <input type="checkbox" ng-model="task.selected" ng-change="changeStatus(task)">
+                    </th>
                     <td>{{task.title}}</td>
                     <td>{{task.created_by}}</td>
                     <td>{{task.description}}</td>

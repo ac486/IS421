@@ -268,6 +268,7 @@ app.controller('ProjectCtrl', function($scope, $http, $routeParams, $location, $
             $scope.newTasks = [];
             $scope.wipTasks = [];
             $scope.doneTasks = [];
+            $scope.selectedTasks = [];
 
             for (var i = 0; i < tasks.length; i++) {
                 var task = tasks[i];
@@ -276,7 +277,7 @@ app.controller('ProjectCtrl', function($scope, $http, $routeParams, $location, $
                     $scope.newTasks.push(task);
                 } else if (task.status === 'wip') {
                     $scope.wipTasks.push(task);
-                } else if (tasks.status === 'done') {
+                } else if (task.status === 'done') {
                     $scope.doneTasks.push(task);
                 }
             }
@@ -302,6 +303,32 @@ app.controller('ProjectCtrl', function($scope, $http, $routeParams, $location, $
             onLoad();
         })
     };
+
+
+    $scope.changeStatus = function(task) {
+        if (task.selected) {
+            $scope.selectedTasks.push(task.taskId);
+        } else {
+            var index = $scope.selectedTasks.indexOf(task.taskId);
+            $scope.selectedTasks.splice(index, 1);
+        }
+    };
+
+    $scope.updateStatus = function(status) {
+        $http({
+            method: 'PUT',
+            url: 'api/project/' + projectId + '/task/status',
+            data: {
+                tasks: $scope.selectedTasks,
+                status: status
+            }
+        }).then(function(response) {
+            console.log(response);
+            onLoad();
+        }, function(err) {
+            console.log(err);
+        })
+    }
 });
 
 app.controller('NewTaskModalCtrl', function($scope, $http, $modalInstance, projectId) {
