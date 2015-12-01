@@ -263,7 +263,23 @@ app.controller('ProjectCtrl', function($scope, $http, $routeParams, $location, $
             url: 'api/project/' + projectId
         }).then(function(response) {
             console.log(response);
-            $scope.tasks = response.data.tasks;
+            var tasks = response.data.tasks;
+
+            $scope.newTasks = [];
+            $scope.wipTasks = [];
+            $scope.doneTasks = [];
+
+            for (var i = 0; i < tasks.length; i++) {
+                var task = tasks[i];
+
+                if (task.status === 'new') {
+                    $scope.newTasks.push(task);
+                } else if (task.status === 'wip') {
+                    $scope.wipTasks.push(task);
+                } else if (tasks.status === 'done') {
+                    $scope.doneTasks.push(task);
+                }
+            }
         }, function(err) {
             console.log(err);
             $location.path('/login');
@@ -300,7 +316,7 @@ app.controller('NewTaskModalCtrl', function($scope, $http, $modalInstance, proje
                 description: $scope.description
             }
         }).then(function (response) {
-            toastr.success('task added')
+            toastr.success('task added');
             console.log(response);
         }, function (err) {
             console.log(err);
@@ -463,7 +479,7 @@ app.controller('ManageUsersCtrl', function($scope, $http) {
             url: '/api/users/all'
         }).then(function(response) {
             console.log(response);
-            var user = response.data.user;
+            $scope.user = response.data.user;
             var userList = response.data.userList;
 
             $scope.myUsers = [];
@@ -471,7 +487,7 @@ app.controller('ManageUsersCtrl', function($scope, $http) {
 
             for (var i = 0; i < userList.length; i++) {
                 var currUser = userList[i];
-                if (currUser.owner === user.username) {
+                if (currUser.owner === $scope.user.username) {
                     $scope.myUsers.push(currUser);
                 } else if (!currUser.owner) {
                     // no owner, means they are admin, we dont want to assign admin under admin

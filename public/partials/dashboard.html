@@ -2,18 +2,23 @@
     <h3 class="text-center">Welcome to your Dashboard, <span>{{user.username}}</span></h3>
     <h4 class="text-center">{{message}}</h4>
 </div>
-<div class="row add-project-add-user" ng-if="user.isAdmin">
-    <div class="col-sm-12">
-        <div class="col-sm-6">
-            <h4>Create new Project</h4>
-            <button class="btn btn-primary btn-block" ng-click="openProjectModal()">New Project</button>
-        </div>
-        <div class="col-sm-6">
-            <h4>Add new User</h4>
-            <button class="btn btn-primary btn-block" ng-click="openUserModal()">New User</button>
-        </div>
+<div class="row">
+    <div class="col-sm-6">
+        <a href="#" ng-click="openProjectModal()">Create new project</a>
     </div>
 </div>
+<!--<div class="row add-project-add-user" ng-if="user.isAdmin">-->
+    <!--<div class="col-sm-12">-->
+        <!--<div class="col-sm-6">-->
+            <!--<h4>Create new Project</h4>-->
+            <!--<button class="btn btn-primary btn-block" ng-click="openProjectModal()">New Project</button>-->
+        <!--</div>-->
+        <!--<div class="col-sm-6">-->
+            <!--<h4>Add new User</h4>-->
+            <!--<button class="btn btn-primary btn-block" ng-click="openUserModal()">New User</button>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
 <div class="row">
     <div class="col-sm-4 col-md-3" ng-repeat="project in projects track by $index">
         <div class="panel panel-primary">

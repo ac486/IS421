@@ -41,3 +41,5 @@ INSERT INTO Task (taskId, projectId, title, description) VALUES (1, 1, 'Sample T
 ALTER TABLE Project ADD COLUMN description VARCHAR(1000);
 
 INSERT INTO User (username, firstname, lastname, email, password, isAdmin, active) VALUES ('admin', 'admin', 'admin', 'admin@admin.com', '$2a$10$h8o8TAoMw/3eQwGNdhFmYuOv9VrgOo2nYyYLn8RvORKYodhtxtmXe', 1, 1);
+
+ALTER TABLE Task ADD created_by varchar(50) not null;

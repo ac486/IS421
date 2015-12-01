@@ -1,19 +1,21 @@
 <div>
     <h3 class="text-center">Manage your users</h3>
-
+    <p>
+        Signup link: localhost:8080/{{user.username}}/signup
+    </p>
     <div class="row">
         <div class="col-sm-6">
             <h4>Users <strong>not</strong> within your organization</h4>
             <table class="table table-striped">
                 <thead>
-                <th>Email</th>
+                <th>Username</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Add?</th>
                 </thead>
                 <tbody>
                 <tr ng-repeat="user in otherUsers">
-                    <td>{{user.email}}</td>
+                    <td>{{user.username}}</td>
                     <td>{{user.firstname}}</td>
                     <td>{{user.lastname}}</td>
                     <td>
@@ -27,14 +29,14 @@
             <h4>Users within your organization</h4>
             <table class="table table-striped">
                 <thead>
-                <th>Email</th>
+                <th>Username</th>
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Remove?</th>
                 </thead>
                 <tbody>
                 <tr ng-repeat="user in myUsers">
-                    <td>{{user.email}}</td>
+                    <td>{{user.username}}</td>
                     <td>{{user.firstname}}</td>
                     <td>{{user.lastname}}</td>
                     <td>

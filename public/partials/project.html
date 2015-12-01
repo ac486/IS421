@@ -1,20 +1,51 @@
 <div>
     <div class="row">
-        <div class="col-sm-8 col-sm-offset-2">
+        <div class="col-sm-12">
             <button ng-click="openTaskModal()" class="btn btn-default">New Task</button>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-8 col-sm-offset-2">
+        <div class="col-sm-4">
+            <h4 class="text-center">New</h4>
             <table class="table table-striped">
                 <tr>
                     <th>Title</th>
-                    <th>Status</th>
+                    <th>Created By</th>
                     <th>Description</th>
                 </tr>
-                <tr ng-repeat="task in tasks track by $index">
+                <tr ng-repeat="task in newTasks track by $index">
                     <td>{{task.title}}</td>
-                    <td>{{task.status}}</td>
+                    <td>{{task.created_by}}</td>
+                    <td>{{task.description}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-sm-4">
+            <h4 class="text-center">Work in Progress </h4>
+            <table class="table table-striped">
+                <tr>
+                    <th>Title</th>
+                    <th>Created By</th>
+                    <th>Description</th>
+                </tr>
+                <tr ng-repeat="task in wipTasks track by $index">
+                    <td>{{task.title}}</td>
+                    <td>{{task.created_by}}</td>
+                    <td>{{task.description}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-sm-4">
+            <h4 class="text-center">Completed</h4>
+            <table class="table table-striped">
+                <tr>
+                    <th>Title</th>
+                    <th>Created By</th>
+                    <th>Description</th>
+                </tr>
+                <tr ng-repeat="task in doneTasks track by $index">
+                    <td>{{task.title}}</td>
+                    <td>{{task.created_by}}</td>
                     <td>{{task.description}}</td>
                 </tr>
             </table>
@@ -31,7 +62,7 @@
             <div class="">
                 <div class="form-group">
                     <label>Title</label>
-                    <input class="form-control" type="text" ng-model="title" placeholder="Project Title">
+                    <input class="form-control" type="text" ng-model="title" placeholder="Task Title">
                 </div>
                 <div class="form-group">
                     <label>Description</label>

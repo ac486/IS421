@@ -111,7 +111,7 @@ router.get('/project/:projectId', function(req, res, next) {
     pool.getConnection(function (err, connection) {
         if (!connection) res.send(500);
 
-        var sql = 'SELECT title, status, description FROM Task WHERE projectId = ?';
+        var sql = 'SELECT title, status, description, created_by FROM Task WHERE projectId = ?';
         var values = [projectId];
         connection.query(sql, values, function(err, rows) {
             if (err) console.log(err);
@@ -132,8 +132,8 @@ router.post('/project/:projectId/task/create', function(req, res, next) {
     pool.getConnection(function (err, connection) {
         if (!connection) res.send(500);
 
-        var sql = 'INSERT INTO Task (projectId, title, description) VALUES (?,?, ?)';
-        var values = [projectId, title, description];
+        var sql = 'INSERT INTO Task (projectId, title, description, created_by) VALUES (?,?, ?, ?)';
+        var values = [projectId, title, description, req.user.username];
         connection.query(sql, values, function(err, result) {
             if (err) console.log(err);
             console.log(result.insertId);
@@ -335,7 +335,7 @@ router.get('/users/all', function(req, res) {
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
 
-        var sql = 'SELECT email, firstname, lastname, owner FROM User WHERE username <> ?;';
+        var sql = 'SELECT username, email, firstname, lastname, owner FROM User WHERE username <> ?;';
         var values = [req.user.username];
 
         connection.query(sql, values, function(err, rows) {
