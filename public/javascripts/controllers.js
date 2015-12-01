@@ -13,6 +13,7 @@ app.controller('NavCtrl', function($scope, $modal, $location, $http) {
         }).then(function(response) {
             console.log(response);
             window.location.href = '/login';
+            toastr.success('Logout Success');
         }, function(err) {
             console.log(err);
         })
@@ -35,6 +36,7 @@ app.controller('LoginCtrl', function($scope, $location, $http) {
         }).then(function(response) {
             console.log(response);
             window.location.href = '/dashboard';
+            toastr.success('Login Success');
         }, function(err) {
             console.log(err);
         });
@@ -53,6 +55,7 @@ app.controller('ForgotUsernameCtrl', function($scope, $http, $location) {
         }).then(function (response) {
             console.log(response);
             $location.path('/login');
+            toastr.success('Username Sent');
         }, function (err) {
             console.log(err);
         })
@@ -70,7 +73,9 @@ app.controller('ForgotPasswordCtrl', function($scope, $http, $location) {
         }).then(function(response) {
             console.log(response);
             $location.path('/login');
+            toastr.success('Password Sent');
         }, function(err) {
+            toastr.error('Something when wrong');
             console.log(err);
         })
     }
@@ -86,9 +91,11 @@ app.controller('SignupCtrl', function($scope, $location, $http, $routeParams) {
                 username: owner
             }
         }).then(function(response) {
+            toastr.success('Your are in!');
             console.log(response);
         }, function(err) {
-            $location.path('/signup');
+            $location.path('/signup')
+            toastr.error('Login Success');
             console.log(err);
         })
     }
@@ -109,6 +116,7 @@ app.controller('SignupCtrl', function($scope, $location, $http, $routeParams) {
         }).then(function(response) {
             console.log(response);
             $location.path('/login');
+            toastr.success('Your are in!');
             //window.location.href = '/confirmation';
         }, function(err) {
             console.log(err);
@@ -127,6 +135,7 @@ app.controller('ConfirmationCtrl', function($scope, $http, $location) {
         }).then(function(response) {
             console.log(response);
             $location.path('/login');
+            toastr.success('Your are Confirmed!');
         }, function(err) {
             console.log(err);
         })
@@ -146,11 +155,13 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
             $scope.message = response.data.message;
             $scope.user = response.data.user;
             $scope.projects = response.data.projects;
+            toastr.success('Welcome ' + $scope.message);
 
             //getUsers();
         }, function(err) {
             console.log(err);
             $location.path('/login');
+            toastr.error('Oops!!');
         });
     }
 
@@ -163,10 +174,12 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
         });
 
         modalInstance.result.then(function () {
+            toastr.success('Task !!!');
             onLoad();
             getUsers();
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
+            toastr.info('Modal dismissed at: ' + new Date());
         });
     };
 
@@ -178,6 +191,7 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
                 projectId: id
             }
         }).then(function(response) {
+            toastr.error('project deleted');
             console.log(response);
             onLoad();
         }, function(err) {
@@ -195,6 +209,7 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
                 email: email
             }
         }).then(function(response) {
+            toastr.success('New User was added!');
             console.log(response);
 
             // existing user cannot confirm if he wants to accept project invite
@@ -222,8 +237,10 @@ app.controller('NewProjectModalCtrl', function($scope, $http, $modalInstance) {
                 description: $scope.description
             }
         }).then(function (response) {
+            toastr.success('New Project was added!');
             console.log(response);
         }, function(err) {
+            toastr.error(err)
             console.log(err);
         });
 
@@ -283,6 +300,7 @@ app.controller('NewTaskModalCtrl', function($scope, $http, $modalInstance, proje
                 description: $scope.description
             }
         }).then(function (response) {
+            toastr.success('task added')
             console.log(response);
         }, function (err) {
             console.log(err);
