@@ -1,6 +1,7 @@
 /.idea
 /bower_components
 /node_modules
-/config/pool.js
+config/pool.js
 /.vscode
-
+.DS_Store
+config/.DS_Store
