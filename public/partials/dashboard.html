@@ -3,8 +3,8 @@
     <h4 class="text-center">{{message}}</h4>
 </div>
 <div class="row">
-    <div class="col-sm-6">
-        <a href="#" ng-click="openProjectModal()">Create new project</a>
+    <div class="col-sm-6 create-project-link">
+        <a href="#" ng-click="openProjectModal()">Create new project&nbsp;<i class="fa fa-angle-double-right"></i></a>
     </div>
 </div>
 <!--<div class="row add-project-add-user" ng-if="user.isAdmin">-->
@@ -20,7 +20,7 @@
     <!--</div>-->
 <!--</div>-->
 <div class="row">
-    <div class="col-sm-4 col-md-3" ng-repeat="project in projects track by $index">
+    <div class="col-sm-4 col-md-3 main-dashboard-body" ng-repeat="project in projects track by $index">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <button type="button" ng-click="deleteProject(project.projectId)" class="close"><i class="fa fa-trash-o"></i></button>
