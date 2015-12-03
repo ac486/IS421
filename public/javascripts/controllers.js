@@ -559,3 +559,25 @@ app.controller('ManageUsersCtrl', function($scope, $http) {
         })
     }
 });
+
+app.controller('ManageTasksCtrl', function($scope, $routeParams, $http, $location) {
+    $scope.username = $routeParams.username;
+
+    onLoad();
+
+    function onLoad() {
+        $http({
+            method: 'GET',
+            url: '/api/tasks',
+            params: {
+                username: $scope.username
+            }
+        }).then(function (response) {
+            console.log(response);
+            $scope.tasks = response.data.tasks;
+        }, function(err) {
+            console.log(err);
+            $location.path('/login');
+        })
+    }
+});

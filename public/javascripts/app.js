@@ -60,6 +60,10 @@ angular.module('is421', [
             templateUrl: 'partials/manageusers.html',
             controller: 'ManageUsersCtrl'
         })
+        .when('/users/:username', {
+            templateUrl: 'partials/managetasks.html',
+            controller: 'ManageTasksCtrl'
+        })
         .otherwise({
             redirectTo: '/'
         })

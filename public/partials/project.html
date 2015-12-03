@@ -17,15 +17,21 @@
                     <th></th>
                     <th>Title</th>
                     <th>Created By</th>
-                    <th>Description</th>
+                    <th>Assigned To</th>
+                    <!--<th>Description</th>-->
                 </tr>
                 <tr ng-repeat="task in newTasks track by $index">
                     <th>
                         <input type="checkbox" ng-model="task.selected" ng-change="changeStatus(task)">
                     </th>
                     <td>{{task.title}}</td>
-                    <td>{{task.created_by}}</td>
-                    <td>{{task.description}}</td>
+                    <td>
+                        <a href="/users/{{task.created_by}}">{{task.created_by}}</a>
+                    </td>
+                    <td>
+                        <a href="/users/{{task.assigned_to}}">{{task.assigned_to}}</a>
+                    </td>
+                    <!--<td>{{task.description}}</td>-->
                 </tr>
             </table>
         </div>
@@ -36,15 +42,21 @@
                     <th></th>
                     <th>Title</th>
                     <th>Created By</th>
-                    <th>Description</th>
+                    <th>Assigned To</th>
+                    <!--<th>Description</th>-->
                 </tr>
                 <tr ng-repeat="task in wipTasks track by $index">
                     <th>
                         <input type="checkbox" ng-model="task.selected" ng-change="changeStatus(task)">
                     </th>
                     <td>{{task.title}}</td>
-                    <td>{{task.created_by}}</td>
-                    <td>{{task.description}}</td>
+                    <td>
+                        <a href="/users/{{task.created_by}}">{{task.created_by}}</a>
+                    </td>
+                    <td>
+                        <a href="/users/{{task.assigned_to}}">{{task.assigned_to}}</a>
+                    </td>
+                    <!--<td>{{task.description}}</td>-->
                 </tr>
             </table>
         </div>
@@ -55,15 +67,21 @@
                     <th></th>
                     <th>Title</th>
                     <th>Created By</th>
-                    <th>Description</th>
+                    <th>Assigned To</th>
+                    <!--<th>Description</th>-->
                 </tr>
                 <tr ng-repeat="task in doneTasks track by $index">
                     <th>
                         <input type="checkbox" ng-model="task.selected" ng-change="changeStatus(task)">
                     </th>
                     <td>{{task.title}}</td>
-                    <td>{{task.created_by}}</td>
-                    <td>{{task.description}}</td>
+                    <td>
+                        <a href="/users/{{task.created_by}}">{{task.created_by}}</a>
+                    </td>
+                    <td>
+                        <a href="/users/{{task.assigned_to}}">{{task.assigned_to}}</a>
+                    </td>
+                    <!--<td>{{task.description}}</td>-->
                 </tr>
             </table>
         </div>

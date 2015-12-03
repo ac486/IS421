@@ -165,6 +165,27 @@ router.put('/project/:projectId/task/status', function(req, res, next) {
     });
 });
 
+router.get('/tasks', function(req, res, next) {
+    var username = req.query.username;
+
+    pool.getConnection(function(err, connection) {
+        if (!connection) res.send(500);
+
+        var sql = 'SELECT * FROM Task WHERE assigned_to = ?';
+        var values = [username];
+        connection.query(sql, values, function(err, rows) {
+            connection.release();
+            if (err) {
+                console.log(err);
+            } else {
+                res.json({
+                    tasks: rows
+                })
+            }
+        });
+    });
+});
+
 router.get('/admin', function(req, res) {
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
