@@ -4,14 +4,14 @@
             <button ng-click="openTaskModal()" class="btn btn-default">New Task</button>
         </div>
         <div ng-show="selectedTasks.length > 0" class="col-sm-8">
-            <button ng-click="updateStatus('new')" class="btn btn-primary">New</button>
+            <button ng-click="updateStatus('new')" class="btn btn-primary">Backlog</button>
             <button ng-click="updateStatus('wip')" class="btn btn-warning">Work in Progress</button>
             <button ng-click="updateStatus('done')" class="btn btn-success">Complete</button>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <h4 class="text-center">New</h4>
+            <h4 class="text-center">Backlog</h4>
             <table class="table table-striped">
                 <tr>
                     <th></th>
