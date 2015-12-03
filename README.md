@@ -30,6 +30,18 @@ Sample login account:
 - username: urvesh <br>
 - password: 123123
 
+#Local DB Configurations
+
+After pulling the repo, and updating your pool.js file if needed to your own login user/password
+
+Run the following command so it does not push or pull this file in the future.
+
+<code>git update-index --assume-unchanged -- config/pool.js</code>
+
+
+Undo command 
+<code>git update-index --no-assume-unchanged -- config/pool.js</code>
+
 
 
 
