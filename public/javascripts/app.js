@@ -60,5 +60,7 @@ angular.module('is421', [
             templateUrl: 'partials/manageusers.html',
             controller: 'ManageUsersCtrl'
         })
-        .otherwise({ redirectTo: '/'})
+        .otherwise({
+            redirectTo: '/'
+        })
 }]);

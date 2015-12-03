@@ -3,7 +3,7 @@
         <div class="col-sm-4">
             <button ng-click="openTaskModal()" class="btn btn-default">New Task</button>
         </div>
-        <div ng-show="selectedTasks.length > 0"  class="col-sm-8">
+        <div ng-show="selectedTasks.length > 0" class="col-sm-8">
             <button ng-click="updateStatus('new')" class="btn btn-primary">New</button>
             <button ng-click="updateStatus('wip')" class="btn btn-warning">Work in Progress</button>
             <button ng-click="updateStatus('done')" class="btn btn-success">Complete</button>
@@ -69,7 +69,6 @@
         </div>
     </div>
 </div>
-
 <script type="text/ng-template" id="newTaskModal.html">
     <div class="modal-header">
         <h3 class="modal-title text-center">New Task</h3>

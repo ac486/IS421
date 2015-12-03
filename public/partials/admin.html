@@ -2,46 +2,46 @@
     <div class="row">
         <table class="table table-striped table-hover">
             <thead>
-            <th>
-                <input type="checkbox" ng-model="selectedAll" ng-click="all()">
-            </th>
-            <th>Username</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Is Admin</th>
+                <th>
+                    <input type="checkbox" ng-model="selectedAll" ng-click="all()">
+                </th>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Is Admin</th>
             </thead>
             <tbody>
-            <tr ng-repeat="user in userList">
-                <td><input type="checkbox" ng-model="user.isSelected" ng-change="selectUser()" ng-disabled="user.username === 'urvesh'"></td>
-                <td>
-                    <a href="#" ng-click="loginAs(user.username)">{{user.username}}</a>
-                </td>
-                <td>{{user.firstname}}</td>
-                <td>{{user.lastname}}</td>
-                <td>{{user.email}}</td>
-                <td>
-                    <select ng-model="user.isAdmin" ng-disabled="user.username === 'urvesh'">
-                        <option disabled hidden></option>
-                        <option ng-selected="user.isAdmin === 1" value="1">true</option>
-                        <option ng-selected="user.isAdmin === 0" value="0">false</option>
-                    </select>
-                </td>
-            </tr>
+                <tr ng-repeat="user in userList">
+                    <td>
+                        <input type="checkbox" ng-model="user.isSelected" ng-change="selectUser()" ng-disabled="user.username === 'urvesh'">
+                    </td>
+                    <td>
+                        <a href="#" ng-click="loginAs(user.username)">{{user.username}}</a>
+                    </td>
+                    <td>{{user.firstname}}</td>
+                    <td>{{user.lastname}}</td>
+                    <td>{{user.email}}</td>
+                    <td>
+                        <select ng-model="user.isAdmin" ng-disabled="user.username === 'urvesh'">
+                            <option disabled hidden></option>
+                            <option ng-selected="user.isAdmin === 1" value="1">true</option>
+                            <option ng-selected="user.isAdmin === 0" value="0">false</option>
+                        </select>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
     <div class="row">
         <div class="col-sm-2">
-            <button class="btn btn-default" ng-click="deleteUsers()">Delete</button>
+            <button class="btn btn-danger" ng-click="deleteUsers()">Delete</button>
         </div>
         <div class="col-sm-2 col-sm-offset-8">
-            <button class="btn btn-default" ng-click="save()">Save Changes</button>
+            <button class="btn btn-primary" ng-click="save()">Save Changes</button>
         </div>
         <div class="pull-right">
             <p>***Your changes won't be saved until you press the Save Changes button.</p>
         </div>
     </div>
-
-
 </div>

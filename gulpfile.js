@@ -1,13 +1,13 @@
-var gulp  = require('gulp'),
+var gulp = require('gulp'),
     gutil = require('gulp-util'),
-    jshint     = require('gulp-jshint'),
-    sass       = require('gulp-sass'),
-    concat     = require('gulp-concat'),
+    jshint = require('gulp-jshint'),
+    sass = require('gulp-sass'),
+    concat = require('gulp-concat'),
     sourcemaps = require('gulp-sourcemaps'),
     livereload = require('gulp-livereload'),
     browserSync = require("browser-sync").create(),
 
-    input  = {
+    input = {
         'sass': 'source/scss/**/*.scss',
         'javascript': 'source/javascript/**/*.js',
         'vendorjs': 'public/assets/javascript/vendor/**/*.js'
@@ -22,11 +22,11 @@ var gulp  = require('gulp'),
 gulp.task('default', ['watch', 'browser-sync']);
 
 /*reload with browser-sync*/
-gulp.task('browser-sync', function(){
-   browserSync.init({
-       proxy: "localhost:8080",
-       online:false
-   })
+gulp.task('browser-sync', function() {
+    browserSync.init({
+        proxy: "localhost:8080",
+        online: false
+    })
 });
 
 /* run javascript through jshint */

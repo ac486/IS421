@@ -2,7 +2,6 @@
     <h3 class="text-center">Forgot Username</h3>
     <p class="cd-form-message">Forgot your username? Please enter your E-mail address.</p>
     <form novalidate name="usernameform" ng-submit="submit()" class="cd-form col-sm-6 col-sm-offset-3">
-
         <div ng-messages="usernameform.email.$error">
             <span ng-message="required">Required</span>
         </div>
@@ -11,7 +10,7 @@
             <input id="reset-username" name="email" type="email" ng-model="email" placeholder="E-mail" class="full-width has-padding has-border" required/>
         </p>
         <p class="fieldset">
-            <input type="submit" value="Email Username" class="full-width has-padding" ng-disabled="usernameform.$invalid"/>
+            <input type="submit" value="Email Username" class="full-width has-padding" ng-disabled="usernameform.$invalid" />
         </p>
     </form>
 </div>

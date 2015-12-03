@@ -8,16 +8,16 @@
     </div>
 </div>
 <!--<div class="row add-project-add-user" ng-if="user.isAdmin">-->
-    <!--<div class="col-sm-12">-->
-        <!--<div class="col-sm-6">-->
-            <!--<h4>Create new Project</h4>-->
-            <!--<button class="btn btn-primary btn-block" ng-click="openProjectModal()">New Project</button>-->
-        <!--</div>-->
-        <!--<div class="col-sm-6">-->
-            <!--<h4>Add new User</h4>-->
-            <!--<button class="btn btn-primary btn-block" ng-click="openUserModal()">New User</button>-->
-        <!--</div>-->
-    <!--</div>-->
+<!--<div class="col-sm-12">-->
+<!--<div class="col-sm-6">-->
+<!--<h4>Create new Project</h4>-->
+<!--<button class="btn btn-primary btn-block" ng-click="openProjectModal()">New Project</button>-->
+<!--</div>-->
+<!--<div class="col-sm-6">-->
+<!--<h4>Add new User</h4>-->
+<!--<button class="btn btn-primary btn-block" ng-click="openUserModal()">New User</button>-->
+<!--</div>-->
+<!--</div>-->
 <!--</div>-->
 <div class="row">
     <div class="col-sm-4 col-md-3 main-dashboard-body" ng-repeat="project in projects track by $index">
@@ -26,7 +26,6 @@
                 <button type="button" ng-click="deleteProject(project.projectId)" class="close"><i class="fa fa-trash-o"></i></button>
                 <!--<button type="button" class="close"><i class="fa fa-pencil"></i></button>-->
                 <h3 class="panel-title projects-items"><i class="fa fa-tasks"></i> <a href="/project/{{project.projectId}}">{{project.title}}</a></h3>
-
             </div>
             <div class="panel-body">
                 <p>{{project.description || 'No description available'}}</p>
@@ -46,8 +45,6 @@
                 </div>
             </form>
 -->
-
-
 <script type="text/ng-template" id="newProjectModal.html">
     <div class="modal-header">
         <h3 class="modal-title text-center">New Project</h3>

@@ -1,6 +1,5 @@
-<div class="row page-header signup" >
+<div class="row page-header signup">
     <h3 class="text-center">New Account</h3>
-
     <!--<form action="/api/signup" method="post" novalidate name="signupForm" class="cd-form col-sm-6 col-sm-offset-3">-->
     <form novalidate name="signupForm" class="cd-form col-sm-6 col-sm-offset-3" ng-submit="submit()">
         <div ng-if="signupForm.username.$touched || signupForm.username.$dirty" ng-messages="signupForm.username.$error">
@@ -10,7 +9,6 @@
             <label class="image-replace cd-username"></label>
             <input ng-model="username" name="username" class="full-width has-padding has-border" type="text" placeholder="Username" required>
         </p>
-
         <div ng-if="signupForm.firstname.$touched || signupForm.firstname.$dirty" ng-messages="signupForm.firstname.$error">
             <span ng-message="required">Required</span>
         </div>
@@ -18,7 +16,6 @@
             <label class="image-replace cd-username"></label>
             <input ng-model="firstname" name="firstname" class="full-width has-padding has-border" type="text" placeholder="First Name" required>
         </p>
-
         <div ng-if="signupForm.lastname.$touched || signupForm.lastname.$dirty" ng-messages="signupForm.lastname.$error">
             <span ng-show="signupForm.lastname.$touched" ng-message="required">Required.</span>
         </div>
@@ -26,18 +23,15 @@
             <label class="image-replace cd-username"></label>
             <input ng-model="lastname" name="lastname" class="full-width has-padding has-border" type="text" placeholder="Last Name" required>
         </p>
-
         <div ng-if="signupForm.email.$touched || signupForm.email.$dirty" ng-messages="signupForm.email.$error">
             <span ng-show="signupForm.email.$touched" ng-message="pattern">Invalid Email.</span>
             <span ng-show="signupForm.email.$touched" ng-message="required">Required.</span>
-
         </div>
         <p class="fieldset">
             <label class="image-replace cd-email"></label>
             <input ng-model="email" name="email" class="full-width has-padding has-border" type="email" placeholder="E-mail" required ng-pattern="/[a-z]\w*@\w+\.[a-z]+/">
             <!--<span class="cd-error-message">Error message here!</span>-->
         </p>
-
         <div ng-if="signupForm.password.$touched || signupForm.password.$dirty" ng-messages="signupForm.password.$error">
             <span ng-show="signupForm.password.$touched" ng-message="minlength">Needs to be at least 6 characters long.</span>
             <span ng-show="signupForm.password.$touched" ng-message="required">Required.</span>
@@ -55,15 +49,13 @@
         </div>
         <p class="fieldset">
             <label class="image-replace cd-password">Re-enter Password</label>
-            <input ng-model="password2" name="password2" class="full-width has-padding has-border" type="password"  placeholder="Re-enter Password" required ng-minlength="6" ng-pattern="{{password}}">
+            <input ng-model="password2" name="password2" class="full-width has-padding has-border" type="password" placeholder="Re-enter Password" required ng-minlength="6" ng-pattern="{{password}}">
             <!--<span class="cd-error-message">Error message here!</span>-->
         </p>
-
         <!--<p class="fieldset">-->
-            <!--<input type="checkbox" id="accept-terms">-->
-            <!--<label for="accept-terms">I agree to the <a href="#">Terms</a></label>-->
+        <!--<input type="checkbox" id="accept-terms">-->
+        <!--<label for="accept-terms">I agree to the <a href="#">Terms</a></label>-->
         <!--</p>-->
-
         <p class="fieldset">
             <input class="full-width has-padding" ng-disabled="signupForm.$invalid" type="submit" value="Create account">
             <input ng-model="forHoneyPot" type="hidden" value="">

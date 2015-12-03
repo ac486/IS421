@@ -52,11 +52,11 @@ app.controller('ForgotUsernameCtrl', function($scope, $http, $location) {
             data: {
                 email: $scope.email
             }
-        }).then(function (response) {
+        }).then(function(response) {
             console.log(response);
             $location.path('/login');
             toastr.success('Username Sent');
-        }, function (err) {
+        }, function(err) {
             console.log(err);
         })
     }
@@ -173,11 +173,11 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
             size: size
         });
 
-        modalInstance.result.then(function () {
+        modalInstance.result.then(function() {
             toastr.success('Task !!!');
             onLoad();
             getUsers();
-        }, function () {
+        }, function() {
             console.log('Modal dismissed at: ' + new Date());
             toastr.info('Modal dismissed at: ' + new Date());
         });
@@ -214,7 +214,7 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
 
             // existing user cannot confirm if he wants to accept project invite
             //$location.path('/confirmAddUser')
-        }, function (err) {
+        }, function(err) {
             console.log(err);
         });
     }
@@ -226,7 +226,7 @@ app.controller('ConfirmAddUserCtrl', function($scope, $http) {
 });
 
 app.controller('NewProjectModalCtrl', function($scope, $http, $modalInstance) {
-    $scope.ok = function () {
+    $scope.ok = function() {
         if (!$scope.title) return;
 
         $http({
@@ -236,7 +236,7 @@ app.controller('NewProjectModalCtrl', function($scope, $http, $modalInstance) {
                 title: $scope.title,
                 description: $scope.description
             }
-        }).then(function (response) {
+        }).then(function(response) {
             toastr.success('New Project was added!');
             console.log(response);
         }, function(err) {
@@ -247,7 +247,7 @@ app.controller('NewProjectModalCtrl', function($scope, $http, $modalInstance) {
         $modalInstance.close();
     };
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     };
 });
@@ -332,7 +332,7 @@ app.controller('ProjectCtrl', function($scope, $http, $routeParams, $location, $
 });
 
 app.controller('NewTaskModalCtrl', function($scope, $http, $modalInstance, projectId) {
-    $scope.ok = function () {
+    $scope.ok = function() {
         if (!$scope.title) return;
 
         $http({
@@ -342,16 +342,16 @@ app.controller('NewTaskModalCtrl', function($scope, $http, $modalInstance, proje
                 title: $scope.title,
                 description: $scope.description
             }
-        }).then(function (response) {
+        }).then(function(response) {
             toastr.success('task added');
             console.log(response);
-        }, function (err) {
+        }, function(err) {
             console.log(err);
         });
         $modalInstance.close();
     };
 
-    $scope.cancel = function () {
+    $scope.cancel = function() {
         $modalInstance.dismiss('cancel');
     }
 });
@@ -367,7 +367,7 @@ app.controller('ProfileCtrl', function($scope, $http, $location) {
         $location.path('/login');
         console.log(err);
     })
-    
+
 });
 
 app.controller('AdminCtrl', function($scope, $http, $location) {
@@ -432,7 +432,7 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
             }
         }
 
-        if (selected.length > 0 ) {
+        if (selected.length > 0) {
             $http({
                 method: 'POST',
                 url: '/api/admin/delete',
@@ -481,13 +481,13 @@ app.controller('AdminCtrl', function($scope, $http, $location) {
             url: '/api/loginas',
             data: {
                 username: username,
-                password: 'test'    // can't be empty
+                password: 'test' // can't be empty
             }
-        }).then(function (response) {
+        }).then(function(response) {
             console.log(response);
             $scope.username = response.data.user.username;
             $location.path('/dashboard');
-        }, function (err) {
+        }, function(err) {
             console.log(err);
         })
     }
@@ -551,10 +551,10 @@ app.controller('ManageUsersCtrl', function($scope, $http) {
             data: {
                 email: email
             }
-        }).then(function (response) {
+        }).then(function(response) {
             console.log(response);
             onLoad();
-        }, function (err) {
+        }, function(err) {
             console.log(err);
         })
     }
