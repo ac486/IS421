@@ -21,6 +21,7 @@ var crypto = require('crypto');
 var mysql = require('mysql');
 var moment = require('moment');
 
+// Projects Page
 router.get('/dashboard', function(req, res) {
     var username = req.user.username;
     var data = {
@@ -32,6 +33,8 @@ router.get('/dashboard', function(req, res) {
 
         async.waterfall([
             function(callback) {
+                // Checks to see user belongs to an organization(user)
+
                 var sql = 'SELECT owner FROM User WHERE username = ?';
                 var values = [username];
                 connection.query(sql, values, function (err, rows) {
@@ -48,6 +51,8 @@ router.get('/dashboard', function(req, res) {
                     callback(null, rows[0].owner);
                 });
             }, function(owner, callback) {
+                // If user belongs to organization, get the owner's userId
+
                 if (owner) {
                     var sql = 'SELECT userId FROM User WHERE username = ?';
                     var values = [owner];
@@ -57,10 +62,14 @@ router.get('/dashboard', function(req, res) {
                         var userId = rows[0].userId;
                         callback(null, userId);
                     });
+
+                // else user doesn't belong to organization, therefore he is the organization (admin)
                 } else {
                     callback(null, req.user.userId);
                 }
             }, function(userId, callback) {
+                // Get the projects belonging to the organization(admin)
+
                 var sql = 'SELECT P.projectId, P.title, P.description FROM Project P INNER JOIN UserProject UP ' +
                     'ON P.projectId = UP.projectId AND UP.userId = ?';
                 var values = [userId];
@@ -76,6 +85,7 @@ router.get('/dashboard', function(req, res) {
     });
 });
 
+// Create Project
 router.post('/project/create', function(req, res, next) {
     var title = req.body.title;
     var description = req.body.description;
@@ -126,7 +136,7 @@ router.get('/project/:projectId', function(req, res, next) {
     });
 });
 
-
+// Create task for the specified project
 router.post('/project/:projectId/task/create', function(req, res, next) {
     var projectId = req.params.projectId;
     var title = req.body.title;
@@ -148,6 +158,7 @@ router.post('/project/:projectId/task/create', function(req, res, next) {
     })
 });
 
+// Update the status of one or multiple tasks
 router.put('/project/:projectId/task/status', function(req, res, next) {
     var projectId = req.params.projectId;
     var ids = req.body.tasks;  //array of task Ids
@@ -170,6 +181,7 @@ router.put('/project/:projectId/task/status', function(req, res, next) {
     });
 });
 
+// Get all tasks that are assigned to a certain user
 router.get('/tasks', function(req, res, next) {
     var username = req.query.username;
 
@@ -198,6 +210,7 @@ router.get('/tasks', function(req, res, next) {
     });
 });
 
+// Admin Page - Get all users under the admin
 router.get('/admin', function(req, res) {
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
@@ -218,6 +231,7 @@ router.get('/admin', function(req, res) {
     })
 });
 
+// Update user settings provided by admin
 router.post('/admin/save', function(req, res) {
     var users = req.body;   //array of users
     if (users.length > 0) {
@@ -243,6 +257,8 @@ router.post('/admin/save', function(req, res) {
     res.send('Done');
 });
 
+
+// Delete the user from the application
 router.post('/admin/delete', function(req, res){
     var usernames = req.body;   //array of usernames
 
@@ -264,6 +280,7 @@ router.post('/admin/delete', function(req, res){
     }
 });
 
+// Masquerade feature - admin can login as another user
 router.post('/loginas', function(req, res, next) {
     req.logout();
     next();
@@ -273,6 +290,7 @@ router.post('/loginas', function(req, res, next) {
     })
 });
 
+// Gets the current user information
 router.get('/user', function(req, res, next) {
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
@@ -293,6 +311,7 @@ router.get('/user', function(req, res, next) {
     });
 });
 
+// Add a new user to the current admin's organization
 router.post('/project/addUser', function(req, res) {
     var email = req.body.email;
     var admin = req.user.username;
@@ -358,6 +377,7 @@ router.post('/project/addUser', function(req, res) {
     });
 });
 
+// Remove a user from the admin's organization
 router.post('/project/removeUser', function(req, res) {
     var email = req.body.email;
     var admin = req.user.username;
@@ -386,7 +406,7 @@ router.post('/project/removeUser', function(req, res) {
     });
 });
 
-
+// Get all the users on the application
 router.get('/users/all', function(req, res) {
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
@@ -405,6 +425,7 @@ router.get('/users/all', function(req, res) {
     })
 });
 
+// Delete a project
 router.put('/project/delete', function(req, res) {
     var id = req.body.projectId;
 

@@ -15,6 +15,7 @@ var transporter = nodemailer.createTransport({
 });
 var crypto = require('crypto');
 
+// Signup
 router.post('/signup', function(req, res) {
     if (req.body) {
         var user = {
@@ -87,6 +88,7 @@ router.post('/signup', function(req, res) {
     }
 });
 
+// Validates confirmation code when signing up
 router.post('/confirmation', function(req, res) {
     var code = req.body.confirmation;
 
@@ -111,15 +113,18 @@ router.post('/confirmation', function(req, res) {
     }
 });
 
+// Authentication for app login
 router.post('/login', passport.authenticate('local'), function(req, res) {
     res.send(req.user);
 });
 
+// Logout the user
 router.post('/logout', function(req, res) {
     req.logout();
     res.send('Successfully Logged Out.');
 });
 
+// Forgot Username
 router.post('/forgotUsername', function(req, res) {
     var email = req.body.email;
     console.log(email);
@@ -146,6 +151,7 @@ router.post('/forgotUsername', function(req, res) {
     res.send();
 });
 
+// Forgot Password
 router.post('/forgotPassword', function(req, res) {
     var username = req.body.username;
     console.log(username);
@@ -190,6 +196,7 @@ router.post('/forgotPassword', function(req, res) {
     res.send();
 });
 
+// Checks if the user is an owner when registering account under an admin. example url - /:admin/signup
 router.get('/owner', function(req, res) {
     var username = req.query.username;
 
