@@ -104,7 +104,10 @@
                 </div>
                 <div class="form-group">
                     <label>Assign To</label>
-                    <input class="form-control" type="text" ng-model="assigned_to" placeholder="Username">
+                    <select ng-model="assigned_to">
+                        <option ng-repeat="user in myUsers" value="{{user.username}}">{{user.username}}</option>
+                    </select>
+                    <!--<input class="form-control" type="text" ng-model="assigned_to" placeholder="Username">-->
                 </div>
                 <div class="form-group">
                     <label>Due By</label>

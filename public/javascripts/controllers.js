@@ -334,6 +334,32 @@ app.controller('ProjectCtrl', function($scope, $http, $routeParams, $location, $
 app.controller('NewTaskModalCtrl', function($scope, $http, $modalInstance, projectId) {
     $scope.due_by = new Date();
 
+    onLoad();
+
+    function onLoad() {
+        $http({
+            method: 'GET',
+            url: '/api/users/all'
+        }).then(function(response) {
+            console.log(response);
+            $scope.user = response.data.user;
+            var userList = response.data.userList;
+
+            $scope.myUsers = [$scope.user];
+
+            for (var i = 0; i < userList.length; i++) {
+                var currUser = userList[i];
+                if (currUser.owner === $scope.user.username) {
+                    $scope.myUsers.push(currUser);
+                }
+            }
+
+        }, function(err) {
+            console.log(err);
+            window.location.href = '/login';
+        })
+    }
+
     $scope.ok = function() {
         if (!$scope.title) return;
 
