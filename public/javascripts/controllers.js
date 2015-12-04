@@ -176,7 +176,6 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
         modalInstance.result.then(function() {
             toastr.success('Task !!!');
             onLoad();
-            getUsers();
         }, function() {
             console.log('Modal dismissed at: ' + new Date());
             toastr.info('Modal dismissed at: ' + new Date());

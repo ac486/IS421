@@ -2,7 +2,7 @@
     <h3 class="text-center">Welcome to your Dashboard, <span>{{user.username}}</span></h3>
     <h4 class="text-center">{{message}}</h4>
 </div>
-<div class="row">
+<div class="row" ng-if="user.isAdmin">
     <div class="col-sm-6 create-project-link">
         <a href="#" ng-click="openProjectModal()">Create new project&nbsp;<i class="fa fa-angle-double-right"></i></a>
     </div>
