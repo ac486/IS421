@@ -19,6 +19,7 @@ var transporter = nodemailer.createTransport({
 });
 var crypto = require('crypto');
 var mysql = require('mysql');
+var moment = require('moment');
 
 router.get('/dashboard', function(req, res) {
     var username = req.user.username;
@@ -130,11 +131,15 @@ router.post('/project/:projectId/task/create', function(req, res, next) {
     var projectId = req.params.projectId;
     var title = req.body.title;
     var description = req.body.description;
+    var assigned_to = req.body.assigned_to || req.user.username;
+    var due_by = moment(req.body.due_by).format('YYYY-MM-DD HH-mm-ss');
+    var created_at = moment(new Date).format('YYYY-MM-DD HH-mm-ss');
+
     pool.getConnection(function (err, connection) {
         if (!connection) res.send(500);
 
-        var sql = 'INSERT INTO Task (projectId, title, description, created_by) VALUES (?,?, ?, ?)';
-        var values = [projectId, title, description, req.user.username];
+        var sql = 'INSERT INTO Task (projectId, title, description, created_by, created_at, assigned_to, due_by) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        var values = [projectId, title, description, req.user.username, created_at, assigned_to, due_by];
         connection.query(sql, values, function(err, result) {
             if (err) console.log(err);
             console.log(result.insertId);
@@ -178,6 +183,13 @@ router.get('/tasks', function(req, res, next) {
             if (err) {
                 console.log(err);
             } else {
+
+                for (var i = 0; i < rows.length; i++) {
+                    rows[i].created_at = moment(rows[i].created_at).format('MM/DD/YYYY');
+                    rows[i].assigned_at = moment(rows[i].assigned_at).format('MM/DD/YYYY');
+                    rows[i].due_by = moment(rows[i].due_by).format('MM/DD/YYYY');
+                }
+
                 res.json({
                     tasks: rows
                 })

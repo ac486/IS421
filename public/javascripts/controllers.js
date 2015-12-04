@@ -332,6 +332,8 @@ app.controller('ProjectCtrl', function($scope, $http, $routeParams, $location, $
 });
 
 app.controller('NewTaskModalCtrl', function($scope, $http, $modalInstance, projectId) {
+    $scope.due_by = new Date();
+
     $scope.ok = function() {
         if (!$scope.title) return;
 
@@ -340,7 +342,9 @@ app.controller('NewTaskModalCtrl', function($scope, $http, $modalInstance, proje
             url: 'api/project/' + projectId + '/task/create',
             data: {
                 title: $scope.title,
-                description: $scope.description
+                description: $scope.description,
+                assigned_to: $scope.assigned_to,
+                due_by: $scope.due_by
             }
         }).then(function(response) {
             toastr.success('task added');
