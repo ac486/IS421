@@ -151,8 +151,31 @@ router.post('/project/:projectId/task/create', function(req, res, next) {
         var sql = 'INSERT INTO Task (projectId, title, description, created_by, created_at, assigned_to, due_by) VALUES (?, ?, ?, ?, ?, ?, ?)';
         var values = [projectId, title, description, req.user.username, created_at, assigned_to, due_by];
         connection.query(sql, values, function(err, result) {
+            connection.release();
             if (err) console.log(err);
             console.log(result.insertId);
+        });
+        res.end();
+    })
+});
+
+router.put('/project/:projectId/task', function(req, res, next) {
+    var projectId = req.params.projectId;
+    var taskId = req.body.taskId;
+    var title = req.body.title;
+    var description = req.body.description;
+    var assigned_to = req.body.assigned_to || req.user.username;
+    var due_by = moment(req.body.due_by).format('YYYY-MM-DD HH-mm-ss');
+
+    pool.getConnection(function (err, connection) {
+        if (!connection) res.send(500);
+
+        var sql = 'UPDATE Task SET title = ?, description = ?, assigned_to = ?, due_by = ? WHERE taskId = ?';
+        var values = [title, description, assigned_to, due_by, taskId];
+        connection.query(sql, values, function (err, result) {
+            connection.release();
+            if (err) console.log(err);
+            console.log(result);
         });
         res.end();
     })

@@ -24,7 +24,9 @@
                     <th>
                         <input type="checkbox" ng-model="task.selected" ng-change="changeStatus(task)">
                     </th>
-                    <td>{{task.title}}</td>
+                    <td>
+                        <a href="#" ng-click="editTask(task)">{{task.title}}</a>
+                    </td>
                     <td>
                         <a href="/users/{{task.created_by}}">{{task.created_by}}</a>
                     </td>
@@ -49,7 +51,9 @@
                     <th>
                         <input type="checkbox" ng-model="task.selected" ng-change="changeStatus(task)">
                     </th>
-                    <td>{{task.title}}</td>
+                    <td>
+                        <a href="#" ng-click="editTask(task)">{{task.title}}</a>
+                    </td>
                     <td>
                         <a href="/users/{{task.created_by}}">{{task.created_by}}</a>
                     </td>
@@ -74,7 +78,9 @@
                     <th>
                         <input type="checkbox" ng-model="task.selected" ng-change="changeStatus(task)">
                     </th>
-                    <td>{{task.title}}</td>
+                    <td>
+                        <a href="#" ng-click="editTask(task)">{{task.title}}</a>
+                    </td>
                     <td>
                         <a href="/users/{{task.created_by}}">{{task.created_by}}</a>
                     </td>
@@ -121,3 +127,39 @@
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
+
+<script type="text/ng-template" id="editTaskModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title text-center">Edit Task</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input class="form-control" type="text" ng-model="title" placeholder="Task Title">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" ng-model="description" placeholder="Task Description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Assign To</label>
+                    <select ng-model="assigned_to">
+                        <option ng-repeat="user in myUsers" value="{{user.username}}">{{user.username}}</option>
+                    </select>
+                    <!--<input class="form-control" type="text" ng-model="assigned_to" placeholder="Username">-->
+                </div>
+                <div class="form-group">
+                    <label>Due By</label>
+                    <input class="form-control" type="date" ng-model="due_by">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="update()">Update</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+

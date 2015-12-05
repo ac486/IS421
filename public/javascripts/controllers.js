@@ -303,6 +303,25 @@ app.controller('ProjectCtrl', function($scope, $http, $routeParams, $location, $
         })
     };
 
+    $scope.editTask = function(task) {
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'editTaskModal.html',
+            controller: 'EditTaskModalCtrl',
+            resolve: {
+                projectId: function() {
+                    return projectId;
+                },
+                task: function() {
+                    return task;
+                }
+            }
+        });
+        modalInstance.result.then(function() {
+            onLoad();
+        })
+    };
+
 
     $scope.changeStatus = function(task) {
         if (task.selected) {
@@ -331,7 +350,6 @@ app.controller('ProjectCtrl', function($scope, $http, $routeParams, $location, $
 });
 
 app.controller('NewTaskModalCtrl', function($scope, $http, $modalInstance, projectId) {
-    $scope.due_by = new Date();
 
     onLoad();
 
@@ -373,6 +391,66 @@ app.controller('NewTaskModalCtrl', function($scope, $http, $modalInstance, proje
             }
         }).then(function(response) {
             toastr.success('task added');
+            console.log(response);
+        }, function(err) {
+            console.log(err);
+        });
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    }
+});
+
+app.controller('EditTaskModalCtrl', function($scope, $http, $modalInstance, projectId, task) {
+    $scope.title = task.title;
+    $scope.description = task.description;
+    $scope.assigned_to = task.assigned_to;
+    $scope.due_by = new Date(task.due_by);
+
+
+    onLoad();
+
+    function onLoad() {
+        $http({
+            method: 'GET',
+            url: '/api/users/all'
+        }).then(function(response) {
+            console.log(response);
+            $scope.user = response.data.user;
+            var userList = response.data.userList;
+
+            $scope.myUsers = [$scope.user];
+
+            for (var i = 0; i < userList.length; i++) {
+                var currUser = userList[i];
+                if (currUser.owner === $scope.user.username) {
+                    $scope.myUsers.push(currUser);
+                }
+            }
+
+        }, function(err) {
+            console.log(err);
+            window.location.href = '/login';
+        })
+    }
+
+    $scope.update = function() {
+        if (!$scope.title) return;
+
+        $http({
+            method: 'PUT',
+            url: 'api/project/' + projectId + '/task',
+            data: {
+                taskId: task.taskId,
+                title: $scope.title,
+                description: $scope.description,
+                assigned_to: $scope.assigned_to,
+                due_by: $scope.due_by
+            }
+        }).then(function(response) {
+            toastr.success('task updated');
             console.log(response);
         }, function(err) {
             console.log(err);
