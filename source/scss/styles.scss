@@ -4,6 +4,7 @@
 @import "variables";
 @import 'dashboard';
 @import "loginSignup";
+@import "admin";
 
 body {
   padding: 50px;
@@ -82,5 +83,20 @@ span[ng-message] {
     background-color: $anchor-base;
     border-color: $anchor-base;
   }
+}
+.btn{
+    padding: 14px;
+    cursor: pointer;
+    color: #FFF;
+    font-weight: bold;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+}
+.btn-primary {
+  background: #00a0d3;
 }
 

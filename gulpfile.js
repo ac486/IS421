@@ -33,7 +33,9 @@ gulp.task('browser-sync', function() {
 gulp.task('jshint', function() {
     return gulp.src(input.javascript)
         .pipe(jshint())
-        .pipe(jshint.reporter('jshint-stylish'));
+        .pipe(jshint.reporter('jshint-stylish'))
+        .pipe(livereload())
+        .pipe(browserSync.stream())
 });
 
 /* compile scss files */
@@ -55,7 +57,9 @@ gulp.task('build-js', function() {
         //only uglify if gulp is ran with '--type production'
         .pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest(output.javascript));
+        .pipe(gulp.dest(output.javascript))
+        .pipe(livereload())
+        .pipe(browserSync.stream())
 });
 
 /* Watch these files for changes and run the task on update */

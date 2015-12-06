@@ -1,5 +1,6 @@
 <div class="container" ng-if="currentUser.isAdmin">
     <div class="row">
+    <div class="table-responsive"> 
         <table class="table table-striped table-hover">
             <thead>
                 <th>
@@ -9,7 +10,7 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
-                <th>Is Admin</th>
+                <th>Role</th>
             </thead>
             <tbody>
                 <tr ng-repeat="user in userList">
@@ -17,30 +18,33 @@
                         <input type="checkbox" ng-model="user.isSelected" ng-change="selectUser()" ng-disabled="user.username === 'urvesh'">
                     </td>
                     <td>
-                        <a href="#" ng-click="loginAs(user.username)">{{user.username}}</a>
+                        <a class="text-uppercase" href="#" ng-click="loginAs(user.username)">{{user.username}}</a>
                     </td>
-                    <td>{{user.firstname}}</td>
-                    <td>{{user.lastname}}</td>
-                    <td>{{user.email}}</td>
+                    <td class="text-capitalize">{{user.firstname}}</td>
+                    <td class="text-capitalize">{{user.lastname}}</td>
+                    <td class="text-lowercase">{{user.email}}</td>
                     <td>
                         <select ng-model="user.isAdmin" ng-disabled="user.username === 'urvesh'">
-                            <option disabled hidden></option>
-                            <option ng-selected="user.isAdmin === 1" value="1">true</option>
-                            <option ng-selected="user.isAdmin === 0" value="0">false</option>
+                            <option selected="selected">Select Option</option>
+                            <option ng-selected="user.isAdmin === 1" value="1">Admin</option>
+                            <option ng-selected="user.isAdmin === 0" value="0">Regular User</option>
                         </select>
                     </td>
                 </tr>
             </tbody>
         </table>
+        </div>
     </div>
     <div class="row">
-        <div class="col-sm-2">
-            <button class="btn btn-danger" ng-click="deleteUsers()">Delete</button>
+        <div class="col-xs-6">
+            <button class="btn btn-danger pull-left " ng-click="deleteUsers()">Delete</button>
         </div>
-        <div class="col-sm-2 col-sm-offset-8">
-            <button class="btn btn-primary" ng-click="save()">Save Changes</button>
+        <div class="col-xs-6">
+            <button class="btn btn-primary pull-right" ng-click="save()">Save Changes</button>
         </div>
-        <div class="pull-right">
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-center information-admin">
             <p>***Your changes won't be saved until you press the Save Changes button.</p>
         </div>
     </div>
