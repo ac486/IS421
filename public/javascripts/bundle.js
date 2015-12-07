@@ -1,0 +1,4 @@
+$('.information-admin').click(function() {
+    $(this).fadeOut();
+});
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNjcmlwdC1mcm9udC1lbmQuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7QUFDQTtBQUNBIiwiZmlsZSI6ImJ1bmRsZS5qcyIsInNvdXJjZXNDb250ZW50IjpbIiQoJy5pbmZvcm1hdGlvbi1hZG1pbicpLmNsaWNrKGZ1bmN0aW9uKCkge1xuICAgICQodGhpcykuZmFkZU91dCgpO1xufSk7Il0sInNvdXJjZVJvb3QiOiIvc291cmNlLyJ9

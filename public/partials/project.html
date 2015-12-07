@@ -1,17 +1,19 @@
 <div>
     <div class="row">
-        <div class="col-sm-4">
-            <button ng-click="openTaskModal()" class="btn btn-default">New Task</button>
+        <div class="col-sm-4 new-task-holder">
+            <button ng-click="openTaskModal()" class="btn btn-primary">New Task</button>
         </div>
-        <div ng-show="selectedTasks.length > 0" class="col-sm-8">
-            <button ng-click="updateStatus('new')" class="btn btn-primary">Backlog</button>
-            <button ng-click="updateStatus('wip')" class="btn btn-warning">Work in Progress</button>
-            <button ng-click="updateStatus('done')" class="btn btn-success">Complete</button>
+        <div ng-show="selectedTasks.length > 0" class="col-xs-12 col-md-8 change-status-buttons text-center">
+            <button ng-click="updateStatus('new')" class="btn btn-primary button-update-status"><i class="fa fa-hand-o-left"></i> Backlog</button>
+            <button ng-click="updateStatus('wip')" class="btn btn-warning button-update-status">Work in Progress <span><i class="fa fa-hand-o-down"></i>
+</span></button>
+            <button ng-click="updateStatus('done')" class="btn btn-success button-update-status">Complete <i class="fa fa-hand-o-right"></i>
+</button>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-4">
-            <h4 class="text-center">Backlog</h4>
+        <div class="col-md-4">
+            <h4 class="text-center title-of-tables">Backlog</h4>
             <table class="table table-striped">
                 <tr>
                     <th></th>
@@ -37,8 +39,8 @@
                 </tr>
             </table>
         </div>
-        <div class="col-sm-4">
-            <h4 class="text-center">Work in Progress </h4>
+        <div class="col-md-4">
+            <h4 class="text-center title-of-tables">Work in Progress </h4>
             <table class="table table-striped">
                 <tr>
                     <th></th>
@@ -64,8 +66,8 @@
                 </tr>
             </table>
         </div>
-        <div class="col-sm-4">
-            <h4 class="text-center">Completed</h4>
+        <div class="col-md-4">
+            <h4 class="text-center title-of-tables">Completed</h4>
             <table class="table table-striped">
                 <tr>
                     <th></th>
@@ -110,7 +112,7 @@
                 </div>
                 <div class="form-group">
                     <label>Assign To</label>
-                    <select ng-model="assigned_to">
+                    <select class="form-control" ng-model="assigned_to">
                         <option ng-repeat="user in myUsers" value="{{user.username}}">{{user.username}}</option>
                     </select>
                     <!--<input class="form-control" type="text" ng-model="assigned_to" placeholder="Username">-->
@@ -124,7 +126,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
 
@@ -144,22 +146,24 @@
                     <textarea class="form-control" ng-model="description" placeholder="Task Description"></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Assign To</label>
-                    <select ng-model="assigned_to">
+                    <label class="control-label">Assign To</label>
+                    <div class="control-label">
+                        <select class="form-control" ng-model="assigned_to">
                         <option ng-repeat="user in myUsers" value="{{user.username}}">{{user.username}}</option>
                     </select>
                     <!--<input class="form-control" type="text" ng-model="assigned_to" placeholder="Username">-->
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Due By</label>
-                    <input class="form-control" type="date" ng-model="due_by">
+                    <input class="col-sm-4 form-control" type="date" ng-model="due_by">
                 </div>
             </div>
         </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="update()">Update</button>
-        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
 

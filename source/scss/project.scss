@@ -1,0 +1,18 @@
+@import "variables";
+@import "mixin";
+.new-task-holder {
+	margin-bottom: 20px;
+}
+.change-status-buttons {
+	@include col-xs(){
+		display: inline-block;
+		border-bottom: 1px solid $brand-primary;
+	}
+
+}
+.button-update-status {
+	@include col-xs(){
+		width: 100%;
+		margin-bottom: 10px;
+	}
+}

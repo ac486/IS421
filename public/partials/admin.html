@@ -24,10 +24,9 @@
                     <td class="text-capitalize">{{user.lastname}}</td>
                     <td class="text-lowercase">{{user.email}}</td>
                     <td>
-                        <select ng-model="user.isAdmin" ng-disabled="user.username === 'urvesh'">
-                            <option selected="selected">Select Option</option>
-                            <option ng-selected="user.isAdmin === 1" value="1">Admin</option>
-                            <option ng-selected="user.isAdmin === 0" value="0">Regular User</option>
+                        <select  class="form-control" ng-model="user.isAdmin" ng-disabled="user.username === 'urvesh'">
+                            <option class="success" ng-selected="user.isAdmin === 1" value="1">Admin</option>
+                            <option class="info" ng-selected="user.isAdmin === 0" value="0">Regular User</option>
                         </select>
                     </td>
                 </tr>

@@ -1,10 +1,16 @@
-@import 'reset';
-@import '../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap';
-@import '../../bower_components/font-awesome/scss/font-awesome';
+@import "reset";
+@import "../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap-sprockets";
+@import "../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap-compass";
+@import "../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap-mincer";
+@import "../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "../../bower_components/font-awesome/scss/font-awesome";
+@import "mixin";
 @import "variables";
-@import 'dashboard';
+@import "dashboard";
 @import "loginSignup";
 @import "admin";
+@import "project";
+
 
 body {
   padding: 50px;
@@ -38,6 +44,9 @@ span[ng-message] {
 
 .navbar {
     background: #FFFFFF;
+    @include col-xs(){
+      min-width: 105%;
+    }
 }
 .navbar-default {
   background-color: #FFFFFF;
@@ -53,7 +62,7 @@ span[ng-message] {
     color: $anchor-base;
     li{
       a {
-        &:hover, &focus {
+        &:hover, &:focus {
           color: #006600;
           background-color: #00a0d3;
         }
@@ -87,7 +96,7 @@ span[ng-message] {
 .btn{
     padding: 14px;
     cursor: pointer;
-    color: #FFF;
+    color: $white;
     font-weight: bold;
     border: none;
     -webkit-appearance: none;
@@ -97,6 +106,14 @@ span[ng-message] {
     appearance: none;
 }
 .btn-primary {
-  background: #00a0d3;
+  background: $anchor-base;
+}
+.title-of-tables {
+  color: $white;
+  background: $anchor-base;
+  padding: 14px 0;
+  @include col-xs(){
+    text-align: left;
+  }
 }
 

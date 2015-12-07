@@ -1,3 +1,5 @@
-   $(".information-admin").click(function(){
-   	$("p").fadeOut("slow");
-   });
+$(function () {
+	$("p").click(function(){
+		alert("The paragraph was clicked.");
+	});
+});
