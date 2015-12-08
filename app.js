@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
+var debug = require('debug')('is421:app');
 
 var routes = require('./routes/index');
 //var users = require('./routes/users');
@@ -20,7 +21,7 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -40,6 +41,7 @@ app.use(passport.session());
 
 app.use('/', routes);
 app.use('/api', function(req, res, next) {
+    debug('checking if authenticated');
     if (req.isAuthenticated()) {
         next();
     } else {
@@ -48,16 +50,15 @@ app.use('/api', function(req, res, next) {
 }, api);
 
 app.use('/*', function(req, res) {
+    debug('loading angular route');
     var authenticated = req.isAuthenticated();
 
     var admin = false;
     if (authenticated) {
         admin = req.user.isAdmin;
     }
-    //console.log('Logged in?:', authenticated);
-    //console.log('admin?', admin);
     res.render('layout', {
-        authenticated: req.isAuthenticated(),
+        authenticated: authenticated,
         isAdmin: admin
     });
 });

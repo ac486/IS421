@@ -20,9 +20,13 @@ var transporter = nodemailer.createTransport({
 var crypto = require('crypto');
 var mysql = require('mysql');
 var moment = require('moment');
+var debug = require('debug')
+var log = debug('is421:api');
+var logdb = debug('is421:sql');
 
 // Projects Page
 router.get('/dashboard', function(req, res) {
+    log(req.method + ' ' + req.url);
     var username = req.user.username;
     var data = {
         user: req.user
@@ -30,15 +34,17 @@ router.get('/dashboard', function(req, res) {
 
     pool.getConnection(function(err, connection) {
         if (!connection) res.send(500);
+        logdb('got pool connection');
 
         async.waterfall([
             function(callback) {
                 // Checks to see user belongs to an organization(user)
+                log('first waterfall function')
 
                 var sql = 'SELECT owner FROM User WHERE username = ?';
                 var values = [username];
                 connection.query(sql, values, function (err, rows) {
-
+                    logdb(mysql.format(sql, values));
                     if (err) {
                         console.log(err);
                     }
@@ -48,15 +54,18 @@ router.get('/dashboard', function(req, res) {
                     } else {
                         data.message = req.user.username + ' you are the owner'
                     }
+
+
                     callback(null, rows[0].owner);
                 });
             }, function(owner, callback) {
                 // If user belongs to organization, get the owner's userId
-
+                log('second waterfall function');
                 if (owner) {
                     var sql = 'SELECT userId FROM User WHERE username = ?';
                     var values = [owner];
                     connection.query(sql, values, function (err, rows) {
+                        logdb(mysql.format(sql, values));
                         if (err) console.log(err);
 
                         var userId = rows[0].userId;
@@ -69,15 +78,18 @@ router.get('/dashboard', function(req, res) {
                 }
             }, function(userId, callback) {
                 // Get the projects belonging to the organization(admin)
+                log('third waterfall function');
 
                 var sql = 'SELECT P.projectId, P.title, P.description FROM Project P INNER JOIN UserProject UP ' +
                     'ON P.projectId = UP.projectId AND UP.userId = ?';
                 var values = [userId];
                 connection.query(sql, values, function(err, rows) {
+                    logdb(mysql.format(sql, values));
                     if (err) console.log(err);
 
                     data.projects = rows;
                     connection.release();
+                    logdb('released connection. Returning...');
                     res.json(data);
                 });
             }
@@ -87,21 +99,22 @@ router.get('/dashboard', function(req, res) {
 
 // Create Project
 router.post('/project/create', function(req, res, next) {
+    log(req.method + ' ' + req.url);
     var title = req.body.title;
     var description = req.body.description;
     var userId = req.user.userId;
     var projectId;
 
     pool.getConnection(function (err, connection) {
+        logdb('got pool connection');
         if (!connection) res.send(500);
 
         var sql = 'INSERT INTO Project (title, description) VALUES (?, ?)';
         var values = [title, description];
         connection.query(sql, values, function(err, result) {
+            logdb(mysql.format(sql, values));
             if (err) console.log(err);
             projectId = result.insertId;
-            console.log(result);
-            console.log(projectId);
 
             sql = 'INSERT INTO UserProject (userId, projectId) VALUES (?,?)';
             values = [userId, projectId];
@@ -111,24 +124,29 @@ router.post('/project/create', function(req, res, next) {
         });
 
         connection.release();
+        logdb('released connection. Returning...');
         res.end();
     })
 });
 
 // Gets tasks for specified project
 router.get('/project/:projectId', function(req, res, next) {
+    log(req.method + ' ' + req.url);
     var projectId = req.params.projectId;
     var data = {};
 
     pool.getConnection(function (err, connection) {
+        log('got pool connection');
         if (!connection) res.send(500);
 
         var sql = 'SELECT * FROM Task WHERE projectId = ?';
         var values = [projectId];
         connection.query(sql, values, function(err, rows) {
+            logdb(mysql.format(sql, values));
             if (err) console.log(err);
 
             connection.release();
+            logdb('released connection. Returning...');
             res.json({
                 tasks: rows
             });
@@ -138,6 +156,7 @@ router.get('/project/:projectId', function(req, res, next) {
 
 // Create task for the specified project
 router.post('/project/:projectId/task/create', function(req, res, next) {
+    log(req.method + ' ' + req.url);
     var projectId = req.params.projectId;
     var title = req.body.title;
     var description = req.body.description;
@@ -146,20 +165,24 @@ router.post('/project/:projectId/task/create', function(req, res, next) {
     var created_at = moment(new Date).format('YYYY-MM-DD HH-mm-ss');
 
     pool.getConnection(function (err, connection) {
+        logdb('got pool connection');
         if (!connection) res.send(500);
 
         var sql = 'INSERT INTO Task (projectId, title, description, created_by, created_at, assigned_to, due_by) VALUES (?, ?, ?, ?, ?, ?, ?)';
         var values = [projectId, title, description, req.user.username, created_at, assigned_to, due_by];
         connection.query(sql, values, function(err, result) {
+            logdb(mysql.format(sql, values));
             connection.release();
+            logdb('released connection');
             if (err) console.log(err);
-            console.log(result.insertId);
         });
+        log('Returning...');
         res.end();
     })
 });
 
 router.put('/project/:projectId/task', function(req, res, next) {
+    log(req.method + ' ' + req.url);
     var projectId = req.params.projectId;
     var taskId = req.body.taskId;
     var title = req.body.title;
@@ -168,37 +191,41 @@ router.put('/project/:projectId/task', function(req, res, next) {
     var due_by = moment(req.body.due_by).format('YYYY-MM-DD HH-mm-ss');
 
     pool.getConnection(function (err, connection) {
+        logdb('got pool connection');
         if (!connection) res.send(500);
 
         var sql = 'UPDATE Task SET title = ?, description = ?, assigned_to = ?, due_by = ? WHERE taskId = ?';
         var values = [title, description, assigned_to, due_by, taskId];
         connection.query(sql, values, function (err, result) {
+            logdb(mysql.format(sql, values));
             connection.release();
+            logdb('releasing connection');
             if (err) console.log(err);
-            console.log(result);
         });
+        log('returning...');
         res.end();
     })
 });
 
 // Update the status of one or multiple tasks
 router.put('/project/:projectId/task/status', function(req, res, next) {
+    log(req.method + ' ' + req.url);
     var projectId = req.params.projectId;
     var ids = req.body.tasks;  //array of task Ids
     var status = req.body.status;
 
-    console.log(ids);
     pool.getConnection(function (err, connection) {
+        logdb('got pool connection');
         if (!connection) req.send(500);
 
         var sql = 'UPDATE Task SET status = ? WHERE taskId IN (?)';
         var values = [status, ids];
 
         connection.query(sql, values, function(err, rows) {
+            logdb(mysql.format(sql, values));
             if (err) console.log(err);
             connection.release();
-            console.log(rows);
-
+            log('released connection. Returning...');
             res.end();
         })
     });
@@ -206,15 +233,19 @@ router.put('/project/:projectId/task/status', function(req, res, next) {
 
 // Get all tasks that are assigned to a certain user
 router.get('/tasks', function(req, res, next) {
+    log(req.method + ' ' + req.url);
     var username = req.query.username;
 
     pool.getConnection(function(err, connection) {
+        logdb('got pool connection');
         if (!connection) res.send(500);
 
         var sql = 'SELECT * FROM Task WHERE assigned_to = ?';
         var values = [username];
         connection.query(sql, values, function(err, rows) {
+            logdb(mysql.format(sql, values));
             connection.release();
+            logdb('released connection');
             if (err) {
                 console.log(err);
             } else {
@@ -225,6 +256,7 @@ router.get('/tasks', function(req, res, next) {
                     rows[i].due_by = moment(rows[i].due_by).format('MM/DD/YYYY');
                 }
 
+                log('returning...');
                 res.json({
                     tasks: rows
                 })
@@ -235,16 +267,21 @@ router.get('/tasks', function(req, res, next) {
 
 // Admin Page - Get all users under the admin
 router.get('/admin', function(req, res) {
+    log(req.method + ' ' + req.url);
     pool.getConnection(function(err, connection) {
+        logdb('got pool connection');
         if (!connection) res.send(500);
 
         var sql = 'SELECT username, firstname, lastname, email, isAdmin FROM User WHERE owner = ?';
         var values = [req.user.username];
         connection.query(sql, values, function(err, rows) {
+            logdb(mysql.format(sql, values));
             connection.release();
+            logdb('releasing connection');
             if (err) {
                 console.log(err);
             } else {
+                log('returning...');
                 res.json({
                     data: rows,
                     user: req.user
@@ -256,9 +293,11 @@ router.get('/admin', function(req, res) {
 
 // Update user settings provided by admin
 router.post('/admin/save', function(req, res) {
+    log(req.method + ' ' + req.url);
     var users = req.body;   //array of users
     if (users.length > 0) {
         pool.getConnection(function(err, connection) {
+            logdb('got pool connection');
             if (!connection) res.send(500);
 
             for (var i = 0; i < users.length; i++) {
@@ -267,35 +306,42 @@ router.post('/admin/save', function(req, res) {
                 connection.query(sql, values, function (err, rows) {
                     //connection.release();
                     if (err) {
-                        connection.log(err);
+                        console.log(err);
                     } else {
-                        console.log('updated');
+                        //console.log('updated');
                         //res.send(rows);
                     }
                 });
             }
             connection.release();
+            logdb('released conncetion');
         });
     }
+    log('returning...');
     res.send('Done');
 });
 
 
 // Delete the user from the application
 router.post('/admin/delete', function(req, res){
+    log(req.method + ' ' + req.url);
     var usernames = req.body;   //array of usernames
 
     if (usernames.length > 0 ) {
         pool.getConnection(function(err, connection) {
+            log('got pool connection');
             if (!connection) res.send(500);
 
             var sql = 'DELETE FROM User WHERE username IN (?)';
             var values  = usernames;
             connection.query(sql, values, function(err, rows) {
+                logdb(mysql.format(sql, values));
                 connection.release();
+                logdb('released connection');
                 if (err) {
                     console.log(err);
                 } else {
+                    log('returning...');
                     res.send(rows);
                 }
             })
@@ -305,9 +351,12 @@ router.post('/admin/delete', function(req, res){
 
 // Masquerade feature - admin can login as another user
 router.post('/loginas', function(req, res, next) {
+    log(req.method + ' ' + req.url);
     req.logout();
     next();
 }, passport.authenticate('adminLocal'), function (req, res){
+    log(req.method + ' ' + req.url);
+    log('returning');
     res.json({
         user: req.user
     })
@@ -315,17 +364,21 @@ router.post('/loginas', function(req, res, next) {
 
 // Gets the current user information
 router.get('/user', function(req, res, next) {
+    log(req.method + ' ' + req.url);
     pool.getConnection(function(err, connection) {
+        logdb('got pool connection');
         if (!connection) res.send(500);
 
         var sql = 'SELECT * FROM User WHERE username = ?';
         var values = [req.user.username];
         connection.query(sql, values, function(err, rows) {
+            logdb(mysql.format(sql, values));
             connection.release();
-
+            logdb('released connection');
             if (err) {
                 console.log(err);
             } else {
+                log('returning...');
                 res.json({
                     user: rows[0]
                 })
@@ -336,16 +389,18 @@ router.get('/user', function(req, res, next) {
 
 // Add a new user to the current admin's organization
 router.post('/project/addUser', function(req, res) {
+    log(req.method + ' ' + req.url);
     var email = req.body.email;
     var admin = req.user.username;
 
-    console.log(email, admin);
     pool.getConnection(function(err, connection) {
+        logdb('got pool connection');
         if (!connection) res.send(500);
 
         var sql = 'SELECT email, confirmationCode FROM User WHERE email = ?';
         var values = [email];
         connection.query(sql, values, function(err, rows) {
+            logdb(mysql.format(sql, values));
 
             if (err) {
                 console.log(err);
@@ -356,11 +411,13 @@ router.post('/project/addUser', function(req, res) {
                 sql = 'UPDATE User SET owner = ? WHERE email = ?';
                 values = [admin, email];
                 connection.query(sql, values, function(err, rows) {
+                    logdb(mysql.format(sql, values));
                     connection.release();
+                    logdb('released connection');
                     if (err) console.log(err);
                 });
 
-
+                log('sending email for project reassignment');
                 transporter.sendMail({
                     to: rows[0].email,
                     subject: 'IS421 - Project Reassignment',
@@ -375,11 +432,13 @@ router.post('/project/addUser', function(req, res) {
                     }
                 });
 
+                log('returning...');
                 res.send({
                     message: rows[0].email + ' has been added to this project'
                 });
 
             } else {
+                log('sending email for project invite');
                 transporter.sendMail({
                     to: email,
                     subject: 'NJIT IS421 New Project Invite',
@@ -392,6 +451,7 @@ router.post('/project/addUser', function(req, res) {
                     }
                 });
 
+                log('returning...');
                 res.send({
                     message: email + ' has been invited to sign up for an account'
                 });
@@ -402,11 +462,12 @@ router.post('/project/addUser', function(req, res) {
 
 // Remove a user from the admin's organization
 router.post('/project/removeUser', function(req, res) {
+    log(req.method + ' ' + req.url);
     var email = req.body.email;
     var admin = req.user.username;
 
-    console.log(email, admin);
     pool.getConnection(function(err, connection) {
+        logdb('got pool connection');
         if (!connection) res.send(500);
 
         var sql = 'UPDATE User SET owner = ? where email = ?';
@@ -418,11 +479,12 @@ router.post('/project/removeUser', function(req, res) {
 
         var values = ['admin', email];
         connection.query(sql, values, function(err, rows) {
+            logdb(mysql.format(sql, values));
             if (err) {
                 console.log(err);
             }
-            console.log(rows);
             connection.release();
+            log('released connection, returning...');
             res.end();
 
         })
@@ -431,15 +493,20 @@ router.post('/project/removeUser', function(req, res) {
 
 // Get all the users on the application
 router.get('/users/all', function(req, res) {
+    log(req.method + ' ' + req.url);
     pool.getConnection(function(err, connection) {
+        logdb('got pool connection');
         if (!connection) res.send(500);
 
         var sql = 'SELECT username, email, firstname, lastname, owner FROM User WHERE username <> ?;';
         var values = [req.user.username];
 
         connection.query(sql, values, function(err, rows) {
+            logdb(mysql.format(sql, values));
             if (err) console.log(err);
 
+            connection.release();
+            logdb('released connection. returning...');
             res.json({
                 userList: rows,
                 user: req.user
@@ -450,9 +517,11 @@ router.get('/users/all', function(req, res) {
 
 // Delete a project
 router.put('/project/delete', function(req, res) {
+    log(req.method + ' ' + req.url);
     var id = req.body.projectId;
 
     pool.getConnection(function (err, connection) {
+        logdb('got pool connection');
         if (!connection) res.send(500);
 
         var sql = 'DELETE Project, UserProject, Task ' +
@@ -463,9 +532,11 @@ router.put('/project/delete', function(req, res) {
         var values = [id];
 
         connection.query(sql, values, function(err, result) {
+            logdb(mysql.format(sql, values));
             connection.release();
+            logdb('released connection');
             if (err) console.log(err);
-            console.log(result);
+            log('returning');
             res.end();
         })
     })
