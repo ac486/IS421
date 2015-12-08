@@ -14,7 +14,7 @@ var transporter = nodemailer.createTransport({
     }
 });
 var crypto = require('crypto');
-var debug = require('debug')
+var debug = require('debug');
 var log = debug('is421:api');
 var logdb = debug('is421:sql');
 var mysql = require('mysql');

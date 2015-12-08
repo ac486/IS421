@@ -536,9 +536,36 @@ router.put('/project/delete', function(req, res) {
             connection.release();
             logdb('released connection');
             if (err) console.log(err);
-            log('returning');
+            log('returning...');
             res.end();
         })
+    })
+});
+
+//Update a project
+router.put('/project/', function(req, res) {
+    log(req.method + ' ' + req.url);
+    var id = req.body.projectId;
+    var title = req.body.title;
+    var description = req.body.description;
+
+    pool.getConnection(function(err, connection) {
+        logdb('got pool connection');
+        if (!connection) res.send(500);
+
+        var sql = 'UPDATE Project SET title = ?, description = ? WHERE projectId = ?';
+        var values = [title, description, id];
+
+        connection.query(sql, values, function(err, result) {
+            logdb(mysql.format(sql, values));
+            connection.release();
+            logdb('released connection');
+
+            if (err) console.log(err);
+
+            log('returning...');
+            res.end();
+        });
     })
 });
 

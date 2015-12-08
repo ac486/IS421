@@ -198,23 +198,23 @@ app.controller('DashboardCtrl', function($scope, $http, $location, $modal) {
         })
     };
 
-    $scope.addUser = function(email) {
-        if (!email) return;
-
-        $http({
-            method: 'POST',
-            url: '/api/project/addUser',
-            data: {
-                email: email
+    $scope.editProject = function(project) {
+        var modalInstance = $modal.open({
+            animation: true,
+            templateUrl: 'editProjectModal.html',
+            controller: 'EditProjectModalCtrl',
+            resolve: {
+                project: function() {
+                    return project;
+                }
             }
-        }).then(function(response) {
-            toastr.success('New User was added!');
-            console.log(response);
+        });
 
-            // existing user cannot confirm if he wants to accept project invite
-            //$location.path('/confirmAddUser')
-        }, function(err) {
-            console.log(err);
+        modalInstance.result.then(function() {
+            onLoad();
+        }, function() {
+            console.log('Modal dismissed at: ' + new Date());
+            toastr.info('Modal dismissed at: ' + new Date());
         });
     }
 });
@@ -240,6 +240,37 @@ app.controller('NewProjectModalCtrl', function($scope, $http, $modalInstance) {
             console.log(response);
         }, function(err) {
             toastr.error(err)
+            console.log(err);
+        });
+
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+app.controller('EditProjectModalCtrl', function($scope, $http, $modalInstance, project) {
+    $scope.title = project.title;
+    $scope.description = project.description;
+
+    $scope.update = function() {
+        if (!$scope.title) return;
+
+        $http({
+            method: 'PUT',
+            url: '/api/project/',
+            data: {
+                projectId: project.projectId,
+                title: $scope.title,
+                description: $scope.description
+            }
+        }).then(function(response) {
+            toastr.success('Project was updated!');
+            console.log(response);
+        }, function(err) {
+            toastr.error(err);
             console.log(err);
         });
 

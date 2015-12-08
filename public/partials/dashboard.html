@@ -24,10 +24,11 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <button type="button" ng-click="deleteProject(project.projectId)" class="close"><i class="fa fa-trash-o"></i></button>
-                <!--<button type="button" class="close"><i class="fa fa-pencil"></i></button>-->
+
                 <h3 class="panel-title projects-items"><i class="fa fa-tasks"></i> <a href="/project/{{project.projectId}}">{{project.title}}</a></h3>
             </div>
             <div class="panel-body">
+                <button type="button" class="close" ng-click="editProject(project)"><i class="fa fa-pencil"></i></button>
                 <p>{{project.description || 'No description available'}}</p>
                 <!--<p>{{project.title}}</p>-->
                 <!--<p>{{project.title}}</p>-->
@@ -36,15 +37,7 @@
         </div>
     </div>
 </div>
-<!--
-     <form class="form-horizontal" ng-submit="addUser(email); email=''">
-                <div class="form-group">
-                    <h4>Add New User</h4>
-                    <input class="form-control" type="email" ng-model="email" placeholder="example@example.com">
-                    <button type="submit" class="btn btn-primary btn-block">Add User</button>
-                </div>
-            </form>
--->
+
 <script type="text/ng-template" id="newProjectModal.html">
     <div class="modal-header">
         <h3 class="modal-title text-center">New Project</h3>
@@ -65,6 +58,30 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="editProjectModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title text-center">New Project</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input class="form-control" type="text" ng-model="title" placeholder="Project Title">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" ng-model="description" placeholder="Project Description"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="update()">Update</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
     </div>
 </script>
